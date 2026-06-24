@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4 — Listening & Understanding</title>
+  <style>
+/* =============================================
+   English Advanced — Shared Lesson Stylesheet
+   v3 — Mobile-friendly, responsive
+   ============================================= */
+
+:root {
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #8b3a3a;
+  --accent-light: #f5e6e6;
+  --border: #d4d4d4;
+  --bg: #fafaf8;
+  --card-bg: #ffffff;
+  --green: #2d6a4f;
+  --green-light: #e8f5e9;
+  --code-bg: #f0efed;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  padding: 1.5rem 1rem;
+  max-width: var(--measure);
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1.5rem 0 0.3rem; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+
+p { margin: 0 0 0.8rem; }
+
+.lesson-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* Story block — compact */
+.story {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+
+/* Word card */
+.word-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.word-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.word-card .word {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.word-card .pronounce {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Speak button */
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.speak-btn:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.speak-btn:active {
+  transform: scale(0.92);
+}
+
+.speak-btn.playing {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); }
+}
+
+.word-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.word-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.word-card .example .highlight {
+  color: var(--accent);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Additional examples — table layout */
+.more-examples {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border);
+}
+
+.more-examples table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.more-examples table td {
+  padding: 0.12rem 0;
+  vertical-align: top;
+}
+
+.more-examples table td:first-child {
+  width: 5rem;
+  min-width: 5rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  padding-right: 0.4rem;
+}
+
+.more-examples table td:last-child {
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* Phrase card */
+.phrase-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--green);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.phrase-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.phrase-card .phrase {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.phrase-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.phrase-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.phrase-card .example .highlight {
+  color: var(--green);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Quiz */
+.quiz {
+  margin: 1.5rem 0 1.2rem;
+  padding: 1rem 1.2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.quiz h2 { margin-top: 0; }
+
+.quiz-question {
+  margin: 1rem 0;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.quiz-question:last-child { border-bottom: none; }
+
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+
+.quiz-option {
+  display: block;
+  padding: 0.65rem 0.8rem;
+  margin: 0.35rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Minimum touch target 44px */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.quiz-option:hover {
+  background: #f0f0ee;
+  border-color: #bbb;
+}
+
+.quiz-option.correct {
+  background: var(--green-light);
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+.quiz-option.wrong {
+  background: #fde8e8;
+  border-color: #9b2226;
+}
+
+.quiz-reveal {
+  margin-top: 0.8rem;
+  padding: 0.7rem 1.2rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--accent);
+  transition: background 0.15s;
+  width: 100%;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quiz-reveal:hover { background: #e8d0d0; }
+
+/* Quiz feedback */
+.quiz-feedback {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.quiz-feedback.show {
+  display: block;
+}
+
+.quiz-feedback.correct-fb {
+  background: var(--green-light);
+  border-left: 3px solid var(--green);
+  color: #1a4a2e;
+}
+
+.quiz-feedback.wrong-fb {
+  background: #fde8e8;
+  border-left: 3px solid #9b2226;
+  color: #7a1a1a;
+}
+
+.quiz-feedback strong {
+  font-weight: 600;
+}
+
+/* Separator */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* Footer */
+.footnotes {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.footnotes a { color: var(--accent); }
+
+/* ===================== */
+/* MOBILE RESPONSIVE     */
+/* ===================== */
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem 0.75rem;
+    font-size: 16px;
+  }
+
+  h1 { font-size: 1.35rem; margin-top: 1.2rem; }
+  h2 { font-size: 1.05rem; }
+
+  .lesson-meta { font-size: 0.7rem; margin-bottom: 1rem; }
+
+  .story {
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    margin: 0.8rem 0 1.2rem;
+  }
+
+  .word-card, .phrase-card {
+    padding: 0.7rem 0.8rem;
+    margin: 0.7rem 0;
+  }
+
+  .word-card .word { font-size: 1.1rem; }
+  .phrase-card .phrase { font-size: 1.05rem; }
+
+  .word-card .definition,
+  .phrase-card .definition { font-size: 0.85rem; }
+
+  .word-card .example,
+  .phrase-card .example { font-size: 0.82rem; }
+
+  .more-examples table { font-size: 0.8rem; }
+
+  /* On very small screens, stack the table rows */
+  .more-examples table td:first-child {
+    width: 4.5rem;
+    min-width: 4.5rem;
+    font-size: 0.78rem;
+  }
+
+  .quiz {
+    padding: 0.8rem 0.9rem;
+    margin: 1.2rem 0 1rem;
+  }
+
+  .quiz-question p { font-size: 0.88rem; }
+
+  .quiz-option {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+    min-height: 44px;
+  }
+
+  .quiz-reveal {
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+    min-height: 44px;
+  }
+
+  .speak-btn {
+    min-width: 36px;
+    min-height: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .more-examples table td:first-child {
+    width: 4rem;
+    min-width: 4rem;
+    font-size: 0.75rem;
+  }
+
+  .more-examples table td:last-child {
+    font-size: 0.78rem;
+  }
+}
+
+/* Print */
+@media print {
+  body { font-size: 13px; padding: 0.5in; background: white; }
+  .story, .word-card, .phrase-card, .quiz { box-shadow: none; page-break-inside: avoid; }
+}
+
+</style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 4 of 5 · Series: Conversational Language</p>
+
+<h1>Listening &amp; Understanding</h1>
+
+<div class="story">
+  <p>A design critique. The room was gathered to review Mia's first major project.</p>
+
+  <p><strong>Nina</strong> noticed Mia's hands were trembling slightly as she pulled up the slides. She started with a warm nod: <em>"You look nervous — that's totally normal. Let's take this slow."</em> She asked questions that helped Mia explain her own thinking rather than putting her on the defensive.</p>
+
+  <p><strong>Tom</strong> scrolled through his phone while Mia presented. When asked for feedback, he waved his hand: <em>"It's fine. Ship it."</em> He didn't engage — not because he disliked it, but because he'd already decided it wasn't worth his attention.</p>
+
+  <p><strong>Leila</strong> leaned forward. She listened without interrupting. When Mia finished, she said: <em>"I love the layout — what if we tried a bolder colour on the call-to-action?"</em> She took Mia's idea and built on it, treating it as a starting point.</p>
+
+  <p><em>Nina saw what Mia needed. Tom wrote her off. Leila made her better.</em></p>
+</div>
+
+<!-- ===== WORDS ===== -->
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">perceptive <button class="speak-btn" onclick="speak('perceptive', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/pəˈsɛp.tɪv/ · pər-SEP-tiv · <em>adjective</em> · 敏銳的，觀察力強的</div>
+  <div class="definition">
+    Quick to notice, understand, or judge things — especially things that are not obvious. A perceptive person picks up on what others miss.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Nina was perceptive</span> — she noticed Mia's hands trembling and adjusted her approach before saying a word.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>📚 Literature:</td><td>A <em>perceptive</em> reader notices the symbolism in the first chapter that everyone else misses until the end.</td></tr>
+      <tr><td>💼 Work:</td><td>She's a <em>perceptive</em> manager who knows her team is burning out before anyone says a word.</td></tr>
+      <tr><td>👫 Personal:</td><td>He made a <em>perceptive</em> observation about why I was upset — before I'd even opened my mouth.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">dismissive <button class="speak-btn" onclick="speak('dismissive', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/dɪsˈmɪs.ɪv/ · diss-MISS-iv · <em>adjective</em> · 輕視的，不屑一顧的</div>
+  <div class="definition">
+    Showing that you think someone or something is not important or worth serious consideration. A dismissive attitude shuts down conversation.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Tom was dismissive</span> — "It's fine. Ship it." He didn't engage because he'd already decided it wasn't worth his time.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Meeting:</td><td>His <em>dismissive</em> wave told the whole room that their opinions didn't matter.</td></tr>
+      <tr><td>🗳️ Politics:</td><td>The government was <em>dismissive</em> of the protestors' concerns, calling them "a vocal minority."</td></tr>
+      <tr><td>🏠 Personal:</td><td>She was <em>dismissive</em> of my suggestion before I'd even finished the sentence — "That won't work."</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">receptive <button class="speak-btn" onclick="speak('receptive', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/rɪˈsɛp.tɪv/ · ri-SEP-tiv · <em>adjective</em> · 願意接受的，開放接納的</div>
+  <div class="definition">
+    Willing to listen to, consider, or accept new ideas, suggestions, or feedback. A receptive person doesn't just hear — they engage and build on what you say.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Leila was receptive</span> — she listened carefully and then built on Mia's idea instead of dismissing or rewriting it.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Work:</td><td>The team was surprisingly <em>receptive</em> to the new workflow after seeing how much time it saved in the pilot.</td></tr>
+      <tr><td>🎓 Learning:</td><td>Students are more <em>receptive</em> to feedback when it's delivered constructively, not as criticism.</td></tr>
+      <tr><td>🌍 Culture:</td><td>The company is <em>receptive</em> to feedback from all levels — junior employees can email the CEO directly.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PHRASES ===== -->
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">lend an ear <button class="speak-btn" onclick="speak('lend an ear', event)" title="Listen">🔊</button></div>
+  <div class="definition">
+    To listen carefully and sympathetically to someone, especially when they need to talk about a problem.<br>
+    · 傾聽，聆聽
+  </div>
+  <div class="example">↳ Back to the story: After the critique, Nina stayed behind to <span class="highlight">lend an ear</span> to Mia, who was feeling overwhelmed by the mixed feedback.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>👫 Personal:</td><td>Whenever I'm stressed about work, my best friend <em>lends an ear</em> without judging or giving unsolicited advice.</td></tr>
+      <tr><td>💼 Work:</td><td>The best managers know when to stop solving problems and just <em>lend an ear</em> to their team.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">on the same page <button class="speak-btn" onclick="speak('on the same page', event)" title="Listen">🔊</button></div>
+  <div class="definition">
+    To be in agreement or have a shared understanding about something. Often used to check alignment before moving forward.<br>
+    · 達成共識，想法一致
+  </div>
+  <div class="example">↳ Back to the story: Nina and Leila made sure they were <span class="highlight">on the same page</span> about the next steps before the meeting ended.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Work:</td><td>Before we start the sprint, let's get <em>on the same page</em> about priorities — otherwise we'll pull in different directions.</td></tr>
+      <tr><td>👫 Personal:</td><td>My partner and I aren't <em>on the same page</em> about where to live, so we're taking a month to discuss it properly.</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr>
+
+<!-- ===== REVIEW ===== -->
+
+<h2>🔄 Review from Lessons 1–3</h2>
+
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+
+<p style="margin-bottom:0.5rem;"><strong>Quick recall from earlier lessons:</strong></p>
+
+<p>📖 <strong>candid</strong> — Clara named the budget problem nobody wanted to mention.</p>
+<p>📖 <strong>compelling</strong> — Anika's single chart made investors nod.</p>
+<p>📖 <strong>see eye to eye</strong> — Maya and Daniel didn't agree on anything.</p>
+<p>💬 <strong>cut to the chase</strong> — Everyone wished Ravi would just get to the point.</p>
+
+</div>
+
+<hr>
+
+<!-- ===== QUIZ ===== -->
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 from Lesson 4. Q4–Q5 review Lessons 1–3. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question">
+    <p><strong>Q1 (Lesson 4).</strong> <em>A _____ reader will catch the foreshadowing in chapter two that most people don't notice until the final plot twist.</em></p>
+    <label class="quiz-option" data-correct="true">a) perceptive</label>
+    <label class="quiz-option" data-correct="false">b) receptive</label>
+    <label class="quiz-option" data-correct="false">c) dismissive</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q2 (Lesson 4).</strong> <em>His _____ attitude during the meeting made everyone feel their input was worthless.</em></p>
+    <label class="quiz-option" data-correct="false">a) perceptive</label>
+    <label class="quiz-option" data-correct="false">b) receptive</label>
+    <label class="quiz-option" data-correct="true">c) dismissive</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q3 (Lesson 4).</strong> <em>The board was surprisingly _____ to the radical proposal — they asked thoughtful questions instead of shutting it down.</em></p>
+    <label class="quiz-option" data-correct="false">a) perceptive</label>
+    <label class="quiz-option" data-correct="true">b) receptive</label>
+    <label class="quiz-option" data-correct="false">c) dismissive</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q4 (Review — Lesson 3).</strong> <em>The lawyer's evidence was so _____ that the jury reached a verdict in under an hour.</em></p>
+    <label class="quiz-option" data-correct="true">a) compelling</label>
+    <label class="quiz-option" data-correct="false">b) disarming</label>
+    <label class="quiz-option" data-correct="false">c) disingenuous</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q5 (Review — Lesson 1).</strong> <em>The report was so _____ that the key finding was buried on page twelve.</em></p>
+    <label class="quiz-option" data-correct="false">a) laconic</label>
+    <label class="quiz-option" data-correct="true">b) verbose</label>
+    <label class="quiz-option" data-correct="false">c) candid</label>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<p style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+  ✅ Lesson 4 complete. Next: Lesson 5 — Tone &amp; Subtext (final lesson).
+</p>
+
+<script>
+function speak(text, evt) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const ut = new SpeechSynthesisUtterance(text);
+  ut.lang = 'en-US';
+  ut.rate = 0.85;
+  ut.pitch = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const enVoice = voices.find(v => v.lang.startsWith('en'));
+  if (enVoice) ut.voice = enVoice;
+
+  const btn = evt?.target?.closest?.('.speak-btn');
+  if (btn) btn.classList.add('playing');
+  ut.onend = () => { if (btn) btn.classList.remove('playing'); };
+
+  window.speechSynthesis.speak(ut);
+}
+
+if (window.speechSynthesis) speechSynthesis.getVoices();
+
+document.querySelectorAll('.quiz-option').forEach(el => {
+  el.addEventListener('click', function() {
+    const parent = this.parentElement;
+    parent.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+    });
+    if (this.dataset.correct === 'true') {
+      this.classList.add('correct');
+    } else {
+      this.classList.add('wrong');
+      parent.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+    }
+  });
+});
+
+document.getElementById('revealBtn').addEventListener('click', function() {
+  document.querySelectorAll('.quiz-question').forEach(q => {
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+    });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — Conversation Styles</title>
+  <style>
+/* =============================================
+   English Advanced — Shared Lesson Stylesheet
+   v3 — Mobile-friendly, responsive
+   ============================================= */
+
+:root {
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #8b3a3a;
+  --accent-light: #f5e6e6;
+  --border: #d4d4d4;
+  --bg: #fafaf8;
+  --card-bg: #ffffff;
+  --green: #2d6a4f;
+  --green-light: #e8f5e9;
+  --code-bg: #f0efed;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  padding: 1.5rem 1rem;
+  max-width: var(--measure);
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1.5rem 0 0.3rem; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+
+p { margin: 0 0 0.8rem; }
+
+.lesson-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* Story block — compact */
+.story {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+
+/* Word card */
+.word-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.word-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.word-card .word {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.word-card .pronounce {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Speak button */
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.speak-btn:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.speak-btn:active {
+  transform: scale(0.92);
+}
+
+.speak-btn.playing {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); }
+}
+
+.word-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.word-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.word-card .example .highlight {
+  color: var(--accent);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Additional examples — table layout */
+.more-examples {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border);
+}
+
+.more-examples table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.more-examples table td {
+  padding: 0.12rem 0;
+  vertical-align: top;
+}
+
+.more-examples table td:first-child {
+  width: 5rem;
+  min-width: 5rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  padding-right: 0.4rem;
+}
+
+.more-examples table td:last-child {
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* Phrase card */
+.phrase-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--green);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.phrase-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.phrase-card .phrase {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.phrase-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.phrase-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.phrase-card .example .highlight {
+  color: var(--green);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Quiz */
+.quiz {
+  margin: 1.5rem 0 1.2rem;
+  padding: 1rem 1.2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.quiz h2 { margin-top: 0; }
+
+.quiz-question {
+  margin: 1rem 0;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.quiz-question:last-child { border-bottom: none; }
+
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+
+.quiz-option {
+  display: block;
+  padding: 0.65rem 0.8rem;
+  margin: 0.35rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Minimum touch target 44px */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.quiz-option:hover {
+  background: #f0f0ee;
+  border-color: #bbb;
+}
+
+.quiz-option.correct {
+  background: var(--green-light);
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+.quiz-option.wrong {
+  background: #fde8e8;
+  border-color: #9b2226;
+}
+
+.quiz-reveal {
+  margin-top: 0.8rem;
+  padding: 0.7rem 1.2rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--accent);
+  transition: background 0.15s;
+  width: 100%;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quiz-reveal:hover { background: #e8d0d0; }
+
+/* Quiz feedback */
+.quiz-feedback {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.quiz-feedback.show {
+  display: block;
+}
+
+.quiz-feedback.correct-fb {
+  background: var(--green-light);
+  border-left: 3px solid var(--green);
+  color: #1a4a2e;
+}
+
+.quiz-feedback.wrong-fb {
+  background: #fde8e8;
+  border-left: 3px solid #9b2226;
+  color: #7a1a1a;
+}
+
+.quiz-feedback strong {
+  font-weight: 600;
+}
+
+/* Separator */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* Footer */
+.footnotes {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.footnotes a { color: var(--accent); }
+
+/* ===================== */
+/* MOBILE RESPONSIVE     */
+/* ===================== */
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem 0.75rem;
+    font-size: 16px;
+  }
+
+  h1 { font-size: 1.35rem; margin-top: 1.2rem; }
+  h2 { font-size: 1.05rem; }
+
+  .lesson-meta { font-size: 0.7rem; margin-bottom: 1rem; }
+
+  .story {
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    margin: 0.8rem 0 1.2rem;
+  }
+
+  .word-card, .phrase-card {
+    padding: 0.7rem 0.8rem;
+    margin: 0.7rem 0;
+  }
+
+  .word-card .word { font-size: 1.1rem; }
+  .phrase-card .phrase { font-size: 1.05rem; }
+
+  .word-card .definition,
+  .phrase-card .definition { font-size: 0.85rem; }
+
+  .word-card .example,
+  .phrase-card .example { font-size: 0.82rem; }
+
+  .more-examples table { font-size: 0.8rem; }
+
+  /* On very small screens, stack the table rows */
+  .more-examples table td:first-child {
+    width: 4.5rem;
+    min-width: 4.5rem;
+    font-size: 0.78rem;
+  }
+
+  .quiz {
+    padding: 0.8rem 0.9rem;
+    margin: 1.2rem 0 1rem;
+  }
+
+  .quiz-question p { font-size: 0.88rem; }
+
+  .quiz-option {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+    min-height: 44px;
+  }
+
+  .quiz-reveal {
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+    min-height: 44px;
+  }
+
+  .speak-btn {
+    min-width: 36px;
+    min-height: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .more-examples table td:first-child {
+    width: 4rem;
+    min-width: 4rem;
+    font-size: 0.75rem;
+  }
+
+  .more-examples table td:last-child {
+    font-size: 0.78rem;
+  }
+}
+
+/* Print */
+@media print {
+  body { font-size: 13px; padding: 0.5in; background: white; }
+  .story, .word-card, .phrase-card, .quiz { box-shadow: none; page-break-inside: avoid; }
+}
+
+</style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 1 of 5 · Series: Conversational Language</p>
+
+<h1>Conversation Styles</h1>
+
+<div class="story">
+  <p>Three people walk into the same meeting.</p>
+
+  <p><strong>Elena</strong> sits down, nods at everyone, and says one sentence. The room listens. She doesn't add another word unless asked. Later, someone says: <em>"Elena's feedback was worth the whole hour."</em></p>
+
+  <p><strong>Ravi</strong> answers every question with context, background, and a detour. He covers every angle — and then some. When he finally finishes, people have forgotten what they asked.</p>
+
+  <p><strong>Clara</strong> says what everyone else is thinking but won't say. The uncomfortable truth. The budget numbers nobody wants to look at. She doesn't raise her voice or apologise — she just names it.</p>
+
+  <p><em>Three people. Three ways of speaking. None wrong — but each lands completely differently.</em></p>
+</div>
+
+<!-- ===== WORDS ===== -->
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">laconic <button class="speak-btn" onclick="speak('laconic', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ləˈkɒn.ɪk/ · lak-ON-ik · <em>adjective</em> · 簡潔的，言簡意賅的</div>
+  <div class="definition">
+    Using very few words — deliberately. A laconic person isn't shy; they choose brevity as a tool. It conveys weight, reserve, or mild disapproval.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Elena was laconic</span> — one sentence that carried more weight than anyone else's presentation.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>📰 News:</td><td>The general's <em>laconic</em> briefing — "We advance at dawn" — said everything that needed saying.</td></tr>
+      <tr><td>💼 Work:</td><td>His <em>laconic</em> email reply was three words: "I disagree. Why?"</td></tr>
+      <tr><td>📚 Literature:</td><td>Hemingway is famous for his <em>laconic</em> prose — short sentences, immense weight.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">verbose <button class="speak-btn" onclick="speak('verbose', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/vɜːˈbəʊs/ · ver-BOHSS · <em>adjective</em> · 冗長的，囉嗦的</div>
+  <div class="definition">
+    Using more words than needed. Suggests inefficiency or lack of clarity — can be neutral (descriptive) or mildly critical depending on tone.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Ravi was verbose</span> — by the time he finished his answer, nobody remembered the question.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>📧 Email:</td><td>Her <em>verbose</em> email took three paragraphs to ask a single yes-or-no question.</td></tr>
+      <tr><td>💼 Work:</td><td>The boss is known for <em>verbose</em> presentations that could be five slides but somehow become thirty.</td></tr>
+      <tr><td>📚 Academic:</td><td>The paper was so <em>verbose</em> that its core finding was buried in the footnotes.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">candid <button class="speak-btn" onclick="speak('candid', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈkæn.dɪd/ · KAN-did · <em>adjective</em> · 坦率的，直言不諱的</div>
+  <div class="definition">
+    Honest and direct, especially when the truth is uncomfortable. Unlike "blunt" (which can be insensitive), candid suggests sincerity without cruelty.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Clara was candid</span> — she named the budget problem nobody wanted to mention.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Work:</td><td>In the performance review, she was <em>candid</em> about needing to improve her time management.</td></tr>
+      <tr><td>🏠 Personal:</td><td>I'll be <em>candid</em> — I don't think this plan is going to work the way you described it.</td></tr>
+      <tr><td>📰 Media:</td><td>The CEO gave a <em>candid</em> interview about the company's struggles, admitting past mistakes.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PHRASES ===== -->
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">cut to the chase <button class="speak-btn" onclick="speak('cut to the chase', event)" title="Listen">🔊</button></div>  <div class="definition">
+    Get to the point. Skip the pleasantries, context, and buildup — say what matters directly.<br>
+    <em>Origin:</em> Film editing jargon — directors would "cut to the chase" instead of building up to it through exposition. · 開門見山，直奔主題
+  </div>
+  <div class="example">↳ Back to the story: Everyone wished Ravi would <span class="highlight">cut to the chase</span> instead of giving them the full backstory.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Work:</td><td>Let me <em>cut to the chase</em> — we're being acquired. The paperwork starts Monday.</td></tr>
+      <tr><td>🎬 Movies:</td><td>The film could've <em>cut to the chase</em> instead of spending twenty minutes on backstory.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">not mince words <button class="speak-btn" onclick="speak('does not mince words', event)" title="Listen">🔊</button></div>  <div class="definition">
+    To speak directly and plainly, without softening the message. Almost always used in the negative form — "doesn't mince words" means they say exactly what they mean, even if it's harsh.<br>
+    ("Mince" here means to chop into small pieces — so "not mincing" means not breaking your words into gentle pieces.) · 直言不諱，毫不婉轉
+  </div>
+  <div class="example">↳ Back to the story: Clara <span class="highlight">doesn't mince words</span> — she told the room the project was failing in four seconds flat.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>💼 Work:</td><td>The reviewer didn't <em>mince words</em>: "This code is unmaintainable and needs a full rewrite."</td></tr>
+      <tr><td>🏠 Personal:</td><td>To not <em>mince words</em>, I think you're making a huge mistake — and I say that because I care.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== THE SPECTRUM ===== -->
+
+<h2>📊 At a Glance</h2>
+
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem; margin:1rem 0; font-size:0.9rem;">
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; font-weight:600; border-bottom:1px solid var(--border); padding-bottom:0.5rem; margin-bottom:0.5rem;">
+  <span>Expression</span>
+  <span>Character</span>
+  <span>Chinese</span>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; padding:0.3rem 0;">
+  <span style="color:var(--accent); font-weight:600;">laconic</span>
+  <span>Elena — one sentence that lands</span>
+  <span>簡潔的</span>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; padding:0.3rem 0;">
+  <span style="color:var(--green); font-weight:600;">not mince words</span>
+  <span>Clara — plain truth, no softening</span>
+  <span>直言不諱</span>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; padding:0.3rem 0;">
+  <span style="color:var(--accent); font-weight:600;">candid</span>
+  <span>Clara — honest even when uncomfortable</span>
+  <span>坦率的</span>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; padding:0.3rem 0;">
+  <span style="color:var(--green); font-weight:600;">cut to the chase</span>
+  <span>What Ravi should have done</span>
+  <span>開門見山</span>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:0.5rem; padding:0.3rem 0;">
+  <span style="color:var(--accent); font-weight:600;">verbose</span>
+  <span>Ravi — too many words, lost the point</span>
+  <span>冗長的</span>
+</div>
+
+</div>
+
+<hr>
+
+<!-- ===== QUIZ ===== -->
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Choose the best word or phrase. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question">
+    <p><strong>Q1.</strong> <em>The CEO's statement was famously _____. Three sentences. The entire strategy laid bare.</em></p>
+    <label class="quiz-option" data-correct="true">a) laconic</label>
+    <label class="quiz-option" data-correct="false">b) verbose</label>
+    <label class="quiz-option" data-correct="false">c) cut to the chase</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q2.</strong> <em>"Let me be _____ — this project is over budget and behind schedule."</em></p>
+    <label class="quiz-option" data-correct="false">a) verbose</label>
+    <label class="quiz-option" data-correct="true">b) candid</label>
+    <label class="quiz-option" data-correct="false">c) laconic</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q3.</strong> <em>The instructions were so _____ that nobody could find the actual steps they needed.</em></p>
+    <label class="quiz-option" data-correct="false">a) candid</label>
+    <label class="quiz-option" data-correct="false">b) laconic</label>
+    <label class="quiz-option" data-correct="true">c) verbose</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q4.</strong> <em>He's known for not _____. If your idea is bad, he'll tell you in plain English.</em></p>
+    <label class="quiz-option" data-correct="true">a) mincing words</label>
+    <label class="quiz-option" data-correct="false">b) cutting to the chase</label>
+    <label class="quiz-option" data-correct="false">c) being verbose</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q5.</strong> <em>Can we please _____? I have another meeting in ten minutes.</em></p>
+    <label class="quiz-option" data-correct="false">a) not mince words</label>
+    <label class="quiz-option" data-correct="true">b) cut to the chase</label>
+    <label class="quiz-option" data-correct="false">c) be candid</label>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<p style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+  ✅ Lesson 1 complete. Review questions from this lesson will appear in future lessons. Next: Lesson 2 — Argument & Disagreement.
+</p>
+
+<script>
+// 🔊 Pronunciation — uses browser speech synthesis
+function speak(text, evt) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const ut = new SpeechSynthesisUtterance(text);
+  ut.lang = 'en-US';
+  ut.rate = 0.85;
+  ut.pitch = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const enVoice = voices.find(v => v.lang.startsWith('en'));
+  if (enVoice) ut.voice = enVoice;
+
+  const btn = evt?.target?.closest?.('.speak-btn');
+  if (btn) btn.classList.add('playing');
+  ut.onend = () => { if (btn) btn.classList.remove('playing'); };
+
+  window.speechSynthesis.speak(ut);
+}
+
+// Pre-load voices (some browsers load async)
+if (window.speechSynthesis) speechSynthesis.getVoices();
+
+// Quiz
+document.querySelectorAll('.quiz-option').forEach(el => {
+  el.addEventListener('click', function() {
+    const parent = this.parentElement;
+    parent.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+    });
+    if (this.dataset.correct === 'true') {
+      this.classList.add('correct');
+    } else {
+      this.classList.add('wrong');
+      parent.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+    }
+  });
+});
+
+document.getElementById('revealBtn').addEventListener('click', function() {
+  document.querySelectorAll('.quiz-question').forEach(q => {
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+    });
+  });
+});
+</script>
+
+</body>
+</html>

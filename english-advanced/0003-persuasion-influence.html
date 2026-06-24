@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3 — Persuasion & Influence</title>
+  <style>
+/* =============================================
+   English Advanced — Shared Lesson Stylesheet
+   v3 — Mobile-friendly, responsive
+   ============================================= */
+
+:root {
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #8b3a3a;
+  --accent-light: #f5e6e6;
+  --border: #d4d4d4;
+  --bg: #fafaf8;
+  --card-bg: #ffffff;
+  --green: #2d6a4f;
+  --green-light: #e8f5e9;
+  --code-bg: #f0efed;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  padding: 1.5rem 1rem;
+  max-width: var(--measure);
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1.5rem 0 0.3rem; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+
+p { margin: 0 0 0.8rem; }
+
+.lesson-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* Story block — compact */
+.story {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+
+/* Word card */
+.word-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.word-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.word-card .word {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.word-card .pronounce {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Speak button */
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.speak-btn:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.speak-btn:active {
+  transform: scale(0.92);
+}
+
+.speak-btn.playing {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); }
+}
+
+.word-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.word-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.word-card .example .highlight {
+  color: var(--accent);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Additional examples — table layout */
+.more-examples {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border);
+}
+
+.more-examples table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.more-examples table td {
+  padding: 0.12rem 0;
+  vertical-align: top;
+}
+
+.more-examples table td:first-child {
+  width: 5rem;
+  min-width: 5rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  padding-right: 0.4rem;
+}
+
+.more-examples table td:last-child {
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* Phrase card */
+.phrase-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--green);
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.phrase-card .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.phrase-card .phrase {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.15rem 0 0.1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.phrase-card .definition {
+  margin-top: 0.4rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.phrase-card .example {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.phrase-card .example .highlight {
+  color: var(--green);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Quiz */
+.quiz {
+  margin: 1.5rem 0 1.2rem;
+  padding: 1rem 1.2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.quiz h2 { margin-top: 0; }
+
+.quiz-question {
+  margin: 1rem 0;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.quiz-question:last-child { border-bottom: none; }
+
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+
+.quiz-option {
+  display: block;
+  padding: 0.65rem 0.8rem;
+  margin: 0.35rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Minimum touch target 44px */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.quiz-option:hover {
+  background: #f0f0ee;
+  border-color: #bbb;
+}
+
+.quiz-option.correct {
+  background: var(--green-light);
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+.quiz-option.wrong {
+  background: #fde8e8;
+  border-color: #9b2226;
+}
+
+.quiz-reveal {
+  margin-top: 0.8rem;
+  padding: 0.7rem 1.2rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--accent);
+  transition: background 0.15s;
+  width: 100%;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quiz-reveal:hover { background: #e8d0d0; }
+
+/* Quiz feedback */
+.quiz-feedback {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.quiz-feedback.show {
+  display: block;
+}
+
+.quiz-feedback.correct-fb {
+  background: var(--green-light);
+  border-left: 3px solid var(--green);
+  color: #1a4a2e;
+}
+
+.quiz-feedback.wrong-fb {
+  background: #fde8e8;
+  border-left: 3px solid #9b2226;
+  color: #7a1a1a;
+}
+
+.quiz-feedback strong {
+  font-weight: 600;
+}
+
+/* Separator */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* Footer */
+.footnotes {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.footnotes a { color: var(--accent); }
+
+/* ===================== */
+/* MOBILE RESPONSIVE     */
+/* ===================== */
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem 0.75rem;
+    font-size: 16px;
+  }
+
+  h1 { font-size: 1.35rem; margin-top: 1.2rem; }
+  h2 { font-size: 1.05rem; }
+
+  .lesson-meta { font-size: 0.7rem; margin-bottom: 1rem; }
+
+  .story {
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    margin: 0.8rem 0 1.2rem;
+  }
+
+  .word-card, .phrase-card {
+    padding: 0.7rem 0.8rem;
+    margin: 0.7rem 0;
+  }
+
+  .word-card .word { font-size: 1.1rem; }
+  .phrase-card .phrase { font-size: 1.05rem; }
+
+  .word-card .definition,
+  .phrase-card .definition { font-size: 0.85rem; }
+
+  .word-card .example,
+  .phrase-card .example { font-size: 0.82rem; }
+
+  .more-examples table { font-size: 0.8rem; }
+
+  /* On very small screens, stack the table rows */
+  .more-examples table td:first-child {
+    width: 4.5rem;
+    min-width: 4.5rem;
+    font-size: 0.78rem;
+  }
+
+  .quiz {
+    padding: 0.8rem 0.9rem;
+    margin: 1.2rem 0 1rem;
+  }
+
+  .quiz-question p { font-size: 0.88rem; }
+
+  .quiz-option {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.7rem;
+    min-height: 44px;
+  }
+
+  .quiz-reveal {
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+    min-height: 44px;
+  }
+
+  .speak-btn {
+    min-width: 36px;
+    min-height: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .more-examples table td:first-child {
+    width: 4rem;
+    min-width: 4rem;
+    font-size: 0.75rem;
+  }
+
+  .more-examples table td:last-child {
+    font-size: 0.78rem;
+  }
+}
+
+/* Print */
+@media print {
+  body { font-size: 13px; padding: 0.5in; background: white; }
+  .story, .word-card, .phrase-card, .quiz { box-shadow: none; page-break-inside: avoid; }
+}
+
+</style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 3 of 5 · Series: Conversational Language</p>
+
+<h1>Persuasion &amp; Influence</h1>
+
+<div class="story">
+  <p>Three startups. Three pitches. One room of investors.</p>
+
+  <p><strong>Anika</strong> opened with a single chart. It showed a problem everybody recognised — and her solution's growth curve going straight up. She didn't beg. She showed the numbers and let them speak. By the third slide, people were nodding.</p>
+
+  <p><strong>Marcus</strong> walked in and immediately admitted: <em>"Our first prototype failed. It was terrible."</em> He smiled. The investors laughed. Then he told them what they learned — and why this version worked. The room softened. They trusted him.</p>
+
+  <p><strong>Susan</strong> kept saying how much she respected everyone's time — then spent twenty minutes on vague projections. When asked about revenue, she smiled: <em>"Well, that depends on how you define revenue."</em> The investors exchanged glances.</p>
+
+  <p><em>Anika convinced with evidence. Marcus won trust by being open. Susan lost them by pretending.</em></p>
+</div>
+
+<!-- ===== WORDS ===== -->
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">compelling <button class="speak-btn" onclick="speak('compelling', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/kəmˈpɛl.ɪŋ/ · kəm-PEL-ing · <em>adjective</em> · 令人信服的，有說服力的</div>
+  <div class="definition">
+    Very convincing — so strong that it makes you believe or agree. A compelling argument doesn't just sound good; it leaves you with no easy way to disagree.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Anika's pitch was compelling</span> — one chart, clear data, and the investors were already nodding.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>⚖️ Law:</td><td>The lawyer presented <em>compelling</em> evidence that changed the jury's mind in ten minutes.</td></tr>
+      <tr><td>📊 Data:</td><td>The report makes a <em>compelling</em> case for switching to renewable energy — the numbers speak for themselves.</td></tr>
+      <tr><td>📖 Personal:</td><td>Her <em>compelling</em> story about growing up in a small town made everyone at the conference stop and listen.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">disarming <button class="speak-btn" onclick="speak('disarming', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/dɪsˈɑː.mɪŋ/ · diss-AR-ming · <em>adjective</em> · 使人消除戒心的，讓人放鬆的</div>
+  <div class="definition">
+    Making you feel less angry, suspicious, or defensive — usually through honesty, warmth, or unexpected humility. A disarming person makes you drop your guard.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Marcus was disarming</span> — by admitting failure upfront, he made the investors trust him.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>🎙️ Interview:</td><td>His <em>disarming</em> honesty in the job interview — "I actually know very little about that system" — made the hiring manager trust him more.</td></tr>
+      <tr><td>🤝 Negotiation:</td><td>She started the negotiation with a <em>disarming</em> smile and said, "I think we both know this first offer isn't realistic."</td></tr>
+      <tr><td>💬 Apology:</td><td>His <em>disarming</em> apology — "You're right, I messed up, and here's how I'll fix it" — ended the argument instantly.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">disingenuous <button class="speak-btn" onclick="speak('disingenuous', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˌdɪs.ɪnˈdʒɛn.ju.əs/ · dis-in-JEN-yoo-əs · <em>adjective</em> · 不真誠的，虛偽的</div>
+  <div class="definition">
+    Not sincere — pretending to know less or care more than you really do. A disingenuous person says the right words but you sense they don't mean them.
+  </div>
+  <div class="example">↳ Back to the story: <span class="highlight">Susan was disingenuous</span> — "it depends on how you define revenue" sounded clever but fooled nobody.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>🗳️ Politics:</td><td>The politician gave a <em>disingenuous</em> answer — he talked around the question for three minutes without saying anything.</td></tr>
+      <tr><td>🏢 Corporate:</td><td>The company's "we care deeply about our employees" statement felt <em>disingenuous</em> after the layoffs.</td></tr>
+      <tr><td>🙅 Excuses:</td><td>His <em>disingenuous</em> excuse — "I didn't get your email" — was obvious since we'd discussed it in person twice.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== PHRASES ===== -->
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">talk into <button class="speak-btn" onclick="speak('talk into', event)" title="Listen">🔊</button></div>
+  <div class="definition">
+    To persuade someone to do something they were initially reluctant to do.<br>
+    <em>Structure:</em> talk + [someone] + into + [something/doing something]<br>
+    · 說服某人做某事
+  </div>
+  <div class="example">↳ Back to the story: Anika <span class="highlight">talked the investors into</span> taking a meeting, even though they were initially sceptical of early-stage startups.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>👫 Personal:</td><td>My friends <em>talked me into</em> going skydiving — I was terrified, but I don't regret it.</td></tr>
+      <tr><td>💼 Work:</td><td>The team <em>talked</em> the manager <em>into</em> extending the deadline by showing the quality impact of rushing.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">win over <button class="speak-btn" onclick="speak('win over', event)" title="Listen">🔊</button></div>
+  <div class="definition">
+    To gain someone's support, approval, or favour through effort and persuasion — especially when they were initially against you.<br>
+    <em>Structure:</em> win + [someone] + over / win over + [someone]<br>
+    · 爭取到支持，說服
+  </div>
+  <div class="example">↳ Back to the story: Marcus <span class="highlight">won over</span> the investors by being honest about his failures instead of hiding them.</div>
+  <div class="more-examples">
+    <table>
+      <tr><td>🎤 Audience:</td><td>The comedian <em>won over</em> a hostile crowd within five minutes by making fun of himself first.</td></tr>
+      <tr><td>💼 Sales:</td><td>It took three meetings, but she finally <em>won over</em> the difficult client with patience and results.</td></tr>
+    </table>
+  </div>
+</div>
+
+<hr>
+
+<!-- ===== REVIEW ===== -->
+
+<h2>🔄 Review from Lessons 1 &amp; 2</h2>
+
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+
+<p style="margin-bottom:0.5rem;"><strong>Quick recall from previous lessons:</strong></p>
+
+<p>📖 <strong>laconic</strong> — Elena said one sentence; the room listened.</p>
+<p>📖 <strong>contentious</strong> — Maya banged the table and escalated the meeting.</p>
+<p>📖 <strong>conciliatory</strong> — Daniel softened the conflict instead of fuelling it.</p>
+<p>💬 <strong>cut to the chase</strong> — Skip the buildup. Say what matters.</p>
+<p>💬 <strong>play devil's advocate</strong> — Argue the opposite side just to test the argument.</p>
+
+</div>
+
+<hr>
+
+<!-- ===== QUIZ ===== -->
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 from Lesson 3. Q4–Q5 review Lessons 1–2. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question">
+    <p><strong>Q1 (Lesson 3).</strong> <em>The data presented a _____ argument for switching suppliers — lower costs, faster delivery, better quality.</em></p>
+    <label class="quiz-option" data-correct="true">a) compelling</label>
+    <label class="quiz-option" data-correct="false">b) disarming</label>
+    <label class="quiz-option" data-correct="false">c) disingenuous</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q2 (Lesson 3).</strong> <em>Her smile was _____ — you couldn't stay angry at her even when she was wrong.</em></p>
+    <label class="quiz-option" data-correct="false">a) compelling</label>
+    <label class="quiz-option" data-correct="true">b) disarming</label>
+    <label class="quiz-option" data-correct="false">c) disingenuous</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q3 (Lesson 3).</strong> <em>His apology felt _____ — he said the right words but you could tell he didn't mean them.</em></p>
+    <label class="quiz-option" data-correct="false">a) compelling</label>
+    <label class="quiz-option" data-correct="false">b) disarming</label>
+    <label class="quiz-option" data-correct="true">c) disingenuous</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q4 (Review — Lesson 2).</strong> <em>The judge's ruling was _____ — no ambiguity, no room for interpretation.</em></p>
+    <label class="quiz-option" data-correct="false">a) contentious</label>
+    <label class="quiz-option" data-correct="true">b) unequivocal</label>
+    <label class="quiz-option" data-correct="false">c) conciliatory</label>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q5 (Review — Lesson 1).</strong> <em>Hemingway was famous for his _____ prose — short sentences that carried immense emotional weight.</em></p>
+    <label class="quiz-option" data-correct="true">a) laconic</label>
+    <label class="quiz-option" data-correct="false">b) verbose</label>
+    <label class="quiz-option" data-correct="false">c) candid</label>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<p style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">
+  ✅ Lesson 3 complete. Next: Lesson 4 — Listening &amp; Understanding.
+</p>
+
+<script>
+function speak(text, evt) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const ut = new SpeechSynthesisUtterance(text);
+  ut.lang = 'en-US';
+  ut.rate = 0.85;
+  ut.pitch = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const enVoice = voices.find(v => v.lang.startsWith('en'));
+  if (enVoice) ut.voice = enVoice;
+
+  const btn = evt?.target?.closest?.('.speak-btn');
+  if (btn) btn.classList.add('playing');
+  ut.onend = () => { if (btn) btn.classList.remove('playing'); };
+
+  window.speechSynthesis.speak(ut);
+}
+
+if (window.speechSynthesis) speechSynthesis.getVoices();
+
+document.querySelectorAll('.quiz-option').forEach(el => {
+  el.addEventListener('click', function() {
+    const parent = this.parentElement;
+    parent.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+    });
+    if (this.dataset.correct === 'true') {
+      this.classList.add('correct');
+    } else {
+      this.classList.add('wrong');
+      parent.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+    }
+  });
+});
+
+document.getElementById('revealBtn').addEventListener('click', function() {
+  document.querySelectorAll('.quiz-question').forEach(q => {
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
