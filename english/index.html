@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joseph's Learning Hub</title>
+  <title>English — Learning Hub</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -15,10 +15,13 @@
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
     }
+    .breadcrumb { font-size: 0.8rem; color: #6b6b6b; margin-bottom: 1rem; }
+    .breadcrumb a { color: #8b3a3a; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
     h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
     .subtitle { color: #6b6b6b; font-size: 0.9rem; margin-bottom: 2rem; }
-    .section-list { list-style: none; }
-    .section-item {
+    .course-list { list-style: none; }
+    .course-item {
       background: #fff;
       border: 1px solid #d4d4d4;
       border-radius: 8px;
@@ -26,38 +29,39 @@
       margin-bottom: 0.8rem;
       transition: box-shadow 0.15s;
     }
-    .section-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .section-item a {
+    .course-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .course-item a {
       text-decoration: none;
       color: #1a1a1a;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .section-cat { font-size: 0.75rem; color: #8b3a3a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .section-title { font-size: 1.05rem; font-weight: 600; margin: 0.15rem 0; }
-    .section-desc { font-size: 0.85rem; color: #6b6b6b; }
+    .course-cat { font-size: 0.75rem; color: #8b3a3a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .course-title { font-size: 1.05rem; font-weight: 600; margin: 0.15rem 0; }
+    .course-desc { font-size: 0.85rem; color: #6b6b6b; }
     .arrow { color: #8b3a3a; font-size: 1.2rem; }
     .footer { margin-top: 2.5rem; font-size: 0.8rem; color: #6b6b6b; text-align: center; }
   </style>
 </head>
 <body>
-  <h1>🗂️ Learning Hub</h1>
-  <p class="subtitle">Personal resources for self-study</p>
+  <div class="breadcrumb"><a href="../">🗂️ Hub</a> / English</div>
+  <h1>🇬🇧 English</h1>
+  <p class="subtitle">Advanced vocabulary and language skills</p>
 
-  <ul class="section-list">
-    <li class="section-item">
-      <a href="english/">
+  <ul class="course-list">
+    <li class="course-item">
+      <a href="conversational-language/">
         <div>
-          <div class="section-cat">Language</div>
-          <div class="section-title">English</div>
-          <div class="section-desc">Vocabulary, phrases, and advanced wording</div>
+          <div class="course-cat">Series · 5 Lessons</div>
+          <div class="course-title">Conversational Language</div>
+          <div class="course-desc">How we speak, argue, persuade, listen, and read subtext</div>
         </div>
         <span class="arrow">→</span>
       </a>
     </li>
   </ul>
 
-  <div class="footer">josephwong13.github.io</div>
+  <div class="footer"><a href="../">← Back to Hub</a></div>
 </body>
 </html>
