@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏁 Final Quiz — Conversational Language</title>
+  <style>
+:root {
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #8b3a3a;
+  --accent-light: #f5e6e6;
+  --border: #d4d4d4;
+  --bg: #fafaf8;
+  --card-bg: #ffffff;
+  --green: #2d6a4f;
+  --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --measure: 38rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  padding: 1.5rem 1rem;
+  max-width: var(--measure);
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+}
+h1 { font-size: 1.5rem; font-weight: 700; margin: 1.5rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.quiz-meta {
+  font-size: 0.75rem; color: var(--muted); margin: 0 0 0.5rem;
+  text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500;
+}
+.quiz-intro {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.quiz-intro .word-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1rem;
+  font-size: 0.85rem; margin-top: 0.5rem;
+}
+.quiz-intro .word-grid span { padding: 0.1rem 0; }
+.quiz-intro .word-grid .l { color: var(--accent); font-weight: 600; }
+.quiz-intro .word-grid .p { color: var(--green); font-weight: 600; }
+.quiz-intro .label { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.quiz { margin: 0; }
+.quiz-question {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem 1.1rem; margin: 1rem 0;
+}
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option {
+  display: flex; align-items: center;
+  padding: 0.65rem 0.8rem; margin: 0.35rem 0;
+  border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; font-size: 0.88rem;
+  transition: all 0.12s; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+}
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback {
+  margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px;
+  font-size: 0.82rem; line-height: 1.5; display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal {
+  margin: 1rem 0; padding: 0.7rem 1.2rem;
+  background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px;
+  font-size: 0.88rem; cursor: pointer; font-family: var(--sans);
+  font-weight: 600; color: var(--accent); transition: background 0.15s;
+  width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent;
+}
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box {
+  background: var(--card-bg); border: 2px solid var(--accent); border-radius: 8px;
+  padding: 1rem 1.2rem; margin: 1rem 0; text-align: center; display: none;
+}
+.score-box.show { display: block; }
+.score-box .score-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+.score-box .score-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+.footer { margin-top: 2rem; font-size: 0.8rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+@media (max-width: 480px) {
+  body { padding: 1rem 0.75rem; font-size: 16px; }
+  h1 { font-size: 1.3rem; }
+  .quiz-intro .word-grid { grid-template-columns: 1fr; }
+  .quiz-question { padding: 0.8rem 0.9rem; }
+  .quiz-question p { font-size: 0.88rem; }
+  .quiz-option { font-size: 0.85rem; padding: 0.6rem 0.7rem; min-height: 44px; }
+}
+  </style>
+</head>
+<body>
+
+<p class="quiz-meta">🏁 Cumulative Quiz · Conversational Language</p>
+<h1>Final Quiz</h1>
+<p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">12 questions covering all 15 words + 10 phrases from Lessons 1–5.</p>
+
+<div class="quiz-intro">
+  <strong>📚 Refresh your memory:</strong>
+  <div class="word-grid">
+    <span><span class="l">laconic</span> · verbose · candid</span>
+    <span><span class="p">cut to the chase</span> · not mince words</span>
+    <span><span class="l">contentious</span> · conciliatory · unequivocal</span>
+    <span><span class="p">see eye to eye</span> · play devil's advocate</span>
+    <span><span class="l">compelling</span> · disarming · disingenuous</span>
+    <span><span class="p">talk into</span> · win over</span>
+    <span><span class="l">perceptive</span> · dismissive · receptive</span>
+    <span><span class="p">lend an ear</span> · on the same page</span>
+    <span><span class="l">sardonic</span> · deferential · curt</span>
+    <span><span class="p">read between the lines</span> · with all due respect</span>
+  </div>
+  <div class="label">🔴 Words &nbsp;·&nbsp; 🟢 Phrases</div>
+</div>
+
+<hr>
+
+<div class="quiz" id="quiz">
+
+  <div class="quiz-question">
+    <p><strong>Q1.</strong> <em>"Oh, another all-hands meeting that could've been an email — fantastic." His _____ tone drew awkward laughs.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Sardonic' means mockingly humorous — it sounds like praise but everyone knows it's really a complaint.">a) sardonic</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'laconic' means deliberately brief, but the sarcasm here points to sardonic instead.">b) laconic</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'unequivocal' means leaving no doubt. The joke here is mocking, not clear and firm.">c) unequivocal</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q2.</strong> <em>The general's _____ briefing — three sentences that said everything — left the room ready to act.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="While 'curt' is also brief, it implies rudeness. The general's briefing was weighty and deliberate, not rude.">a) curt</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Laconic' describes deliberate, weighty brevity — few words that carry real meaning.">b) laconic</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Opposite — 'verbose' means using too many words.">c) verbose</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q3.</strong> <em>The new parking policy proved highly _____ — every discussion about it ended in an argument.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Contentious' means likely to cause disagreement or argument.">a) contentious</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'conciliatory' means intended to make peace, which is the opposite of causing arguments.">b) conciliatory</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'disingenuous' means insincere, not argument-provoking.">c) disingenuous</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q4.</strong> <em>"_____, I think your numbers don't add up." A polite way to say "you're wrong."</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'not mincing words' is direct and blunt, not the polite disagreement this sentence calls for.">a) Not mincing words</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Correct! 'With all due respect' is the standard polite phrase to introduce disagreement, especially in professional settings.">b) With all due respect</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'cutting to the chase' means getting to the point, not politely disagreeing.">c) Cutting to the chase</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q5.</strong> <em>The lawyer's closing argument was _____ — the jury took under an hour to reach a verdict.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Close — 'unequivocal' means leaving no doubt, but 'compelling' better captures the power of persuasion in an argument.">a) unequivocal</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Compelling' means very convincing — strong enough that people can't easily disagree.">b) compelling</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'receptive' describes someone who listens well, not the quality of an argument.">c) receptive</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q6.</strong> <em>The design and engineering teams rarely _____ on timelines — one wants polish, the other wants delivery.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'playing devil's advocate' means arguing the opposite side, not disagreeing naturally.">a) play devil's advocate</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'See eye to eye' means to fully agree. Used in the negative here — they DON'T agree on timelines.">b) see eye to eye</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'lending an ear' means listening sympathetically, which isn't about agreement.">c) lend an ear</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q7.</strong> <em>He said everything was "fine," but if you _____, you could tell he was devastated by the news.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'cut to the chase' means get to the point, not uncover hidden meaning.">a) cut to the chase</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Read between the lines' means to understand the hidden meaning behind what someone says.">b) read between the lines</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'talk into' means to persuade someone to do something.">c) talk into</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q8.</strong> <em>She's known for not _____. If your presentation is boring, she'll say so in plain English.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'cutting to the chase' is about getting to the main point, not about direct honesty.">a) cutting to the chase</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Correct! 'Not mince words' means to speak directly and plainly without softening the message.">b) mincing words</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'playing devil's advocate' means arguing the opposite side for debate purposes.">c) playing devil's advocate</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q9.</strong> <em>My best friend always _____ when I need to vent about work — she just listens without judging.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'wins me over' means gaining my support through persuasion, not listening.">a) wins me over</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'talks me into' means persuading me to do something.">b) talks me into</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Lends an ear' means to listen carefully and sympathetically.">c) lends an ear</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q10.</strong> <em>A _____ manager notices when her team is burning out before anyone says a word.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Perceptive' means quick to notice things that aren't obvious.">a) perceptive</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'receptive' means willing to listen to ideas, which is different from noticing non-obvious things.">b) receptive</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dismissive' means treating things as not worth attention, which is the opposite a good manager.">c) dismissive</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q11.</strong> <em>The junior associate was always _____ around the senior partner — never contradicting, always agreeing.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'candid' means honest and direct, which is the opposite of what the sentence describes.">a) candid</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Deferential' means showing respectful submission to someone of higher status.">b) deferential</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'conciliatory' means making peace after a conflict, not showing general respect to authority.">c) conciliatory</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question">
+    <p><strong>Q12.</strong> <em>After the heated debate, she sent a _____ email offering to find common ground.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dismissive' means showing disregard, which is the opposite of making peace.">a) dismissive</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Conciliatory' means intended to make peace and resolve a disagreement.">b) conciliatory</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'curt' means rudely brief, which wouldn't help resolve a conflict.">c) curt</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<div class="score-box" id="scoreBox">
+  <div class="score-num" id="scoreNum">0/12</div>
+  <div class="score-label" id="scoreLabel"></div>
+</div>
+
+<div class="footer">
+  <a href="index.html">← Back to Conversational Language</a>
+</div>
+
+<script>
+let answered = {};
+let score = 0;
+let total = 12;
+
+document.querySelectorAll('.quiz-option').forEach(el => {
+  el.addEventListener('click', function() {
+    const parent = this.closest('.quiz-question');
+    const qIndex = Array.from(parent.parentElement.querySelectorAll('.quiz-question')).indexOf(parent);
+
+    // Prevent re-answering
+    if (answered[qIndex]) return;
+    answered[qIndex] = true;
+
+    parent.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+    });
+    if (this.dataset.correct === 'true') {
+      this.classList.add('correct');
+      score++;
+    } else {
+      this.classList.add('wrong');
+      parent.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+    }
+    // Show feedback
+    const fb = parent.querySelector('.quiz-feedback');
+    if (fb) {
+      fb.textContent = this.dataset.feedback || '';
+      fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb');
+    }
+    // Show score if all answered
+    if (Object.keys(answered).length === total) showScore();
+  });
+});
+
+document.getElementById('revealBtn').addEventListener('click', function() {
+  document.querySelectorAll('.quiz-question').forEach((q, i) => {
+    if (answered[i]) return;
+    answered[i] = true;
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('correct', 'wrong');
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+    });
+    const fb = q.querySelector('.quiz-feedback');
+    const correctOpt = q.querySelector('.quiz-option[data-correct="true"]');
+    if (fb && correctOpt) {
+      fb.textContent = correctOpt.dataset.feedback || '';
+      fb.className = 'quiz-feedback show correct-fb';
+    }
+  });
+  showScore();
+});
+
+function showScore() {
+  const box = document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent = score + '/' + total;
+  const pct = Math.round(score / total * 100);
+  let label = '';
+  if (pct === 100) label = '🏆 Perfect! You have mastered all 25 expressions!';
+  else if (pct >= 80) label = '🌟 Excellent! Review the ones you missed and you\'ll be all set.';
+  else if (pct >= 60) label = '👍 Good job! Some words need more practice — revisit the relevant lessons.';
+  else label = '💪 Keep studying! Try reviewing Lessons 1–5 and retake the quiz.';
+  document.getElementById('scoreLabel').textContent = label;
+  box.classList.add('show');
+}
+</script>
+
+</body>
+</html>
