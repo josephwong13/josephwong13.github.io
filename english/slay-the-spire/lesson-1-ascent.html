@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — The Ascent</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.story { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .story { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+</style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 1 of 5 · Series: Slay the Spire</p>
+<p class="back-link"><a href="index.html">← Back to Slay the Spire</a></p>
+
+<h1>The Ascent</h1>
+
+<div class="story">
+  <p>You wake at the base of the Spire. A mysterious whale, Neow, offers you a gift — an ancient <span class="highlight">relic</span> to aid your climb. You have nothing but a basic deck of strikes and defends.</p>
+
+  <p>Every floor you <span class="highlight">ascend</span> tests your resolve. You battle Cultists, Sentries, and the occasional elite — each victory rewards you with new cards, gold, or potions. You learn to <span class="highlight">forge</span> your deck carefully, choosing only the cards that strengthen your strategy.</p>
+
+  <p>At campfires, you face a choice: rest to recover lost health, or <span class="highlight">forge</span> a card at the smith to make it permanently stronger — a calculated risk. Do you <span class="highlight">start from scratch</span>, building something precise, or do you take every reward offered?</p>
+
+  <p>Whatever you choose, you must <span class="highlight">forge ahead</span>. The Spire waits for no one.</p>
+</div>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">ascend <button class="speak-btn" onclick="speak('ascend', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/əˈsɛnd/ · ə-SEND · <em>verb</em> · 攀登；上升</div>
+  <div class="definition">To climb or move upward; to rise to a higher level or rank. In the game, each successful run unlocks higher Ascension levels.</div>
+  <div class="example">↳ From the story: Every floor you <span class="highlight">ascend</span> tests your resolve — the higher you climb, the greater the challenge.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>She <em>ascended</em> through the ranks over a decade to become the company's first female CEO.</td></tr>
+    <tr><td>🏔️ Travel:</td><td>The climbers <em>ascended</em> the final 500 meters at dawn, reaching the summit as the sun rose.</td></tr>
+    <tr><td>📈 Growth:</td><td>With each successful project, his reputation <em>ascended</em> to new heights in the industry.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">relic <button class="speak-btn" onclick="speak('relic', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈrɛl.ɪk/ · REL-ik · <em>noun</em> · 遺物；聖物</div>
+  <div class="definition">An object surviving from an earlier time, especially one of historical or sentimental value. Relics in Slay the Spire provide powerful passive bonuses throughout your run.</div>
+  <div class="example">↳ From the story: Neow gifted you an ancient <span class="highlight">relic</span> — a small charm that would grow stronger with every battle won.</div>
+  <div class="more-examples">
+    <table><tr><td>🏛️ History:</td><td>The museum's newest exhibit features <em>relics</em> from the Ming Dynasty recovered from a shipwreck.</td></tr>
+    <tr><td>🎮 Gaming:</td><td>That family board game has become a cherished <em>relic</em> — its pieces worn smooth by decades of play.</td></tr>
+    <tr><td>💬 Personal:</td><td>My grandfather's pocket watch is the only <em>relic</em> I have left of him.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">forge <button class="speak-btn" onclick="speak('forge', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/fɔːdʒ/ · FORJ · <em>verb</em> · 鍛造；打造；開闢</div>
+  <div class="definition">To shape or create something with great effort — originally metal by heating and hammering, but now broadly: to build, to establish, or to move ahead with determination.</div>
+  <div class="example">↳ From the story: At the campfire, you could rest — or <span class="highlight">forge</span> a card at the smith, making it permanently stronger.</div>
+  <div class="more-examples">
+    <table><tr><td>🤝 Relationships:</td><td>They <em>forged</em> a deep friendship during those long nights working on the startup together.</td></tr>
+    <tr><td>💼 Work:</td><td>The two companies <em>forged</em> a partnership that reshaped the entire industry.</td></tr>
+    <tr><td>🛤️ Life:</td><td>She left her hometown at eighteen and <em>forged</em> her own path, against everyone's advice.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">start from scratch <button class="speak-btn" onclick="speak('start from scratch', event)" title="Listen">🔊</button></div>
+  <div class="definition">To begin again from the very beginning, with nothing prepared or carried over.<br>· 從零開始，從頭再來</div>
+  <div class="example">↳ From the story: Every run <span class="highlight">starts from scratch</span> — only your knowledge carries over from your last attempt.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>After the acquisition fell through, we had to <em>start from scratch</em> on the entire proposal.</td></tr>
+    <tr><td>🍳 Daily life:</td><td>I burned the cake so badly I had to <em>start from scratch</em> — new batter, new pan, everything.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">forge ahead <button class="speak-btn" onclick="speak('forge ahead', event)" title="Listen">🔊</button></div>
+  <div class="definition">To continue moving forward with determination, especially when progress is difficult.<br>· 奮勇前進，毅然前行</div>
+  <div class="example">↳ From the story: Whatever you choose, you must <span class="highlight">forge ahead</span> — the Spire waits for no one.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>Despite losing their biggest client, the team decided to <em>forge ahead</em> with the new product launch.</td></tr>
+    <tr><td>🏃 Sport:</td><td>Exhausted but unwilling to quit, the marathon runner <em>forged ahead</em> through the final kilometers.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Choose the best word or phrase.</p>
+
+  <div class="quiz-question"><p><strong>Q1.</strong> <em>With every promotion, she continued to _____ the corporate ladder until she reached the executive floor.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Ascend' means to climb or rise to a higher level.">a) ascend</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge' means to shape or create, not to climb.">b) forge</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relic' is a noun, not a verb.">c) relic</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q2.</strong> <em>The archaeologists uncovered a small golden _____ from an ancient civilization buried under the temple.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ascend' is a verb, not a noun.">a) ascend</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! A 'relic' is an object surviving from an earlier time.">b) relic</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge' is a verb meaning to shape or move forward.">c) forge</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q3.</strong> <em>After years of collaboration, the two researchers had _____ a bond that went far beyond professional respect.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ascend' means to rise, not to create or build.">a) ascended</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — you can't 'relic' a bond.">b) reliced</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Forged' means created or shaped through effort — they built a strong bond.">c) forged</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q4.</strong> <em>When the experiment failed completely, the team had no choice but to _____ and redesign the entire system.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — this phrase means to continue forward, not to begin again.">a) forge ahead</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Start from scratch' means to begin again from the very beginning.">b) start from scratch</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge a bond' is about building relationships.">c) forge a bond</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q5.</strong> <em>Despite the heavy rain and fading daylight, the hikers decided to _____ rather than set up camp early.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'start from scratch' means to begin again from nothing.">a) start from scratch</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Forge ahead' means to continue moving forward with determination despite difficulty.">b) forge ahead</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ascend' means to climb upward specifically.">c) ascend</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Slay the Spire</a></div>
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
+document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+</script>
+</body>
+</html>
