@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — The Fellowship</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.story { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .story { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 1 of 5 · Series: Lord of the Rings</p>
+<p class="back-link"><a href="index.html">← Back to Lord of the Rings</a></p>
+
+<h1>The Fellowship</h1>
+
+<div class="story">
+  <p>Nine companions set out from Rivendell. None knew what lay ahead.</p>
+
+  <p>Frodo had accepted the Ring — a burden that grew heavier with every step. Yet he remained <span class="highlight">steadfast</span>, never once turning back. The others watched in awe as this small hobbit carried what even the mighty could not.</p>
+
+  <p>Aragorn was a <span class="highlight">formidable</span> presence — weathered, skilled, carrying the weight of a kingdom he did not yet claim. When the orcs attacked at the pass of Caradhras, he stood between them and the hobbits, and nothing moved him.</p>
+
+  <p>The journey across the Misty Mountains was <span class="highlight">arduous</span>. Snow up to their chests. No path. Bitter cold that seeped into their bones. Yet they pushed forward, because stopping meant failing their <span class="highlight">steadfast</span> friend.</p>
+
+  <p>They had sworn to <span class="highlight">bear the burden</span> together. And in the darkest moments, when all seemed lost, they would <span class="highlight">stand together</span> — and that was enough.</p>
+</div>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">steadfast <button class="speak-btn" onclick="speak('steadfast', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈstɛd.fɑːst/ · STED-fast · <em>adjective</em> · 堅定不移的，忠誠的</div>
+  <div class="definition">Resolutely firm and unwavering in loyalty, purpose, or belief. A steadfast person does not waver even under pressure.</div>
+  <div class="example">↳ From the story: Frobo remained <span class="highlight">steadfast</span>, never once turning back — even as the Ring grew heavier with every step.</div>
+  <div class="more-examples">
+    <table><tr><td>👫 Friendship:</td><td>Through years of hardship, she remained a <em>steadfast</em> friend who never abandoned those she loved.</td></tr>
+    <tr><td>💼 Work:</td><td>The team's <em>steadfast</em> commitment to quality meant they never shipped a product they weren't proud of.</td></tr>
+    <tr><td>💬 Belief:</td><td>He was <em>steadfast</em> in his principles, even when it cost him his job.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">formidable <button class="speak-btn" onclick="speak('formidable', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈfɔː.mɪ.də.bəl/ · FOR-mid-ə-bəl · <em>adjective</em> · 令人敬畏的，強大的</div>
+  <div class="definition">Inspiring fear or respect through being impressively powerful, capable, or intense.</div>
+  <div class="example">↳ From the story: Aragorn was a <span class="highlight">formidable</span> presence — weathered, skilled, and unstoppable in battle.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>Her <em>formidable</em> reputation meant competitors knew better than to underestimate her.</td></tr>
+    <tr><td>🗳️ Politics:</td><td>The senator is a <em>formidable</em> debater — she can dismantle any argument in under a minute.</td></tr>
+    <tr><td>🎵 Art:</td><td>Beethoven's Ninth is a <em>formidable</em> piece that challenges even the most accomplished orchestras.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">arduous <button class="speak-btn" onclick="speak('arduous', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈɑː.dʒu.əs/ · AR-djoo-əs · <em>adjective</em> · 艱巨的，費力的</div>
+  <div class="definition">Involving great effort, difficulty, or hardship. An arduous task tests your endurance and will.</div>
+  <div class="example">↳ From the story: The journey across the Misty Mountains was <span class="highlight">arduous</span> — snow, cold, and no path to follow.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The audit was an <em>arduous</em> process that took three months and countless late nights.</td></tr>
+    <tr><td>🎓 Learning:</td><td>Learning classical Chinese is <em>arduous</em>, but the ability to read ancient texts makes it worthwhile.</td></tr>
+    <tr><td>🏔️ Travel:</td><td>The trek to base camp was <em>arduous</em> — steep climbs at high altitude with limited oxygen.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">bear the burden <button class="speak-btn" onclick="speak('bear the burden', event)" title="Listen">🔊</button></div>
+  <div class="definition">To carry a heavy responsibility or difficult duty — especially one that cannot be shared.<br>· 承擔重擔</div>
+  <div class="example">↳ From the story: The Fellowship swore to <span class="highlight">bear the burden</span> together, even though only Frodo could carry the Ring itself.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The CEO <em>bears the burden</em> of every layoff decision, even when the numbers leave no choice.</td></tr>
+    <tr><td>👫 Family:</td><td>As the eldest child, she often <em>bears the burden</em> of caring for their aging parents alone.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">stand together <button class="speak-btn" onclick="speak('stand together', event)" title="Listen">🔊</button></div>
+  <div class="definition">To remain united in support of each other, especially during difficult times.<br>· 團結一致，共同進退</div>
+  <div class="example">↳ From the story: In the darkest moments, the Fellowship would <span class="highlight">stand together</span> — and that alone gave them strength.</div>
+  <div class="more-examples">
+    <table><tr><td>🌍 Society:</td><td>In times of crisis, communities that <em>stand together</em> recover faster than those that fracture.</td></tr>
+    <tr><td>💼 Work:</td><td>The team <em>stood together</em> when the project was blamed for the budget overrun, refusing to let one person take the fall.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Choose the best word or phrase.</p>
+
+  <div class="quiz-question"><p><strong>Q1.</strong> <em>Despite the criticism, she remained _____ in her commitment to the project.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'formidable' means impressively powerful, not unwavering.">a) formidable</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Steadfast' means resolutely firm and unwavering in purpose.">b) steadfast</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'arduous' means difficult, not loyal or unwavering.">c) arduous</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q2.</strong> <em>Climbing the mountain was an _____ journey that took all their strength and endurance.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'steadfast' means unwavering, not difficult.">a) steadfast</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'formidable' means inspiring fear or respect.">b) formidable</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Arduous' means involving great effort and difficulty.">c) arduous</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q3.</strong> <em>She's a _____ opponent in any debate — well-prepared, quick-thinking, and relentless.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Formidable' means inspiring fear or respect through impressive capability.">a) formidable</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'steadfast' describes loyalty, not skill or power.">b) steadfast</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'arduous' means difficult, not powerful.">c) arduous</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q4.</strong> <em>When the company faced bankruptcy, the employees _____ and refused to give up.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'bear the burden' means carry responsibility, not unite.">a) bore the burden</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Stood together' means remaining united in support of each other.">b) stood together</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'pressing on' means continuing despite difficulty.">c) pressed on</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question"><p><strong>Q5.</strong> <em>As team leader, she had to _____ of making the final call when opinions were split.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Bear the burden' means to carry a heavy responsibility.">a) bear the burden</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'stand together' is about unity, not individual responsibility.">b) stand together</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'see through' means to complete despite obstacles.">c) see it through</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Lord of the Rings</a></div>
+
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
+document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+</script>
+</body>
+</html>
