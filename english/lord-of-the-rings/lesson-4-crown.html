@@ -1,10 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Lesson 4 — The Crown</title>
 <style>:root{--text:#1a1a1a;--muted:#6b6b6b;--accent:#8b3a3a;--accent-light:#f5e6e6;--border:#d4d4d4;--bg:#fafaf8;--card-bg:#fff;--green:#2d6a4f;--green-light:#e8f5e9;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--mono:'SF Mono',SFMono-Regular,Menlo,Monaco,Consolas,monospace;--measure:40rem}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);padding:1.5rem 1rem;max-width:var(--measure);margin:0 auto;-webkit-font-smoothing:antialiased}
-h1{font-size:1.6rem;font-weight:700;margin:1rem 0 0.3rem;line-height:1.2}
-h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}p{margin:0 0 0.8rem}
-.lesson-meta{font-size:.75rem;color:var(--muted);margin:0 0 0.2rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);padding:1.5rem 1rem;max-width:var(--measure);margin:0 auto;-webkit-font-smoothing:antialiased}
+h1{font-size:1.6rem;font-weight:700;margin:1rem 0 .3rem;line-height:1.2}h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 .6rem;color:var(--accent)}p{margin:0 0 .8rem}
+.lesson-meta{font-size:.75rem;color:var(--muted);margin:0 0 .2rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .back-link{margin-bottom:.5rem}.back-link a{color:var(--accent);text-decoration:none;font-size:.85rem}.back-link a:hover{text-decoration:underline}
 .story{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0 1.5rem;font-size:.9rem;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,.04)}.story p{margin-bottom:.5rem}.story p:last-child{margin-bottom:0}
 .word-card{background:var(--card-bg);border-left:4px solid var(--accent);padding:.8rem 1rem;margin:.8rem 0;border-radius:0 8px 8px 0}
@@ -39,7 +37,13 @@ h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}
 .quiz-feedback.show{display:block}.quiz-feedback.correct-fb{background:var(--green-light);border-left:3px solid var(--green);color:#1a4a2e}
 .quiz-feedback.wrong-fb{background:#fde8e8;border-left:3px solid #9b2226;color:#7a1a1a}
 .quiz-reveal{margin:1rem 0 0;padding:.7rem 1.2rem;background:var(--accent-light);border:1px solid var(--accent);border-radius:8px;font-size:.88rem;cursor:pointer;font-family:var(--sans);font-weight:600;color:var(--accent);transition:background .15s;width:100%;min-height:44px;-webkit-tap-highlight-color:transparent}
-.quiz-reveal:hover{background:#e8d0d0}hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.quiz-reveal:hover{background:#e8d0d0}
+.score-box{margin:1.2rem 0 0;padding:.9rem 1rem;background:var(--card-bg);border:1px solid var(--green);border-radius:8px;font-size:.95rem;line-height:1.5}
+.score-box .summary-line{font-family:var(--mono);font-size:.92rem;color:var(--text);margin-bottom:.6rem;word-break:break-word}
+.score-box .copy-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .8rem;background:var(--green-light);border:1px solid var(--green);border-radius:6px;font-size:.82rem;font-family:var(--sans);font-weight:600;color:var(--green);cursor:pointer;-webkit-tap-highlight-color:transparent;min-height:36px}
+.score-box .copy-btn:hover{background:#d4ead9}.score-box .copy-btn.copied{background:var(--green);color:#fff}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
+hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 .footer{margin-top:2rem;font-size:.82rem;color:var(--muted);text-align:center}.footer a{color:var(--accent);text-decoration:none}
 @media(max-width:480px){body{padding:1rem .75rem;font-size:16px}h1{font-size:1.35rem}.story{padding:.8rem 1rem;font-size:.88rem}.word-card,.phrase-card{padding:.7rem .8rem}.quiz{padding:.8rem .9rem}.quiz-option{min-height:44px}.speak-btn{min-width:36px;min-height:36px;width:36px;height:36px}}
 </style></head><body>
@@ -142,44 +146,71 @@ h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}
 
 <div class="quiz">
   <h2>🎯 Quiz</h2>
-  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 4. Q4–Q5 review Lesson 3. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Eight questions — every word and phrase from this lesson, plus a few from earlier lessons to keep them fresh. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
 
-  <div class="quiz-question"><p><strong>Q1 (Lesson 4).</strong> <em>Bias can be _____ — you don't notice it shaping your decisions until you look back years later.</em></p>
+  <div class="quiz-question" data-correct-answer="insidious"><p><strong>Q1.</strong> <em>Bias can be _____ — you don't notice it shaping your decisions until you look back years later.</em></p>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'tenuous' means weak, not subtle and harmful.">a) tenuous</label>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Insidious' means proceeding subtly and gradually causing harm without being noticed.">b) insidious</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' (L2) means never stopping, but misses the subtle, hidden nature.">c) relentless</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' (from L2) means never stopping, but misses the subtle, hidden nature.">c) relentless</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q2 (Lesson 4).</strong> <em>Her _____ courage in the face of impossible odds inspired everyone around her.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'steadfast' (L1) means unwavering in loyalty, but 'indomitable' better captures unconquerable spirit.">a) steadfast</label>
+  <div class="quiz-question" data-correct-answer="indomitable"><p><strong>Q2.</strong> <em>Her _____ courage in the face of impossible odds inspired everyone around her.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'steadfast' (from L1) means unwavering in loyalty, but 'indomitable' better captures unconquerable spirit.">a) steadfast</label>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Indomitable' means impossible to subdue or defeat.">b) indomitable</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'resolute' (L3) means firmly determined, but 'indomitable' is stronger — unbreakable, not just determined.">c) resolute</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'resolute' (from L3) means firmly determined, but 'indomitable' is stronger — unbreakable.">c) resolute</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q3 (Lesson 4).</strong> <em>For years, the dictator _____ over the country through fear and propaganda.</em></p>
+  <div class="quiz-question" data-correct-answer="tenuous"><p><strong>Q3.</strong> <em>His connection to his childhood home grew _____ after years abroad — more memory than reality.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Tenuous' means very weak or slight.">a) tenuous</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'insidious' means subtly harmful, not weak.">b) insidious</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'indomitable' means unconquerable, the opposite of weak.">c) indomitable</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="hold sway"><p><strong>Q4.</strong> <em>For years, the dictator _____ over the country through fear and propaganda.</em></p>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Held sway' means to have dominating power or influence.">a) held sway</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'loomed large' (L2) means appeared as a threat, not exercised power over a people.">b) loomed large</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'bore the burden' (L1) means carried a heavy responsibility, not dominated.">c) bore the burden</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'loom large' (from L2) means appeared as a threat, not exercised power over a people.">b) loomed large</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'bore the burden' (from L1) means carried a heavy responsibility, not dominated.">c) bore the burden</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q4 (Review — Lesson 3).</strong> <em>Even when his best friend died on the mountain, the climber was _____ — he would reach the summit or die trying.</em></p>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Resolute' means admirably determined and unwavering in purpose.">a) resolute</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'insidious' (from L4) means subtly harmful, not determined.">b) insidious</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'tenuous' (from L4) means weak, the opposite of unbreakable spirit.">c) tenuous</label>
+  <div class="quiz-question" data-correct-answer="come to pass"><p><strong>Q5.</strong> <em>The ancient prophecy _____ when the rightful heir finally returned to claim the throne.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'press on' (from L3) means to continue, not for a prediction to happen.">a) pressed on</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Come to pass' means a prediction or expected event finally happens.">b) came to pass</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'hold sway' means to have dominating power, not for a prediction.">c) held sway</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q5 (Review — Lesson 3).</strong> <em>The team's funding was cut, but they refused to quit and decided to _____ with a smaller budget.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'come to pass' (from L4) means something predicted happened — about time, not about effort.">a) come to pass</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Press on' means to continue despite difficulty or opposition.">b) press on</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'hold sway' (from L4) means to have dominating power, not to continue effort.">c) hold sway</label>
+  <div class="quiz-question" data-correct-answer="poignant"><p><strong>Q6.</strong> <em>The farewell scene at the end of the film was _____ — the entire theatre sat in silence afterwards.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'tenuous' means weak, not emotionally moving.">a) tenuous</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Poignant' (from L3) means evoking a keen sense of sadness or emotional depth.">b) poignant</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'insidious' means subtly harmful, not emotionally moving.">c) insidious</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="treacherous"><p><strong>Q7.</strong> <em>He learned the hard way that his business partner was _____ — quietly siphoning funds into a private account.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Treacherous' (from L2) describes dangerous deception.">a) treacherous</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'formidable' (from L1) means impressively powerful, not deceitful.">b) formidable</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' (from L2) means never stopping, not deceptive.">c) relentless</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="press on"><p><strong>Q8.</strong> <em>Even when his best friend died on the mountain, the climber was determined to _____ and reach the summit.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'come to pass' (from L4) is about predictions happening, not continuing effort.">a) come to pass</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Press on' (from L3) means to continue despite difficulty.">b) press on</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dwell on' (from L2) means to think constantly about something negative.">c) dwell on</label>
     <div class="quiz-feedback"></div>
   </div>
 
   <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">lord of the ring lesson 4 completed: correct answer - (0) incorrect answer (0)</div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
 </div>
 
 <div class="footer"><a href="index.html">← Back to Lord of the Rings</a></div>
@@ -187,7 +218,53 @@ h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}
 <script>
 function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
 if(window.speechSynthesis)speechSynthesis.getVoices();
-document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
-document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+(function(){
+  var SERIES='lord of the ring';
+  var LESSON_N=4;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong')wrong++;
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var text=document.getElementById('summaryLine').textContent;
+    var btn=document.getElementById('copyBtn');
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
 </script>
 </body></html>

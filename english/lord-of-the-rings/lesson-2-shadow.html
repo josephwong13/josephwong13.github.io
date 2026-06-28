@@ -5,56 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lesson 2 — The Shadow</title>
   <style>
-:root{--text:#1a1a1a;--muted:#6b6b6b;--accent:#8b3a3a;--accent-light:#f5e6e6;--border:#d4d4d4;--bg:#fafaf8;--card-bg:#fff;--green:#2d6a4f;--green-light:#e8f5e9;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--mono:'SF Mono',SFMono-Regular,Menlo,Monaco,Consolas,monospace;--measure:40rem}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);padding:1.5rem 1rem;max-width:var(--measure);margin:0 auto;-webkit-font-smoothing:antialiased}
-h1{font-size:1.6rem;font-weight:700;margin:1rem 0 0.3rem;line-height:1.2}
-h2{font-size:1.15rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}
-p{margin:0 0 0.8rem}
-.lesson-meta{font-size:0.75rem;color:var(--muted);margin:0 0 0.2rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
-.back-link{margin-bottom:.5rem}.back-link a{color:var(--accent);text-decoration:none;font-size:.85rem}.back-link a:hover{text-decoration:underline}
-.story{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0 1.5rem;font-size:.9rem;line-height:1.7;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.story p{margin-bottom:.5rem}.story p:last-child{margin-bottom:0}
-.word-card{background:var(--card-bg);border-left:4px solid var(--accent);padding:.8rem 1rem;margin:.8rem 0;border-radius:0 8px 8px 0}
-.word-card .label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600}
-.word-card .word{font-size:1.2rem;font-weight:700;margin:.15rem 0 .1rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem}
-.word-card .pronounce{font-family:var(--mono);font-size:.75rem;color:var(--muted);line-height:1.4}
-.speak-btn{display:inline-flex;align-items:center;justify-content:center;min-width:32px;min-height:32px;width:32px;height:32px;border:1px solid var(--border);border-radius:50%;background:var(--card-bg);cursor:pointer;font-size:.9rem;transition:all .15s;vertical-align:middle;margin-left:.3rem;line-height:1;-webkit-tap-highlight-color:transparent}
-.speak-btn:hover{background:var(--accent-light);border-color:var(--accent)}.speak-btn:active{transform:scale(.92)}
-.speak-btn.playing{background:var(--accent-light);border-color:var(--accent);animation:pulse .6s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,58,58,.2)}50%{box-shadow:0 0 0 6px rgba(139,58,58,0)}}
-.word-card .definition{margin-top:.4rem;font-size:.88rem;line-height:1.6}
-.word-card .example{margin-top:.4rem;font-size:.85rem;color:var(--muted);font-style:italic;border-left:2px solid var(--border);padding-left:.7rem}
-.word-card .example .highlight{color:var(--accent);font-weight:600;font-style:normal}
-.more-examples{margin-top:.5rem;padding-top:.4rem;border-top:1px dashed var(--border)}
-.more-examples table{width:100%;border-collapse:collapse;font-size:.82rem;line-height:1.5}
-.more-examples table td{padding:.12rem 0;vertical-align:top}
-.more-examples table td:first-child{width:5rem;min-width:5rem;font-weight:500;color:var(--text);white-space:nowrap;padding-right:.4rem}
-.more-examples table td:last-child{color:var(--text);word-break:break-word}
-.phrase-card{background:var(--card-bg);border-left:4px solid var(--green);padding:.8rem 1rem;margin:.8rem 0;border-radius:0 8px 8px 0}
-.phrase-card .label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--green);font-weight:600}
-.phrase-card .phrase{font-size:1.1rem;font-weight:700;margin:.15rem 0 .1rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem}
-.phrase-card .definition{margin-top:.4rem;font-size:.88rem;line-height:1.6}
-.phrase-card .example{margin-top:.4rem;font-size:.85rem;color:var(--muted);font-style:italic;border-left:2px solid var(--border);padding-left:.7rem}
-.phrase-card .example .highlight{color:var(--green);font-weight:600;font-style:normal}
-.quiz{margin:1.5rem 0 1.2rem;padding:1rem 1.2rem;background:var(--card-bg);border:1px solid var(--border);border-radius:8px}
-.quiz h2{margin-top:0}
-.quiz-question{margin:1rem 0;padding-bottom:.8rem;border-bottom:1px solid #eee}
-.quiz-question:last-child{border-bottom:none}
-.quiz-question p{margin-bottom:.4rem;font-size:.92rem}
-.quiz-option{display:flex;align-items:center;padding:.65rem .8rem;margin:.35rem 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .12s;user-select:none;-webkit-tap-highlight-color:transparent;min-height:44px}
-.quiz-option:hover{background:#f0f0ee;border-color:#bbb}
-.quiz-option.correct{background:var(--green-light);border-color:var(--green);font-weight:600}
-.quiz-option.wrong{background:#fde8e8;border-color:#9b2226}
-.quiz-feedback{margin-top:.5rem;padding:.5rem .7rem;border-radius:6px;font-size:.82rem;line-height:1.5;display:none}
-.quiz-feedback.show{display:block}
-.quiz-feedback.correct-fb{background:var(--green-light);border-left:3px solid var(--green);color:#1a4a2e}
-.quiz-feedback.wrong-fb{background:#fde8e8;border-left:3px solid #9b2226;color:#7a1a1a}
-.quiz-reveal{margin:1rem 0 0;padding:.7rem 1.2rem;background:var(--accent-light);border:1px solid var(--accent);border-radius:8px;font-size:.88rem;cursor:pointer;font-family:var(--sans);font-weight:600;color:var(--accent);transition:background .15s;width:100%;min-height:44px;-webkit-tap-highlight-color:transparent}
-.quiz-reveal:hover{background:#e8d0d0}
-hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
-.footer{margin-top:2rem;font-size:.82rem;color:var(--muted);text-align:center}.footer a{color:var(--accent);text-decoration:none}
-@media(max-width:480px){body{padding:1rem .75rem;font-size:16px}h1{font-size:1.35rem}.story{padding:.8rem 1rem;font-size:.88rem}.word-card,.phrase-card{padding:.7rem .8rem}.quiz{padding:.8rem .9rem}.quiz-option{min-height:44px}.speak-btn{min-width:36px;min-height:36px;width:36px;height:36px}}
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.story { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box { margin: 1.2rem 0 0; padding: 0.9rem 1rem; background: var(--card-bg); border: 1px solid var(--green); border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
+.score-box .summary-line { font-family: var(--mono); font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; word-break: break-word; }
+.score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
+.score-box .copy-btn:hover { background: #d4ead9; }
+.score-box .copy-btn.copied { background: var(--green); color: white; }
+.score-box .hint { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .story { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
   </style>
 </head>
 <body>
@@ -65,13 +82,13 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 <h1>The Shadow</h1>
 
 <div class="story">
-  <p>Mordor <span class="highlight">loomed large</span> in the minds of the Fellowship — a dark <span class="highlight">ominous</span> presence that seemed to grow closer with each day.</p>
+  <p>The Ringwraiths rode out of Minas Morgul. An <span class="highlight">ominous</span> black tide against a sky that had no stars.</p>
 
-  <p>The Ringwraiths were <span class="highlight">relentless</span>. They did not sleep. They did not tire. They followed the Ring with a single-mindedness that terrified even the bravest. No matter how far the hobbits ran, the shadow behind them never shrank.</p>
+  <p>The hunt was <span class="highlight">relentless</span>. They did not sleep. They did not tire. They did not stop to ask directions. The Fellowship could run, but never rest — and the gap between them and the pursuers grew no wider with every passing day.</p>
 
-  <p>Gollum followed them through the Dead Marshes — a <span class="highlight">treacherous</span> guide who had once betrayed his own kin. The ground beneath their feet was <span class="highlight">treacherous</span> too: bog that would swallow a man in seconds, false paths that led to nowhere.</p>
+  <p>Beyond the gates, the paths through the Dead Marshes were <span class="highlight">treacherous</span>. Luminous faces of the drowned floated beneath the surface, luring travellers to step off the path and into the water. Only Gollum, snarling and miserable, could guide them through — and even he could not be trusted.</p>
 
-  <p>Frodo could not stop thinking about the Ring. He would <span class="highlight">dwell on</span> its power late into the night — what it could do, what it was doing to him. The others tried to keep his spirits up, but the shadow pressed in from all sides.</p>
+  <p>The threat of Mordor <span class="highlight">loomed large</span> in every mind. The closer they came, the heavier the air, the darker the night. Frodo would <span class="highlight">dwell on</span> the Ring's whisper long after the others had fallen asleep — listening, always listening, to what it promised.</p>
 </div>
 
 <h2>📖 Words</h2>
@@ -79,39 +96,39 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 <div class="word-card">
   <div class="label">Word 1 of 3</div>
   <div class="word">ominous <button class="speak-btn" onclick="speak('ominous', event)" title="Listen">🔊</button></div>
-  <div class="pronounce">/ˈɒm.ɪ.nəs/ · OM-in-əs · <em>adjective</em> · 不祥的，預兆不好的</div>
-  <div class="definition">Giving the impression that something bad or unpleasant is about to happen.</div>
-  <div class="example">↳ From the story: Mordor was an <span class="highlight">ominous</span> presence — a darkness that seemed to grow closer each day.</div>
+  <div class="pronounce">/ˈɒm.ɪ.nəs/ · OM-i-nəs · <em>adjective</em> · 不祥的，預示厄運的</div>
+  <div class="definition">Giving the impression that something bad or harmful is going to happen; foreboding.</div>
+  <div class="example">↳ From the story: The Ringwraiths rode out — an <span class="highlight">ominous</span> black tide against a sky with no stars.</div>
   <div class="more-examples">
-    <table><tr><td>☁️ Weather:</td><td>The sky turned an <em>ominous</em> shade of green before the tornado touched down.</td></tr>
-    <tr><td>💼 Work:</td><td>His boss's silence was <em>ominous</em> — she usually had plenty to say after a quarterly review.</td></tr>
-    <tr><td>📰 News:</td><td>The <em>ominous</em> headlines about the economy made everyone nervous about their savings.</td></tr></table>
+    <table><tr><td>🌦️ Weather:</td><td>There was an <em>ominous</em> stillness in the air just before the tornado touched down.</td></tr>
+    <tr><td>💼 Work:</td><td>The board meeting was <em>ominous</em> — three executives were asked to leave before the others even sat down.</td></tr>
+    <tr><td>📰 News:</td><td>Dark clouds gathered overhead — an <em>ominous</em> sign that the storm was coming.</td></tr></table>
   </div>
 </div>
 
 <div class="word-card">
   <div class="label">Word 2 of 3</div>
   <div class="word">relentless <button class="speak-btn" onclick="speak('relentless', event)" title="Listen">🔊</button></div>
-  <div class="pronounce">/rɪˈlɛnt.ləs/ · ri-LENT-ləs · <em>adjective</em> · 不懈的，無情的</div>
-  <div class="definition">Unyielding in intensity or pace; never stopping or giving up, often oppressively so.</div>
-  <div class="example">↳ From the story: The Ringwraiths were <span class="highlight">relentless</span> — they did not sleep or tire, following the Ring without pause.</div>
+  <div class="pronounce">/rɪˈlɛnt.ləs/ · ri-LENT-ləs · <em>adjective</em> · 不間斷的，無情的</div>
+  <div class="definition">Unyielding in intensity or pace; never stopping, never softening, never giving rest.</div>
+  <div class="example">↳ From the story: The hunt was <span class="highlight">relentless</span> — they did not sleep, did not tire, did not slow.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>The sales team's <em>relentless</em> pursuit of the target finally paid off in the last quarter.</td></tr>
-    <tr><td>☀️ Nature:</td><td>The <em>relentless</em> summer heat dried up the reservoir and forced water rationing.</td></tr>
-    <tr><td>🎓 Learning:</td><td>Her <em>relentless</em> practice — four hours every day — is what made her a concert pianist.</td></tr></table>
+    <table><tr><td>💼 Work:</td><td>The reporter's <em>relentless</em> investigation uncovered corruption that went all the way to the top.</td></tr>
+    <tr><td>🌦️ Weather:</td><td>The <em>relentless</em> rain lasted nine straight days, flooding the valley.</td></tr>
+    <tr><td>🏅 Sport:</td><td>His <em>relentless</em> pressure on the serve forced three double-faults in a row.</td></tr></table>
   </div>
 </div>
 
 <div class="word-card">
   <div class="label">Word 3 of 3</div>
   <div class="word">treacherous <button class="speak-btn" onclick="speak('treacherous', event)" title="Listen">🔊</button></div>
-  <div class="pronounce">/ˈtrɛtʃ.ər.əs/ · TRECH-ər-əs · <em>adjective</em> · 背叛的，危險的</div>
-  <div class="definition">Guilty of betrayal; also: hazardous because of hidden dangers that can deceive or harm.</div>
-  <div class="example">↳ From the story: Gollum was a <span class="highlight">treacherous</span> guide — and the Dead Marshes were <span class="highlight">treacherous</span> ground that could swallow them both.</div>
+  <div class="pronounce">/ˈtrɛtʃ.ər.əs/ · TRECH-ər-əs · <em>adjective</em> · 背叛的；表面安全實則危險的</div>
+  <div class="definition">Dangerously unstable or deceptive; appearing safe while hiding real danger beneath the surface.</div>
+  <div class="example">↳ From the story: The Dead Marshes were <span class="highlight">treacherous</span> — luminous faces lured travellers into the water.</div>
   <div class="more-examples">
-    <table><tr><td>🏔️ Travel:</td><td>The mountain pass became <em>treacherous</em> after the snowfall, with ice hiding deep crevasses.</td></tr>
-    <tr><td>🤝 Trust:</td><td>He was a <em>treacherous</em> ally who sold secrets to the competitor while pretending to be loyal.</td></tr>
-    <tr><td>🚗 Driving:</td><td>Black ice made the highway <em>treacherous</em> — drivers were warned to stay home if possible.</td></tr></table>
+    <table><tr><td>🏔️ Travel:</td><td>The mountain road was <em>treacherous</em> — one wrong move and you'd slide off the edge.</td></tr>
+    <tr><td>🤝 Relationships:</td><td>He learned the hard way that his business partner was <em>treacherous</em>, quietly siphoning funds into a private account.</td></tr>
+    <tr><td>🌊 Nature:</td><td>Coastal currents can be <em>treacherous</em> — calm at the surface, deadly underneath.</td></tr></table>
   </div>
 </div>
 
@@ -120,22 +137,22 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 <div class="phrase-card">
   <div class="label">Phrase 1 of 2</div>
   <div class="phrase">loom large <button class="speak-btn" onclick="speak('loom large', event)" title="Listen">🔊</button></div>
-  <div class="definition">(Of something unwelcome) To appear as an approaching threat or worry that dominates one's thoughts.<br>· 逼近，令人擔憂</div>
-  <div class="example">↳ From the story: Mordor <span class="highlight">loomed large</span> in the minds of the Fellowship — a darkness they could not escape.</div>
+  <div class="definition">To appear as an approaching threat or worry that dominates thoughts and overshadows everything else.<br>· 逼近，造成巨大壓力</div>
+  <div class="example">↳ From the story: The threat of Mordor <span class="highlight">loomed large</span> in every mind as the Fellowship drew closer.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>The deadline <em>loomed large</em> as the team struggled to fix the final bugs.</td></tr>
-    <tr><td>💰 Finance:</td><td>Student debt <em>looms large</em> for many graduates, affecting major life decisions for years.</td></tr></table>
+    <table><tr><td>💼 Work:</td><td>With the deadline <em>looming large</em>, the team finally stopped overthinking and just started building.</td></tr>
+    <tr><td>💬 Personal:</td><td>The thought of moving abroad had been <em>looming large</em> in her mind for years.</td></tr></table>
   </div>
 </div>
 
 <div class="phrase-card">
   <div class="label">Phrase 2 of 2</div>
   <div class="phrase">dwell on <button class="speak-btn" onclick="speak('dwell on', event)" title="Listen">🔊</button></div>
-  <div class="definition">To think constantly and at length about something — especially something negative or worrying.<br>· 沉溺於，反覆思考</div>
-  <div class="example">↳ From the story: Frodo would <span class="highlight">dwell on</span> the Ring's power late into the night, unable to stop thinking about its pull.</div>
+  <div class="definition">To think or worry about something repeatedly, often to an unhealthy or unproductive extent.<br>· 沉溺於，反覆想著</div>
+  <div class="example">↳ From the story: Frodo would <span class="highlight">dwell on</span> the Ring's whisper long after the others had fallen asleep.</div>
   <div class="more-examples">
-    <table><tr><td>💬 Conversation:</td><td>It's healthy to learn from mistakes, but don't <em>dwell on</em> them to the point of paralysis.</td></tr>
-    <tr><td>💼 Work:</td><td>Instead of <em>dwelling on</em> the failed pitch, the team focused on what they could improve for the next one.</td></tr></table>
+    <table><tr><td>💬 Personal:</td><td>After the argument, she couldn't stop <em>dwelling on</em> the one careless thing he'd said.</td></tr>
+    <tr><td>💼 Work:</td><td>The team agreed not to <em>dwell on</em> the failed launch and focus on what they could fix next quarter.</td></tr></table>
   </div>
 </div>
 
@@ -146,9 +163,9 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
 <p style="margin-bottom:0.5rem;"><strong>Quick recall — do you remember these from Lesson 1?</strong></p>
 
-<p><strong>steadfast</strong> · 堅定不移的 <em>— "Frodo never turned back, even as the Ring grew heavier."</em></p>
-<p><strong>formidable</strong> · 令人敬畏的 <em>— "Aragorn was a formidable presence — weathered, skilled, unstoppable."</em></p>
-<p><strong>arduous</strong> · 艱巨的 <em>— "The crossing of Caradhras was arduous — chest-deep snow, no path."</em></p>
+<p><strong>steadfast</strong> · 堅定不移的 <em>— "Frodo remained steadfast, never once turning back."</em></p>
+<p><strong>formidable</strong> · 令人敬畏的 <em>— "Aragorn was a formidable presence, weathered and skilled."</em></p>
+<p><strong>arduous</strong> · 艱巨的 <em>— "The journey across the Misty Mountains was arduous."</em></p>
 <p><strong>bear the burden</strong> · 承擔重擔 <em>— "The Fellowship swore to bear the burden together."</em></p>
 <p><strong>stand together</strong> · 團結一致 <em>— "In the darkest moments, they would stand together."</em></p>
 </div>
@@ -157,44 +174,71 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 
 <div class="quiz">
   <h2>🎯 Quiz</h2>
-  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 2. Q4–Q5 review Lesson 1. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Eight questions — every word and phrase from this lesson, plus a few from Lesson 1 to keep them fresh. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
 
-  <div class="quiz-question"><p><strong>Q1 (Lesson 2).</strong> <em>Dark clouds gathered overhead — an _____ sign that the storm was coming.</em></p>
+  <div class="quiz-question" data-correct-answer="ominous"><p><strong>Q1.</strong> <em>Dark clouds gathered overhead — an _____ sign that the storm was coming.</em></p>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'treacherous' means dangerously deceptive, not foreboding.">a) treacherous</label>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Ominous' means giving the impression that something bad is about to happen.">b) ominous</label>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'arduous' (from L1) means difficult and demanding, not foreboding.">c) arduous</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q2 (Lesson 2).</strong> <em>The reporter's _____ investigation uncovered corruption that went all the way to the top.</em></p>
+  <div class="quiz-question" data-correct-answer="relentless"><p><strong>Q2.</strong> <em>The reporter's _____ investigation uncovered corruption that went all the way to the top.</em></p>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ominous' means foreboding, not persistent.">a) ominous</label>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Relentless' means unyielding in intensity and never stopping.">b) relentless</label>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'steadfast' (from L1) means loyal and unwavering in purpose, not about intensity.">c) steadfast</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q3 (Lesson 2).</strong> <em>The mountain road was _____ — one wrong move and you'd slide off the edge.</em></p>
+  <div class="quiz-question" data-correct-answer="treacherous"><p><strong>Q3.</strong> <em>The mountain road was _____ — one wrong move and you'd slide off the edge.</em></p>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Treacherous' describes hazards that hide danger beneath a seemingly safe surface.">a) treacherous</label>
     <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'formidable' (from L1) means impressively powerful, not hidden-danger dangerous.">b) formidable</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' means never stopping.">c) relentless</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' means never stopping, not deceptive.">c) relentless</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q4 (Review — Lesson 1).</strong> <em>Through years of hardship, she remained a _____ friend who never abandoned those she loved.</em></p>
+  <div class="quiz-question" data-correct-answer="loom large"><p><strong>Q4.</strong> <em>With the deadline _____ over them, the team finally stopped overthinking and just started building.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Loom large' means to appear as an approaching threat that dominates thoughts.">a) looming large</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dwell on' means thinking constantly about something negative — close but not the same as an approaching threat.">b) dwelling on</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'stand together' (from L1) is about unity, not a threat approaching.">c) standing together</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="dwell on"><p><strong>Q5.</strong> <em>After the argument, she couldn't stop _____ that one careless thing he'd said.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'loom large' is about an approaching threat, not replaying a moment.">a) looming over it</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dwell on' means to think about something repeatedly, often unhealthily.">b) dwelling on</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'bear the burden' (from L1) is about carrying responsibility, not replaying.">c) bearing it</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="steadfast"><p><strong>Q6.</strong> <em>Through years of hardship, she remained a _____ friend who never abandoned those she loved.</em></p>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Steadfast' means resolutely firm and unwavering in loyalty.">a) steadfast</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ominous' (from L2) means foreboding, not loyal.">b) ominous</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'treacherous' (from L2) means deceitful or hazardous.">c) treacherous</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ominous' means foreboding, not loyal.">b) ominous</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'relentless' means never stopping — not the right fit for loyal.">c) relentless</label>
     <div class="quiz-feedback"></div>
   </div>
 
-  <div class="quiz-question"><p><strong>Q5 (Review — Lesson 1).</strong> <em>After the layoff announcement, the team chose to _____ and refuse to give up on each other.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dwell on' (from L2) means think constantly about something negative.">a) dwell on</label>
+  <div class="quiz-question" data-correct-answer="formidable"><p><strong>Q7.</strong> <em>The new chess champion is a _____ opponent — even grandmasters have lost to her.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'treacherous' means deceptive or hazardous, not impressive in capability.">a) treacherous</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Formidable' means inspiring fear or respect through impressive capability.">b) formidable</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'arduous' (from L1) means difficult, not powerful.">c) arduous</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="stand together"><p><strong>Q8.</strong> <em>After the layoff announcement, the team chose to _____ and refuse to give up on each other.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dwell on' means to think constantly about something negative.">a) dwell on it</label>
     <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Stand together' means to remain united in support of each other.">b) stand together</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'loom large' (from L2) is about an approaching threat, not about unity.">c) loom large</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'loom large' is about an approaching threat, not unity.">c) loom large</label>
     <div class="quiz-feedback"></div>
   </div>
 
   <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">lord of the ring lesson 2 completed: correct answer - (0) incorrect answer (0)</div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
 </div>
 
 <div class="footer"><a href="index.html">← Back to Lord of the Rings</a></div>
@@ -202,8 +246,54 @@ hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 <script>
 function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
 if(window.speechSynthesis)speechSynthesis.getVoices();
-document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
-document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+(function(){
+  var SERIES='lord of the ring';
+  var LESSON_N=2;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong')wrong++;
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var text=document.getElementById('summaryLine').textContent;
+    var btn=document.getElementById('copyBtn');
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
 </script>
 </body>
 </html>
