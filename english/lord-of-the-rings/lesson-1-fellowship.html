@@ -67,7 +67,11 @@ p { margin: 0 0 0.8rem; }
 .score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
 .score-box .copy-btn:hover { background: #d4ead9; }
 .score-box .copy-btn.copied { background: var(--green); color: white; }
-.score-box .hint { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+.score-box .wrong-line{font-family:var(--mono);font-size:.88rem;color:#7a1a1a;margin-bottom:.6rem;word-break:break-word;display:none}
+.score-box .wrong-line.show{display:block}
+.score-box .wrong-line .label{color:#7a1a1a;font-weight:600}
+.score-box .wrong-line.none{color:var(--muted)}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
 .footer a { color: var(--accent); text-decoration: none; }
@@ -203,6 +207,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
   <div class="score-box">
     <div class="summary-line" id="summaryLine">lord of the ring lesson 1 completed: correct answer - (0) incorrect answer (0)</div>
+    <div class="wrong-line" id="wrongLine"><span class="label">Wrong answer to review later:</span> <span id="wrongList"></span></div>
     <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
     <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
   </div>
@@ -220,12 +225,16 @@ if(window.speechSynthesis)speechSynthesis.getVoices();
   function refreshScore(){
     var correct=0,wrong=0;
     var total=document.querySelectorAll('.quiz-question').length;
+    var wrongItems=[];
     document.querySelectorAll('.quiz-question').forEach(function(q){
       var a=answered[q.dataset.correctAnswer];
       if(a==='right')correct++;
-      else if(a==='wrong')wrong++;
+      else if(a==='wrong'){wrong++;wrongItems.push(q.dataset.correctAnswer)}
     });
     document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+    var wl=document.getElementById('wrongLine');
+    var list=document.getElementById('wrongList');
+    if(wrong>0){wl.classList.add('show');wl.classList.remove('none');list.textContent=wrongItems.join(', ')}else if(total>0&&correct+wrong===total){wl.classList.add('show');wl.classList.add('none');list.textContent='none'}else{wl.classList.remove('show');wl.classList.remove('none')}
   }
   document.querySelectorAll('.quiz-option').forEach(function(el){
     el.addEventListener('click',function(){
@@ -255,8 +264,10 @@ if(window.speechSynthesis)speechSynthesis.getVoices();
     refreshScore();
   });
   document.getElementById('copyBtn').addEventListener('click',function(){
-    var text=document.getElementById('summaryLine').textContent;
     var btn=document.getElementById('copyBtn');
+    var wl=document.getElementById('wrongLine');
+    var text=document.getElementById('summaryLine').textContent;
+    if(wl.classList.contains('show')){text+='\n'+wl.textContent}
     var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
     function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
