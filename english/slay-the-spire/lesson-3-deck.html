@@ -41,17 +41,29 @@ p { margin: 0 0 0.8rem; }
 .more-examples table td { padding: 0.12rem 0; vertical-align: top; }
 .more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
 .more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.forms { margin-top: 0.5rem; padding: 0.5rem 0.7rem 0.6rem; background: var(--accent-light); border-radius: 6px; font-size: 0.82rem; line-height: 1.55; }
+.forms strong { color: var(--accent); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.3rem; }
+.forms ul { margin: 0; padding-left: 1.1rem; }
+.forms li { margin-bottom: 0.18rem; }
+.forms li:last-child { margin-bottom: 0; }
 .phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
 .phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
 .phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
 .phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
 .phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
 .phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.phrase-card .forms { background: var(--green-light); }
+.phrase-card .forms strong { color: var(--green); }
+.review-block { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+.review-block p { margin-bottom: 0.5rem; }
+.review-block p:last-child { margin-bottom: 0; }
 .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
 .quiz h2 { margin-top: 0; }
 .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
 .quiz-question:last-child { border-bottom: none; }
 .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-question .qnum { color: var(--muted); font-size: 0.85rem; font-weight: 600; margin-right: 0.3rem; }
+.quiz-options { list-style: none; padding: 0; margin: 0; }
 .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
 .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
 .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
@@ -60,8 +72,11 @@ p { margin: 0 0 0.8rem; }
 .quiz-feedback.show { display: block; }
 .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
 .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
-.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
-.quiz-reveal:hover { background: #e8d0d0; }
+.quiz-actions { display: flex; gap: 0.6rem; margin: 1rem 0 0; flex-wrap: wrap; }
+.quiz-actions button { flex: 1; min-width: 140px; padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: var(--sans); font-weight: 600; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); transition: all 0.15s; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-actions button:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-actions button.primary { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.quiz-actions button.primary:hover { background: #e8d0d0; }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
 .footer a { color: var(--accent); text-decoration: none; }
@@ -88,13 +103,27 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 <div class="word-card">
   <div class="label">Word 1 of 3</div>
   <div class="word">dilute <button class="speak-btn" onclick="speak('dilute', event)" title="Listen">🔊</button></div>
-  <div class="pronounce">/daɪˈluːt/ · die-LOOT · <em>verb</em> · 稀釋；削弱</div>
+  <div class="pronounce">/daɪˈluːt/ · die-LOOT · <em>verb / adjective</em> · 稀釋；削弱</div>
   <div class="definition">To make something weaker or less effective by adding other elements. A diluted deck has too many weak cards that reduce your chance of drawing the strong ones.</div>
   <div class="example">↳ From the story: Too many weak cards <span class="highlight">dilute</span> your deck — you'll draw Strikes when you need Blocks.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>Adding too many features will <em>dilute</em> the product's core value — users won't know what it's really for.</td></tr>
+    <table>
+    <tr><td>💼 Work:</td><td>Adding too many features will <em>dilute</em> the product's core value — users won't know what it's really for.</td></tr>
     <tr><td>🍹 Cooking:</td><td>If the soup is too salty, <em>dilute</em> it with water or add a peeled potato to absorb the excess.</td></tr>
-    <tr><td>📊 Finance:</td><td>Issuing more shares will <em>dilute</em> the value of existing shareholders' stakes.</td></tr></table>
+    <tr><td>📊 Finance:</td><td>Issuing more shares will <em>dilute</em> the value of existing shareholders' stakes.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>dilute (v., base form)</strong> — weaken by adding to it. <em>Water will dilute the concentrate.</em></li>
+      <li><strong>diluted (adj. / past participle)</strong> — already weakened by addition. <em>The orange juice tasted watered down and diluted.</em></li>
+      <li><strong>dilute (adj.)</strong> — also an adjective meaning weakened. <em>A dilute acid is safer to handle.</em></li>
+      <li><strong>dilution (n.)</strong> — the process of weakening; in finance, a reduction of share value. <em>Share dilution is a concern for early investors.</em></li>
+      <li><strong>dilute with + noun</strong> — common grammar: dilute with water, dilute with sugar. <em>The chef diluted the sauce with stock.</em></li>
+      <li><strong>diluted in + noun</strong> — used in chemistry. <em>The acid was diluted in distilled water.</em></li>
+      <li><strong>concentrated (adj., opposite)</strong> — made stronger, not weaker. <em>Use concentrated juice for stronger flavor.</em></li>
+      <li><strong>water down (phrasal verb, synonym)</strong> — weaken the impact of something. <em>The report was watered down before publication.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -105,9 +134,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">The combined effect of elements working together that is greater than the sum of their individual effects.</div>
   <div class="example">↳ From the story: The key is <span class="highlight">synergy</span> — every card should work with the others, creating effects far greater than any single card alone.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>The <em>synergy</em> between the design and engineering teams produced a product neither could have built alone.</td></tr>
+    <table>
+    <tr><td>💼 Work:</td><td>The <em>synergy</em> between the design and engineering teams produced a product neither could have built alone.</td></tr>
     <tr><td>🎵 Music:</td><td>The band's <em>synergy</em> on stage was electric — each musician feeding off the others' energy.</td></tr>
-    <tr><td>🤝 M&A:</td><td>The merger was driven by expected <em>synergies</em> — combining the two sales forces would double market reach.</td></tr></table>
+    <tr><td>🤝 M&amp;A:</td><td>The merger was driven by expected <em>synergies</em> — combining the two sales forces would double market reach.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>synergy (n., base form)</strong> — combined greater-than-sum effect. <em>There's great synergy between sales and product.</em></li>
+      <li><strong>synergies (n., plural)</strong> — multiple such combined effects; very common in business reports. <em>The report identified three cost synergies from the merger.</em></li>
+      <li><strong>synergistic (adj.)</strong> — producing such an effect. <em>The two drugs have a synergistic effect when combined.</em></li>
+      <li><strong>synergistically (adv.)</strong> — in a synergistic manner. <em>The departments worked synergistically on the launch.</em></li>
+      <li><strong>synergize (v., informal)</strong> — to produce synergy by working together. <em>The two departments began to synergize on the launch.</em></li>
+      <li><strong>synergy between A and B</strong> — common grammar pattern. <em>There's real synergy between marketing and product.</em></li>
+      <li><strong>in synergy</strong> — phrase used in technical writing. <em>The two systems operate in synergy to balance the load.</em></li>
+      <li><strong>corporate buzzword warning</strong> — note: <em>synergy</em> is heavily used in business jargon; in casual conversation a simpler word (<em>teamwork</em>, <em>flow</em>) often works better.</li>
+    </ul>
   </div>
 </div>
 
@@ -118,9 +161,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">Settling an issue or producing a definite result; having the ability to make decisions quickly and effectively.</div>
   <div class="example">↳ From the story: At the Merchant, you face a <span class="highlight">decisive</span> moment — one choice that will shape the rest of your run.</div>
   <div class="more-examples">
-    <table><tr><td>⚔️ History:</td><td>The Battle of Midway was the <em>decisive</em> naval engagement that turned the war in the Pacific.</td></tr>
+    <table>
+    <tr><td>⚔️ History:</td><td>The Battle of Midway was the <em>decisive</em> naval engagement that turned the war in the Pacific.</td></tr>
     <tr><td>💼 Work:</td><td>A good manager is <em>decisive</em> — they gather the facts, make a call, and take responsibility for the outcome.</td></tr>
-    <tr><td>🏟️ Sport:</td><td>She scored the <em>decisive</em> goal in the 89th minute, securing her team's place in the final.</td></tr></table>
+    <tr><td>🏟️ Sport:</td><td>She scored the <em>decisive</em> goal in the 89th minute, securing her team's place in the final.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>decisive (adj., base form)</strong> — producing a clear result, or quick to decide. <em>His decisive strike won the fight.</em></li>
+      <li><strong>decision (n.)</strong> — the choice that was made. <em>The decision to delay launch was unanimous.</em></li>
+      <li><strong>decisively (adv.)</strong> — in a way that produces a clear result. <em>She voted decisively against the proposal.</em></li>
+      <li><strong>decisiveness (n.)</strong> — the quality of being decisive. <em>The CEO's decisiveness won the board's respect.</em></li>
+      <li><strong>make / take a decision</strong> — common verb pattern. <em>We need to make a decision by Friday.</em></li>
+      <li><strong>decisive moment / factor / victory</strong> — common collocations. <em>The decisive factor was price, not quality.</em></li>
+      <li><strong>indecisive (adj., opposite)</strong> — unable to choose; producing no clear result. <em>An indecisive leader loses the team's trust.</em></li>
+      <li><strong>decisive vs. determined</strong> — note: <em>decisive</em> = settles an outcome or acts quickly; <em>determined</em> = committed to a goal. <em>She was determined but not decisive.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -132,8 +189,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">To carefully consider the advantages and disadvantages of each possible choice before making a decision.<br>· 權衡利弊；反覆斟酌</div>
   <div class="example">↳ From the story: You must learn to <span class="highlight">weigh your options</span> — sometimes skipping a reward is the strongest play you can make.</div>
   <div class="more-examples">
-    <table><tr><td>🎓 Education:</td><td>Before accepting any university offer, take time to <em>weigh your options</em> — consider location, cost, and course quality.</td></tr>
-    <tr><td>💼 Work:</td><td>After receiving two job offers, she spent the weekend <em>weighing her options</em> before making a final decision.</td></tr></table>
+    <table>
+    <tr><td>🎓 Education:</td><td>Before accepting any university offer, take time to <em>weigh your options</em> — consider location, cost, and course quality.</td></tr>
+    <tr><td>💼 Work:</td><td>After receiving two job offers, she spent the weekend <em>weighing her options</em> before making a final decision.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>weigh (one's) options</strong> — base form. <em>Take a day to weigh your options.</em></li>
+      <li><strong>weighed (one's) options (past)</strong> — already considered. <em>She weighed her options carefully.</em></li>
+      <li><strong>weighing (one's) options (continuous)</strong> — currently considering. <em>We're still weighing our options before signing.</em></li>
+      <li><strong>weigh up + noun</strong> — close variant common in British English. <em>She weighed up the pros and cons.</em></li>
+      <li><strong>weigh the pros and cons</strong> — common expansion. <em>Let's weigh the pros and cons before committing.</em></li>
+      <li><strong>weigh + noun</strong> — "weigh" can also be used with other objects: weigh risks, weigh consequences. <em>The judge weighed the consequences carefully.</em></li>
+      <li><strong>explore one's options</strong> — close synonym: to look into what's available. <em>She's exploring her options before signing.</em></li>
+      <li><strong>keep one's options open</strong> — related idiom: don't commit yet. <em>I'm keeping my options open until next quarter.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -143,8 +214,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">To abandon a failing plan or investment before the situation gets worse; to accept a small loss to avoid a bigger one.<br>· 及時止損</div>
   <div class="example">↳ From the story: Learn to <span class="highlight">cut your losses</span> — selling a potion you'll never use to afford what you truly need.</div>
   <div class="more-examples">
-    <table><tr><td>📈 Finance:</td><td>The investor decided to <em>cut his losses</em> and sell the stock before it dropped another 20%.</td></tr>
-    <tr><td>💼 Work:</td><td>After six months on a failing project, management finally chose to <em>cut their losses</em> and redirect the team.</td></tr></table>
+    <table>
+    <tr><td>📈 Finance:</td><td>The investor decided to <em>cut his losses</em> and sell the stock before it dropped another 20%.</td></tr>
+    <tr><td>💼 Work:</td><td>After six months on a failing project, management finally chose to <em>cut their losses</em> and redirect the team.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>cut (one's) losses</strong> — base form. <em>It's time to cut our losses and move on.</em></li>
+      <li><strong>cut (one's) losses and run</strong> — extended form, emphasizing leaving the situation. <em>They cut their losses and ran before the company collapsed.</em></li>
+      <li><strong>cutting (one's) losses (continuous)</strong> — currently abandoning. <em>We're cutting our losses on the failing product line.</em></li>
+      <li><strong>cut + noun</strong> — note: <em>cut</em> also appears in <em>cut costs</em>, <em>cut ties</em>, <em>cut corners</em> (same root idea of trimming). <em>They cut ties with the supplier after the scandal.</em></li>
+      <li><strong>before the losses get worse</strong> — typical reasoning embedded in the phrase. <em>Sell now, before the losses get worse.</em></li>
+      <li><strong>cut one's losses and move on</strong> — extended idiom. <em>After the breakup, she cut her losses and moved on.</em></li>
+      <li><strong>throw good money after bad (related)</strong> — the OPPOSITE mistake: continuing to invest in a lost cause. <em>Don't throw good money after bad — cut your losses now.</em></li>
+      <li><strong>cut one's losses at + noun</strong> — common grammar: cut losses at $1000, at the first sign. <em>Cut your losses at the first sign of trouble.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -152,66 +237,78 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
 <h2>🔄 Review from Lesson 2</h2>
 
-<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+<div class="review-block">
 <p style="margin-bottom:0.5rem;"><strong>Quick recall — do you remember these from Lesson 2?</strong></p>
 
 <p><strong>vulnerable</strong> · 脆弱的，易受攻擊的 <em>— "A deck with no block is vulnerable to every elite fight."</em></p>
 <p><strong>overwhelm</strong> · 壓倒，擊潰 <em>— "Snecko Eye's debuffs can overwhelm even a strong run."</em></p>
 <p><strong>potent</strong> · 強效的，強大的 <em>— "A well-crafted combo is far more potent than any single card."</em></p>
 <p><strong>hold your ground</strong> · 堅守陣地 <em>— "When the enemy scales, sometimes the right call is to hold your ground and block up."</em></p>
-<p><strong>turn the tide</strong> · 扭轉局勢 <em>— "One well-timed potion can turn the tide of a boss fight."</em></p>
+<p><strong>weather the storm</strong> · 渡過難關 <em>— "One bad round isn't a loss — you just weather the storm until your big card draw."</em></p>
 </div>
 
 <hr>
 
 <div class="quiz">
   <h2>🎯 Quiz</h2>
-  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 3. Q4–Q5 review Lesson 2. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Choose the best word or phrase. <strong>Option order is shuffled on every page load</strong> — the correct answer can be in any position. Click any answer — green = correct, red = wrong.</p>
 
-  <div class="quiz-question"><p><strong>Q1 (Lesson 3).</strong> <em>Adding too many low-priority tasks to your sprint will _____ the team's focus on what actually matters.</em></p>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dilute' means to make something weaker by adding other elements.">a) dilute</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'synergy' is a noun meaning combined effect, not a verb.">b) synergy</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'decisive' is an adjective, not a verb.">c) decisive</label>
-    <div class="quiz-feedback"></div>
+  <div class="quiz-question"><p><span class="qnum">Q1.</span> <em>Adding too many low-priority tasks to your sprint will _____ the team's focus on what actually matters.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dilute' means to make something weaker by adding other elements.">a) dilute</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'decide' means to make a choice, not to weaken by addition.">b) decide</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that would mean to combine for greater effect, the opposite of weakening.">c) synergize</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q2.</span> <em>The _____ between the marketing and sales departments resulted in a campaign that broke every company record.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Synergy' is the combined effect greater than the sum of individual parts.">a) synergy</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'dilution' means weakening, not strengthening by combination.">b) dilution</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that's about abandoning something, not combining efforts.">c) cutting losses</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q3.</span> <em>The general made a _____ move, ordering the cavalry to strike while the enemy's flank was exposed.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="false" data-feedback="Not quite — 'diluted' means weakened, not bold or effective.">a) diluted</li>
+      <li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Decisive' means producing a definite result — in this case, a battle-winning move.">b) decisive</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'potent' means powerful, but 'decisive' better fits a single strategic move.">c) potent</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q4.</span> <em>Without any block cards, his Ironclad run was completely _____ to hallway fights — every encounter chipped him down.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="false" data-feedback="Not quite — 'diluted' means weakened in effect, not exposed to harm.">a) diluted</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'decisive' means producing a result, not exposed.">b) decisive</li>
+      <li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Vulnerable' means exposed to the possibility of being harmed.">c) vulnerable</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q5.</span> <em>After three losses in a row, the team decided to stop chasing the original plan and _____ by abandoning the doomed feature entirely.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="false" data-feedback="Not quite — that means to consider choices, not to abandon.">a) weigh their options</li>
+      <li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Cut their losses' means to abandon a failing situation before it gets worse.">b) cut their losses</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that means to endure difficulty, not to abandon.">c) weather the storm</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-actions">
+    <button class="primary" id="revealBtn">🔍 Reveal all answers</button>
+    <button id="resetBtn">🔄 Reset &amp; reshuffle</button>
   </div>
-
-  <div class="quiz-question"><p><strong>Q2 (Lesson 3).</strong> <em>The _____ between the marketing and sales departments resulted in a campaign that broke every company record.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'diluting' would mean weakening, not strengthening.">a) diluting</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Synergy' is the combined effect greater than the sum of individual parts.">b) synergy</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'cutting losses' is about abandoning something, not combining efforts.">c) cutting losses</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q3 (Lesson 3).</strong> <em>The general made a _____ move, ordering the cavalry to strike while the enemy's flank was exposed.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'diluted' means weakened, not bold or effective.">a) diluted</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Decisive' means producing a definite result — in this case, a battle-winning move.">b) decisive</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'potent' (L2) means powerful, but 'decisive' better fits a strategic move.">c) potent</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q4 (Review — Lesson 2).</strong> <em>Without any block cards, his Ironclad run was completely _____ to hallway fights — every encounter chipped him down.</em></p>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Vulnerable' means exposed to the possibility of being harmed.">a) vulnerable</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'diluted' (from L3) means weakened in effect, not exposed to harm.">b) diluted</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'decisive' (from L3) means producing a result, not exposed.">c) decisive</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q5 (Review — Lesson 2).</strong> <em>After three losses in a row, the team decided to stop chasing the original plan and _____ by abandoning the doomed feature entirely.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'turn the tide' (from L2) means to reverse events, not to abandon.">a) turn the tide</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Cut their losses' means to abandon a failing situation before it gets worse.">b) cut their losses</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'weigh their options' (from L3) means to consider choices, not to abandon.">c) weigh their options</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
 </div>
 
 <div class="footer"><a href="index.html">← Back to Slay the Spire</a></div>
 <script>
 function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
 if(window.speechSynthesis)speechSynthesis.getVoices();
-document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct=\"true\"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
-document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct=\"true\"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function shuffleOptions(){document.querySelectorAll('.quiz-options').forEach(function(ul){var lis=Array.prototype.slice.call(ul.children);var sh=shuffle(lis);ul.innerHTML='';sh.forEach(function(li){ul.appendChild(li)})})}
+
+document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.parentElement.parentElement.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
+
+document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+
+document.getElementById('resetBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});var fb=q.querySelector('.quiz-feedback');if(fb){fb.textContent='';fb.className='quiz-feedback'}});shuffleOptions()});
+
+shuffleOptions();
 </script>
 </body>
 </html>

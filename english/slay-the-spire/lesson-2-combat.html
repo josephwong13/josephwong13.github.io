@@ -41,17 +41,29 @@ p { margin: 0 0 0.8rem; }
 .more-examples table td { padding: 0.12rem 0; vertical-align: top; }
 .more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
 .more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.forms { margin-top: 0.5rem; padding: 0.5rem 0.7rem 0.6rem; background: var(--accent-light); border-radius: 6px; font-size: 0.82rem; line-height: 1.55; }
+.forms strong { color: var(--accent); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.3rem; }
+.forms ul { margin: 0; padding-left: 1.1rem; }
+.forms li { margin-bottom: 0.18rem; }
+.forms li:last-child { margin-bottom: 0; }
 .phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
 .phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
 .phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
 .phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
 .phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
 .phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.phrase-card .forms { background: var(--green-light); }
+.phrase-card .forms strong { color: var(--green); }
+.review-block { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+.review-block p { margin-bottom: 0.5rem; }
+.review-block p:last-child { margin-bottom: 0; }
 .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
 .quiz h2 { margin-top: 0; }
 .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
 .quiz-question:last-child { border-bottom: none; }
 .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-question .qnum { color: var(--muted); font-size: 0.85rem; font-weight: 600; margin-right: 0.3rem; }
+.quiz-options { list-style: none; padding: 0; margin: 0; }
 .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
 .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
 .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
@@ -60,8 +72,11 @@ p { margin: 0 0 0.8rem; }
 .quiz-feedback.show { display: block; }
 .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
 .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
-.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
-.quiz-reveal:hover { background: #e8d0d0; }
+.quiz-actions { display: flex; gap: 0.6rem; margin: 1rem 0 0; flex-wrap: wrap; }
+.quiz-actions button { flex: 1; min-width: 140px; padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: var(--sans); font-weight: 600; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); transition: all 0.15s; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-actions button:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-actions button.primary { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+.quiz-actions button.primary:hover { background: #e8d0d0; }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
 .footer a { color: var(--accent); text-decoration: none; }
@@ -80,7 +95,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
   <p>You play a card that makes the enemy <span class="highlight">vulnerable</span> — suddenly it takes 50% more damage from your attacks. Another card that gives you Block, shielding you from harm. Then you unleash a <span class="highlight">potent</span> strike, dealing massive damage in a single blow. The enemy staggers.</p>
 
-  <p>But the fight isn't over. More enemies surround you. Their attacks could <span class="highlight">overwhelm</span> you if you're not careful. You must <span class="highlight">hold your ground</span> — block what you can, strike when it's safe, and wait for the right moment to <span class="highlight">turn the tide</span>.</p>
+  <p>But the fight isn't over. More enemies surround you. Their attacks could <span class="highlight">overwhelm</span> you if you're not careful. You must <span class="highlight">hold your ground</span> — block what you can, strike when it's safe, and try to <span class="highlight">weather the storm</span> until the moment is right.</p>
 
   <p>Combat in the Spire is a puzzle. Every turn, you choose: defend, attack, or set up for a bigger play next round.</p>
 </div>
@@ -94,22 +109,50 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">Exposed to the possibility of being attacked or harmed, either physically or emotionally. In the game, applying Vulnerable to an enemy makes them take 50% more damage from attacks.</div>
   <div class="example">↳ From the story: You play a card that makes the enemy <span class="highlight">vulnerable</span> — suddenly it takes 50% more damage.</div>
   <div class="more-examples">
-    <table><tr><td>💻 Tech:</td><td>Outdated software leaves your system <em>vulnerable</em> to security breaches and ransomware attacks.</td></tr>
+    <table>
+    <tr><td>💻 Tech:</td><td>Outdated software leaves your system <em>vulnerable</em> to security breaches and ransomware attacks.</td></tr>
     <tr><td>❤️ Personal:</td><td>Opening up about your fears makes you feel <em>vulnerable</em>, but it's the only way to build real trust.</td></tr>
-    <tr><td>🏢 Business:</td><td>Startups are especially <em>vulnerable</em> in their first year — one bad quarter can end everything.</td></tr></table>
+    <tr><td>🏢 Business:</td><td>Startups are especially <em>vulnerable</em> in their first year — one bad quarter can end everything.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>vulnerable (adj., base form)</strong> — exposed to harm. <em>The injured animal was vulnerable to predators.</em></li>
+      <li><strong>vulnerability (n.)</strong> — the state of being exposed; also a specific weakness. <em>The report listed several security vulnerabilities.</em></li>
+      <li><strong>vulnerabilities (n., plural)</strong> — multiple weaknesses. <em>Three vulnerabilities were patched in the latest update.</em></li>
+      <li><strong>vulnerably (adv.)</strong> — in an exposed manner (rare in everyday use). <em>She smiled vulnerably, unsure how he would respond.</em></li>
+      <li><strong>vulnerable to + noun</strong> — most common grammar: vulnerable to attack, vulnerable to criticism, vulnerable to disease. <em>Elderly patients are especially vulnerable to the flu.</em></li>
+      <li><strong>in a vulnerable position / state</strong> — common phrasing. <em>The company is in a vulnerable position after the data leak.</em></li>
+      <li><strong>invulnerable (adj., opposite)</strong> — impossible to harm. <em>He seemed invulnerable to criticism.</em></li>
+      <li><strong>leave someone/something vulnerable</strong> — common verb pattern. <em>The layoffs left the team vulnerable to burnout.</em></li>
+    </ul>
   </div>
 </div>
 
 <div class="word-card">
   <div class="label">Word 2 of 3</div>
   <div class="word">overwhelm <button class="speak-btn" onclick="speak('overwhelm', event)" title="Listen">🔊</button></div>
-  <div class="pronounce">/ˌəʊ.vəˈwɛlm/ · oh-vər-WELM · <em>verb</em> · 壓倒；淹沒</div>
-  <div class="definition">To defeat or overcome completely; to give too much of something to someone so they cannot cope. Enemies can overwhelm you with numbers or sheer damage.</div>
+  <div class="pronounce">/ˌəʊ.vəˈwɛlm/ · oh-vər-WELM · <em>verb</em> · 壓倒；淹沒；深深打動</div>
+  <div class="definition">To defeat or overcome completely; to give too much of something so they cannot cope. Can also mean deeply moved emotionally (a positive sense).</div>
   <div class="example">↳ From the story: More enemies surround you — their attacks could <span class="highlight">overwhelm</span> you if you're not careful.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>She was <em>overwhelmed</em> by the flood of emails after returning from a two-week vacation.</td></tr>
+    <table>
+    <tr><td>💼 Work:</td><td>She was <em>overwhelmed</em> by the flood of emails after returning from a two-week vacation.</td></tr>
     <tr><td>🎓 Learning:</td><td>Don't try to learn everything at once — you'll <em>overwhelm</em> yourself and retain nothing.</td></tr>
-    <tr><td>🥲 Emotion:</td><td>He was <em>overwhelmed</em> with gratitude when his colleagues threw him a surprise farewell party.</td></tr></table>
+    <tr><td>🥲 Emotion:</td><td>He was <em>overwhelmed</em> with gratitude when his colleagues threw him a surprise farewell party.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>overwhelm (v., base form)</strong> — flood, defeat, or deeply move. <em>The crowd began to overwhelm the security line.</em></li>
+      <li><strong>overwhelmed (adj. / past participle)</strong> — flooded and unable to cope; or deeply moved emotionally. <em>She felt overwhelmed by the kindness she received.</em></li>
+      <li><strong>overwhelming (adj.)</strong> — extremely strong, intense, or large. <em>The vote was an overwhelming majority — 90% in favor.</em></li>
+      <li><strong>overwhelmingly (adv.)</strong> — to an extreme degree. <em>The audience responded overwhelmingly positively to the new product.</em></li>
+      <li><strong>overwhelm + with + noun</strong> — common grammar: overwhelm someone with work, overwhelm them with emotion, overwhelm with questions. <em>The reporters overwhelmed the spokesperson with questions.</em></li>
+      <li><strong>overwhelmed by + noun</strong> — passive form: feeling flooded by something. <em>He was overwhelmed by grief.</em></li>
+      <li><strong>overwhelming majority / victory / success</strong> — very common collocations. <em>The candidate won by an overwhelming margin.</em></li>
+      <li><strong>underwhelm (v., opposite)</strong> — to fail to impress. <em>The sequel underwhelmed critics and audiences alike.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -120,9 +163,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">Having great power, influence, or effect. A potent attack deals massive damage; a potent argument wins debates instantly.</div>
   <div class="example">↳ From the story: You unleash a <span class="highlight">potent</span> strike, dealing massive damage in a single blow.</div>
   <div class="more-examples">
-    <table><tr><td>💊 Medicine:</td><td>This is a <em>potent</em> antibiotic — one dose is usually enough to clear the infection.</td></tr>
+    <table>
+    <tr><td>💊 Medicine:</td><td>This is a <em>potent</em> antibiotic — one dose is usually enough to clear the infection.</td></tr>
     <tr><td>💼 Work:</td><td>Her <em>potent</em> combination of technical skill and people management made her the obvious choice for team lead.</td></tr>
-    <tr><td>📝 Writing:</td><td>A <em>potent</em> opening sentence can grab the reader's attention and never let go.</td></tr></table>
+    <tr><td>📝 Writing:</td><td>A <em>potent</em> opening sentence can grab the reader's attention and never let go.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>potent (adj., base form)</strong> — very strong or effective. <em>The new drug is extremely potent.</em></li>
+      <li><strong>potency (n.)</strong> — the strength or effectiveness of something. <em>The caffeine in this coffee has serious potency.</em></li>
+      <li><strong>potently (adv.)</strong> — in a powerful, effective way. <em>The argument potently reframed the entire debate.</em></li>
+      <li><strong>impotent (adj., opposite)</strong> — powerless or unable to act. <em>The new law proved impotent against the well-funded lobby.</em></li>
+      <li><strong>potent + noun</strong> — common collocations: potent weapon, potent force, potent symbol, potent reminder. <em>The portrait became a potent symbol of the era.</em></li>
+      <li><strong>potent against + noun</strong> — used especially for drugs/chemicals. <em>The remedy is potent against most strains of the virus.</em></li>
+      <li><strong>with potent effect</strong> — common adverb phrase. <em>His words landed with potent effect on the audience.</em></li>
+      <li><strong>potency vs. power</strong> — note: <em>potency</em> often implies a hidden or concentrated strength (a drug, an argument), while <em>power</em> is broader. <em>The potion's potency was greater than expected.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -134,19 +191,47 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <div class="definition">To refuse to retreat or give in; to defend your position firmly under pressure.<br>· 堅守陣地；寸步不讓</div>
   <div class="example">↳ From the story: You must <span class="highlight">hold your ground</span> — block what you can, and strike when it's safe.</div>
   <div class="more-examples">
-    <table><tr><td>💼 Work:</td><td>When the client demanded an impossible deadline, she <em>held her ground</em> and refused to promise what the team couldn't deliver.</td></tr>
-    <tr><td>💬 Debate:</td><td>The politician <em>held his ground</em> during the heated interview, refusing to be baited into a soundbite.</td></tr></table>
+    <table>
+    <tr><td>💼 Work:</td><td>When the client demanded an impossible deadline, she <em>held her ground</em> and refused to promise what the team couldn't deliver.</td></tr>
+    <tr><td>💬 Debate:</td><td>The politician <em>held his ground</em> during the heated interview, refusing to be baited into a soundbite.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>hold your ground</strong> — base form. <em>Hold your ground until reinforcements arrive.</em></li>
+      <li><strong>held (one's) ground (past)</strong> — already defended the position. <em>She held her ground against the chairman's pressure.</em></li>
+      <li><strong>holding (one's) ground (continuous)</strong> — currently defending. <em>He's still holding his ground on the price.</em></li>
+      <li><strong>stand (one's) ground</strong> — same meaning, common variant. <em>The villagers stood their ground against the raiders.</em></li>
+      <li><strong>hold your ground on + noun</strong> — common grammar: hold your ground on the price, on the principle. <em>He held his ground on every clause.</em></li>
+      <li><strong>dig in (your heels)</strong> — close synonym: to become stubborn in a position. <em>She dug in her heels and refused to apologize.</em></li>
+      <li><strong>give ground (opposite)</strong> — to retreat or concede. <em>The union refused to give ground on wages.</em></li>
+      <li><strong>hold the line</strong> — related: maintain the current position against pressure. <em>Hold the line until the cavalry arrives.</em></li>
+    </ul>
   </div>
 </div>
 
 <div class="phrase-card">
   <div class="label">Phrase 2 of 2</div>
-  <div class="phrase">turn the tide <button class="speak-btn" onclick="speak('turn the tide', event)" title="Listen">🔊</button></div>
-  <div class="definition">To reverse the direction of events, especially from a losing position to a winning one.<br>· 扭轉局勢；力挽狂瀾</div>
-  <div class="example">↳ From the story: Wait for the right moment to <span class="highlight">turn the tide</span> — one well-timed play can win the fight.</div>
+  <div class="phrase">weather the storm <button class="speak-btn" onclick="speak('weather the storm', event)" title="Listen">🔊</button></div>
+  <div class="definition">To survive a difficult or unpleasant situation without being permanently harmed; to endure a period of hardship until things improve.<br>· 渡過難關；熬過風暴</div>
+  <div class="example">↳ From the story: You must <span class="highlight">weather the storm</span> — survive this round of damage and the fight is yours.</div>
   <div class="more-examples">
-    <table><tr><td>🏟️ Sport:</td><td>That last-minute goal <em>turned the tide</em> of the entire match, shifting momentum in their favor.</td></tr>
-    <tr><td>💼 Work:</td><td>The new CEO's first decision — cutting the failing product line — <em>turned the tide</em> for the struggling company.</td></tr></table>
+    <table>
+    <tr><td>🏢 Business:</td><td>The airline managed to <em>weather the storm</em> of the pandemic by cutting costs early and raising cash reserves.</td></tr>
+    <tr><td>💼 Work:</td><td>After two rounds of layoffs, the remaining team <em>weathered the storm</em> and rebuilt morale over the next year.</td></tr>
+    </table>
+  </div>
+  <div class="forms"><strong>📝 Other forms &amp; aspects</strong>
+    <ul>
+      <li><strong>weather the storm</strong> — base form of the idiom. <em>We'll weather the storm together.</em></li>
+      <li><strong>weathered the storm (past)</strong> — already survived. <em>She weathered the storm of public criticism with dignity.</em></li>
+      <li><strong>weathering the storm (continuous)</strong> — currently enduring. <em>The economy is weathering the storm better than expected.</em></li>
+      <li><strong>weather + noun</strong> — note: "weather" can also be used with other nouns (weather a crisis, weather a scandal). <em>The government weathered a political crisis last year.</em></li>
+      <li><strong>ride out the storm</strong> — close synonym, slightly more about waiting it out. <em>We'll ride out the storm and reassess next quarter.</em></li>
+      <li><strong>weather the storm of + noun</strong> — common grammar: storm of criticism, storm of controversy. <em>He weathered the storm of accusations and stayed in office.</em></li>
+      <li><strong>before / after the storm</strong> — common paired phrases. <em>Things look bleak now, but after the storm we'll recover.</em></li>
+      <li><strong>make it through / pull through</strong> — non-idiom alternatives meaning the same thing. <em>We pulled through the recession with no layoffs.</em></li>
+    </ul>
   </div>
 </div>
 
@@ -154,7 +239,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
 <h2>🔄 Review from Lesson 1</h2>
 
-<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+<div class="review-block">
 <p style="margin-bottom:0.5rem;"><strong>Quick recall — do you remember these from Lesson 1?</strong></p>
 
 <p><strong>ascend</strong> · 上升，登頂 <em>— "Each climb forces you to ascend further than you think you can."</em></p>
@@ -168,52 +253,64 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
 <div class="quiz">
   <h2>🎯 Quiz</h2>
-  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 2. Q4–Q5 review Lesson 1. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Choose the best word or phrase. <strong>Option order is shuffled on every page load</strong> — the correct answer can be in any position. Click any answer — green = correct, red = wrong.</p>
 
-  <div class="quiz-question"><p><strong>Q1 (Lesson 2).</strong> <em>Without a firewall, your network is _____ to attacks from anywhere in the world.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'overwhelmed' means defeated or flooded, not exposed to risk.">a) overwhelmed</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Vulnerable' means exposed to the possibility of being harmed.">b) vulnerable</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'potent' means powerful, not exposed.">c) potent</label>
-    <div class="quiz-feedback"></div>
+  <div class="quiz-question"><p><span class="qnum">Q1.</span> <em>Without a firewall, your network is _____ to attacks from anywhere in the world.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="false" data-feedback="Not quite — 'overwhelmed' means defeated or flooded, not exposed to risk.">a) overwhelmed</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'potent' means powerful, not exposed.">b) potent</li>
+      <li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Vulnerable' means exposed to the possibility of being harmed.">c) vulnerable</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q2.</span> <em>The sheer volume of customer complaints after the outage _____ the support team, who worked through the night to respond to every ticket.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Overwhelmed' means flooded with more than they could handle.">a) overwhelmed</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that phrase means to survive a difficult period, not to be flooded by it.">b) weathered the storm</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that means to refuse to retreat, not to be flooded.">c) held their ground</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q3.</span> <em>The lawyer's closing argument was so _____ that even the most skeptical jurors were convinced.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Potent' means having great power, influence, or effect.">a) potent</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'vulnerable' means exposed to harm, not powerful.">b) vulnerable</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Close — 'overwhelming' is the -ing form of overwhelm (flood/defeat), not the word for a powerful argument.">c) overwhelming</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q4.</span> <em>By the time you reach Act 3, your character is no longer learning to climb — they're ready to _____ into the final fight.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="false" data-feedback="Not quite — that phrase is about enduring hardship, not advancing.">a) weather the storm</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that means to defend a position, not to advance.">b) hold your ground</li>
+      <li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Forge ahead' means to push forward with determination.">c) forge ahead</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-question"><p><span class="qnum">Q5.</span> <em>After his first three runs ended in disaster, he decided to _____ with a brand-new deck and a clean strategy.</em></p>
+      <ul class="quiz-options"><li class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Start from scratch' means to begin again from zero.">a) start from scratch</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — that means to defend a position, not to begin anew.">b) hold your ground</li>
+      <li class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge ahead' means to push forward, but doesn't capture starting over.">c) forge ahead</li></ul>
+      <div class="quiz-feedback"></div>
+    </div>
+
+  <div class="quiz-actions">
+    <button class="primary" id="revealBtn">🔍 Reveal all answers</button>
+    <button id="resetBtn">🔄 Reset &amp; reshuffle</button>
   </div>
-
-  <div class="quiz-question"><p><strong>Q2 (Lesson 2).</strong> <em>The sheer volume of customer complaints after the outage _____ the support team, who worked through the night to respond to every ticket.</em></p>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Overwhelmed' means flooded with more than they could handle.">a) overwhelmed</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'turned the tide' means to reverse a situation.">b) turned the tide</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'held their ground' means to refuse to retreat.">c) held their ground</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q3 (Lesson 2).</strong> <em>The lawyer's closing argument was so _____ that even the most skeptical jurors were convinced.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'vulnerable' means exposed to harm, not powerful.">a) vulnerable</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Potent' means having great power, influence, or effect.">b) potent</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'overwhelmed' is a verb, not an adjective describing the argument.">c) overwhelmed</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q4 (Review — Lesson 1).</strong> <em>By the time you reach Act 3, your character is no longer learning to climb — they're ready to _____ into the final fight.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge' (from L1) means to shape or create, not to climb.">a) forge</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Ascend' means to rise or climb up.">b) ascend</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'overwhelm' (from L2) means to flood or defeat, not to climb.">c) overwhelm</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="quiz-question"><p><strong>Q5 (Review — Lesson 1).</strong> <em>After his first three runs ended in disaster, he decided to _____ with a brand-new deck and a clean strategy.</em></p>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'forge ahead' (from L1) means to push forward, but doesn't capture starting over.">a) forge ahead</label>
-    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Start from scratch' means to begin again from zero.">b) start from scratch</label>
-    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'hold your ground' (from L2) means to defend a position, not to begin anew.">c) hold your ground</label>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
 </div>
 
 <div class="footer"><a href="index.html">← Back to Slay the Spire</a></div>
 <script>
 function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
 if(window.speechSynthesis)speechSynthesis.getVoices();
-document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct=\"true\"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
-document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct=\"true\"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function shuffleOptions(){document.querySelectorAll('.quiz-options').forEach(function(ul){var lis=Array.prototype.slice.call(ul.children);var sh=shuffle(lis);ul.innerHTML='';sh.forEach(function(li){ul.appendChild(li)})})}
+
+document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.parentElement;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct')}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.parentElement.parentElement.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}})});
+
+document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}})});
+
+document.getElementById('resetBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q){q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});var fb=q.querySelector('.quiz-feedback');if(fb){fb.textContent='';fb.className='quiz-feedback'}});shuffleOptions()});
+
+shuffleOptions();
 </script>
 </body>
 </html>
