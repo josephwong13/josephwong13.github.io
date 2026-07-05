@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth 2.0 — Technical Lessons</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #fafaf8; color: #1a1a1a; line-height: 1.6;
+      max-width: 36rem; margin: 0 auto; padding: 2.5rem 1.5rem;
+    }
+    .breadcrumb { font-size: .8rem; color: #6b6b6b; margin-bottom: 1rem; }
+    .breadcrumb a { color: #8b3a3a; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+    .subtitle { color: #6b6b6b; font-size: .9rem; margin-bottom: 1.5rem; }
+    .series-desc { font-size: .88rem; color: #6b6b6b; margin-bottom: 1.5rem; }
+    .lesson-list { list-style: none; }
+    .lesson-item {
+      background: #fff; border: 1px solid #d4d4d4; border-radius: 8px;
+      padding: .9rem 1.1rem; margin-bottom: .7rem; transition: box-shadow .15s;
+    }
+    .lesson-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .lesson-item a { text-decoration: none; color: #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .lesson-num { font-size: .72rem; color: #8b3a3a; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .lesson-title { font-size: 1rem; font-weight: 600; margin: .1rem 0; }
+    .lesson-theme { font-size: .82rem; color: #6b6b6b; }
+    .arrow { color: #8b3a3a; font-size: 1.1rem; }
+    .quiz-box {
+      background: #fff; border: 2px solid #8b3a3a; border-radius: 8px;
+      padding: 1rem 1.1rem; margin-top: 1.5rem;
+    }
+    .quiz-box a { color: #8b3a3a; text-decoration: none; font-weight: 600; }
+    .footer { margin-top: 2.5rem; font-size: .8rem; color: #6b6b6b; text-align: center; }
+    .footer a { color: #8b3a3a; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb"><a href="../">🗂️ Hub</a> / <a href="../">Technical</a> / OAuth 2.0</div>
+  <h1>🔐 OAuth 2.0</h1>
+  <p class="subtitle">A 5-lesson series on delegated authorization · with MCP as the running example</p>
+  <p class="series-desc">
+    OAuth is the protocol behind "Sign in with Google", GitHub app permissions, and now Model Context Protocol servers.
+    These lessons build the model from first principles — roles, flows, tokens, scopes, PKCE — ending with how MCP
+    authorization was actually specified on top of OAuth 2.1.
+  </p>
+
+  <ul class="lesson-list">
+    <li class="lesson-item">
+      <a href="lesson-1-why.html">
+        <div>
+          <div class="lesson-num">Lesson 01</div>
+          <div class="lesson-title">Why OAuth Exists</div>
+          <div class="lesson-theme">auth vs authorization · delegation · the 4 roles</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="lesson-item">
+      <a href="lesson-2-auth-code.html">
+        <div>
+          <div class="lesson-num">Lesson 02</div>
+          <div class="lesson-title">The Authorization Code Flow</div>
+          <div class="lesson-theme">/authorize → consent → code → token · the happy path</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="lesson-item">
+      <a href="lesson-3-tokens.html">
+        <div>
+          <div class="lesson-num">Lesson 03</div>
+          <div class="lesson-title">Tokens, Scopes &amp; Refresh</div>
+          <div class="lesson-theme">access tokens · JWT vs opaque · scope · refresh · revocation</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="lesson-item">
+      <a href="lesson-4-pkce.html">
+        <div>
+          <div class="lesson-num">Lesson 04</div>
+          <div class="lesson-title">PKCE &amp; Public Clients</div>
+          <div class="lesson-theme">code interception · code_verifier · S256</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="lesson-item">
+      <a href="lesson-5-flows-pitfalls.html">
+        <div>
+          <div class="lesson-num">Lesson 05</div>
+          <div class="lesson-title">Other Flows &amp; Common Pitfalls</div>
+          <div class="lesson-theme">client credentials · implicit (deprecated) · confused deputy · MCP discovery</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="quiz-box">
+    <div style="font-size:.72rem;color:#8b3a3a;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;">Final Test</div>
+    <a href="final-test.html">📝 12 cumulative questions across all 5 lessons →</a>
+  </div>
+
+  <div class="footer">
+    <a href="../">← Back to Technical Lessons</a>
+  </div>
+</body>
+</html>

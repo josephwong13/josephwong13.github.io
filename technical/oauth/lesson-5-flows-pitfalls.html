@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5 — Other Flows &amp; Common Pitfalls</title>
+  <style>    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; color: var(--text); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .concept.danger { border-left: 4px solid #9b2226; background: #fde8e8; }
+    .concept.danger .label { color: #9b2226; }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; }
+    .scenario p { margin-bottom: 0.5rem; }
+    .scenario p:last-child { margin-bottom: 0; }
+    .scenario strong { color: var(--accent); }
+    table.flows { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+    table.flows th, table.flows td { padding: 0.6rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.flows th { background: var(--accent-light); color: var(--accent); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    table.flows td code { font-size: 0.85em; }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.5rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 5 of 5 · OAuth 2.0 Series</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-4-pkce.html">← Lesson 4</a></p>
+  <h1>Other Flows &amp; Common Pitfalls</h1>
+
+  <div class="scenario">
+    <p>Lesson 2 covered the authorization code flow — the workhorse. But there are three other grants you may encounter in RFC 6749: client credentials (M2M), implicit (now deprecated), and resource owner password credentials (also deprecated). Lesson 5 covers when each is appropriate, plus the security pitfalls RFC 9700 explicitly addresses — most of which you'll meet in real MCP and OAuth deployments.</p>
+  </div>
+
+  <h2>The grant-type landscape</h2>
+
+  <table class="flows">
+    <thead>
+      <tr><th>Grant</th><th>When it's used</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>authorization_code</code></td>
+        <td>User is present. Browser hands a code to the client (Lesson 2).</td>
+        <td><strong>Default. Always. With PKCE.</strong></td>
+      </tr>
+      <tr>
+        <td><code>client_credentials</code></td>
+        <td>No user — a backend service authenticating itself.</td>
+        <td>Legitimate use case.</td>
+      </tr>
+      <tr>
+        <td><code>refresh_token</code></td>
+        <td>Swap a refresh token for a new access token (Lesson 3).</td>
+        <td>Companion to <code>authorization_code</code>.</td>
+      </tr>
+      <tr>
+        <td><code>implicit</code> (<code>response_type=token</code>)</td>
+        <td>Legacy SPAs that returned tokens in the URL fragment.</td>
+        <td>Deprecated. <strong>Don't use.</strong></td>
+      </tr>
+      <tr>
+        <td><code>password</code></td>
+        <td>Legacy first-party apps that collected the user's password directly.</td>
+        <td>Deprecated. <strong>Don't use.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Client credentials — when the user is a service</h3>
+
+  <div class="concept">
+    <div class="label">Use case</div>
+    <p>A CI pipeline needs to call your internal API. There's no human, no browser, no consent screen. The pipeline authenticates with its own client ID + secret at <code>/token</code>, gets an access token back, and uses it.</p>
+<pre><code>POST https://auth.internal/oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id=ci-pipeline
+&client_secret=***
+&scope=build:write</code></pre>
+    <p style="margin-top:.5rem;">This grant is the right tool for M2M. The "user" is the service itself; consent is implicit in the deploy.</p>
+  </div>
+
+  <div class="concept mcp">
+    <div class="label">MCP · Could a server-to-server use this?</div>
+    <p>Yes. An MCP server running <em>as</em> the data owner (rather than holding data on behalf of users) could mint tokens via <code>client_credentials</code> for downstream services that call it. <code>client_id_metadata_document_supported</code> in AS metadata signals whether the modern alternative is available. <sup>[R9]</sup></p>
+  </div>
+
+  <h3>Implicit — deprecated, do not use</h3>
+
+  <div class="concept danger">
+    <div class="label">Why implicit is dead</div>
+    <p>The implicit grant returned access tokens in the URL fragment. The browser history, referer headers, JS-injected tracking pixels, and extensions all saw that token. RFC 9700 formally deprecates it: <em>"Clients SHOULD NOT use the implicit grant... unless access token injection in the authorization response is prevented and the aforementioned token leakage vectors are mitigated."</em> <sup>[R2]</sup></p>
+    <p style="margin-top:.5rem;">OAuth 2.1 drops implicit entirely. The modern replacement is authorization code + PKCE — yes, even for SPAs. <sup>[R3]</sup></p>
+  </div>
+
+  <h3>RO password — deprecated, do not use</h3>
+
+  <div class="concept danger">
+    <div class="label">Why RO password is dead</div>
+    <p>The user types their password into the client. The client forwards it to the AS to mint a token. The whole point of OAuth — that the client never touches the password — is gone. RFC 9700 deprecates this except for "trusted first-party apps" and even then recommends migration. <sup>[R2]</sup></p>
+  </div>
+
+  <h2>Common pitfalls and the attacks they enable</h2>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 1 · Open redirector on redirect_uri</div>
+    <p>An AS compares the registered <code>redirect_uri</code> with what the client sends. If your client uses a wildcard, prefix-match, or any non-exact comparison — or if it follows redirects on the redirect URI itself — an attacker can submit <code>redirect_uri=https://yoursite.com/oauth/callback?next=https://evil.com</code> and exfiltrate the authorization code via a chained redirect. <strong>RFC 9700 mandates exact string matching</strong> for redirect URIs. <sup>[R2]</sup></p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 2 · Missing or weak CSRF protection</div>
+    <p>If the authorize request sends no <code>state</code> (and no PKCE / <code>nonce</code>), an attacker can trick a logged-in user's browser into starting an OAuth flow that returns the code to the attacker's account. This is "<em>login CSRF</em>". Mitigation: always set <code>state</code>, always use PKCE. <sup>[R2]</sup></p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 3 · The confused deputy</div>
+    <p>A user with access to ten resources grants an OAuth client access to all ten — but only intended to grant access to one. The client legitimately uses the token to read resources the user didn't think about. The user's access is being <em>delegated</em> through a confused intermediary.</p>
+    <p style="margin-top:.5rem;">Mitigation: narrow scopes (Lesson 3), explicit consent screens, and (in MCP and similar) the <code>resource</code> parameter in the authorize request that binds tokens to a specific RS. <sup>[R8] [R9]</sup></p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 4 · Access tokens in URL fragments</div>
+    <p>Implicit grant leak. Use authorization code with PKCE.</p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 5 · Sharing refresh tokens across devices</div>
+    <p>A single refresh token reused on phones, browsers, and laptops gives any one compromised device unlimited token minting. OAuth 2.1 says refresh tokens for public clients must be sender-constrained <em>or</em> one-time-use (rotation: server invalidates each refresh token after one exchange, returns a new one). <sup>[R3]</sup></p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Pitfall 6 · Tokens in cookies or localStorage without care</div>
+    <p>An XSS bug = full token theft. Use <code>HttpOnly</code>, <code>Secure</code> cookies and CSRF tokens if you must put tokens there. Better: keep tokens in memory (JS variable) and use refresh tokens for persistence. <sup>[R2]</sup></p>
+  </div>
+
+  <h2>The MCP connection — discovery + registration</h2>
+
+  <div class="concept mcp">
+    <div class="label">MCP · Bootstrapping without prior setup</div>
+    <p>MCP has to handle a special challenge: a brand-new MCP client (Claude Desktop) and a brand-new MCP server often have <em>no prior relationship</em>. No pre-registered client ID, no shared secret. The MCP spec layers three RFCs to handle this. <sup>[R9]</sup></p>
+    <p style="margin-top:.5rem;"><strong>Step 1. Discover.</strong> The MCP client makes an unauthenticated request. The RS replies 401 with:</p>
+<pre><code>HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="https://mcp.example.com/.well-known/oauth-protected-resource",
+                         scope="files:read"</code></pre>
+    <p style="margin-top:.5rem;"><strong>Step 2. Resolve.</strong> Client fetches that URL → Protected Resource Metadata (RFC 9728) → <code>authorization_servers</code> array → Authorization Server Metadata (RFC 8414) → finally the actual <code>/authorize</code> and <code>/token</code> endpoints. <sup>[R8] [R7]</sup></p>
+    <p style="margin-top:.5rem;"><strong>Step 3. Register.</strong> If the client has no client_id, three options in priority order:</p>
+    <ol style="margin: 0.4rem 0 0 1.2rem; font-size: 0.9rem;">
+      <li><strong>Client ID Metadata Document</strong> — client hosts a JSON doc at an HTTPS URL, uses that URL as its <code>client_id</code>. AS validates. <em>Modern MCP preference.</em></li>
+      <li><strong>Dynamic Client Registration (RFC 7591)</strong> — client POSTs metadata to <code>registration_endpoint</code>, gets a client_id back. <sup>[R6]</sup></li>
+      <li><strong>Prompt the user</strong> — fall back to a manual client_id entry.</li>
+    </ol>
+    <p style="margin-top:.5rem;"><strong>Step 4. Bind to the resource.</strong> The authorize request includes <code>&amp;resource=https%3A%2F%2Fmcp.example.com</code> — this RFC 9728 parameter tells the AS to bind the issued access token's audience claim to that resource URI. Prevents confused-deputy: a token meant for MCP server A cannot be replayed at server B. <sup>[R8] [R9]</sup></p>
+  </div>
+
+  <div class="concept note">
+    <div class="label">Why this matters in practice</div>
+    <p>The MCP spec doesn't invent anything new. It composes OAuth 2.1 (draft), PKCE (RFC 7636), Dynamic Client Registration (RFC 7591), AS Metadata (RFC 8414), and Protected Resource Metadata (RFC 9728) into a coherent discovery → register → authorize story. <sup>[R10]</sup></p>
+  </div>
+
+  <hr>
+
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 4</h2>
+    <p><strong>PKCE</strong> · client generates <code>verifier</code>, sends <code>challenge = SHA256(verifier)</code> on authorize, reveals verifier on token exchange.</p>
+    <p><strong>S256</strong> · the only acceptable challenge method per RFC 9700.</p>
+    <p><strong>OAuth 2.1</strong> · PKCE is required for all clients using the authorization code flow.</p>
+    <p><strong>Public clients</strong> · loopback redirect URIs (mobile), no embedded "secret", sender-constrained or one-time-use refresh tokens.</p>
+  </div>
+
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">All six questions are scenario-based. Q5 is fill-in-the-blank.</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> Your CI pipeline has no human user. Which grant should it use to obtain an access token for the internal API?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — password is deprecated and requires a human password.">a) Resource owner password credentials</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — there's no authorization code in a server-to-server scenario; the spec grants you token directly via client_credentials.">b) Authorization code</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. M2M scenarios use client_credentials — no user, no consent screen, just client_id + client_secret. <sup>[R1]</sup>">c) Client credentials</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> You are reviewing a legacy SPA that uses <code>response_type=token</code> (implicit grant). What's the modern fix?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Authorization code + PKCE replaces implicit entirely, even for SPAs. <sup>[R2] [R3]</sup>">a) Migrate to authorization code with PKCE</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — implicit isn't a quirk, it's deprecated because tokens leak via browser history, referer, etc.">b) Add a stronger client secret embedded in the SPA bundle</label>
+      <label class="quiz-option" data-correct="false" data-feedback="URIs are fine, but the grant itself is the problem — moving to auth code + PKCE is the fix.">c) Whitelist only https redirect URIs to mitigate the leak</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> The AS matches redirect URIs using a prefix check (<code>https://yoursite.com/callback/*</code>). What attack does this enable?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="PKCE blocks code interception but doesn't help with chained redirects through your own URL.">a) PKCE downgrade</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Prefix matching allows code exfiltration via <code>?next=...</code>. RFC 9700 mandates exact string matching. <sup>[R2]</sup>">b) Open redirector / authorization code exfiltration via path traversal</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — that's a different transport-layer threat.">c) TLS downgrade</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> An MCP client meets a new MCP server for the first time. Which RFC does it use first to discover the authorization server?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="RFC 8414 is the AS metadata, but you can't fetch it without first learning the AS URL — which comes from Protected Resource Metadata.">a) Direct fetch of RFC 8414 Authorization Server Metadata at a known URL</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The MCP server returns 401 with a resource_metadata URL in WWW-Authenticate. Client fetches that (RFC 9728) to learn the AS. <sup>[R8] [R9]</sup>">b) Fetch Protected Resource Metadata (RFC 9728) from a URL in the 401's WWW-Authenticate header</label>
+      <label class="quiz-option" data-correct="false" data-feedback="JWKS is for verifying JWT signatures, not initial discovery.">c) Fetch JWKS from the MCP server's metadata endpoint</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">A user grants a client access to 10 resources but only intended 1 — the client uses the access token legitimately, but on resources the user didn't consciously delegate. This is the <input class="fillin" type="text" data-answer="confused deputy" data-feedback-ok="✓ Right. Confused-deputy attacks arise when a delegated party exercises broader authority than the user intended." data-feedback-bad="The pattern you're describing — when a delegated client acts on resources the user didn't intend — is the 'confused deputy' problem." data-feedback-ref="<sup>[R2]</sup>">__ problem; mitigation includes narrower scopes, clearer consent screens, and (in MCP) the <code>resource</code> parameter binding tokens to a specific RS.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q6.</strong> An MCP server returns <code>WWW-Authenticate: Bearer error="insufficient_scope", scope="files:read files:write"</code> in response to a tool call. The MCP client's correct response is…</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — changing tokens doesn't change the missing-scope problem.">a) Request a new access token with the existing scopes and retry</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Per MCP spec §10 Scope Challenge Handling, the client must re-engage the user to consent to the additional scope (step-up authorization). <sup>[R9]</sup>">b) Run step-up authorization: open a new authorization request that requests the additional scope, with the user's consent, then retry</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — that abandons legitimate session state for the worst possible outcome.">c) Drop all credentials and restart the entire MCP connection</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc6749">[R1] RFC 6749 — The OAuth 2.0 Authorization Framework</a> — Section 4.4 (client credentials), Section 10.16 (security considerations)</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc9700">[R2] RFC 9700 — OAuth 2.0 Security Best Current Practice (BCP 240)</a> — Section 2.1 (redirect-based flow), 2.1.2 (implicit deprecation), 2.2 (refresh tokens)</li>
+      <li><a href="https://oauth.net/2.1/">[R3] OAuth 2.1 (oauth.net)</a> — Omitted grants; refresh-token rules</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc7591">[R6] RFC 7591 — OAuth 2.0 Dynamic Client Registration Protocol</a></li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc9728">[R8] RFC 9728 — OAuth 2.0 Protected Resource Metadata</a> — the discovery document MCP servers must expose</li>
+      <li><a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization">[R9] MCP Authorization Specification (2025-11-25)</a> — Sections 4 (Discovery), 5 (Client Registration), 7 (Authorization Flow Steps), 10 (Error Handling)</li>
+      <li><a href="https://auth0.com/blog/an-introduction-to-mcp-and-authorization/">[R10] Auth0 — An Introduction to MCP and Authorization</a> — a developer-friendly walkthrough of MCP's OAuth 2.1 composition</li>
+      <li><a href="https://aembit.io/blog/mcp-oauth-2-1-pkce-and-the-future-of-ai-authorization/">[R11] Aembit — MCP, OAuth 2.1, PKCE, and the Future of AI Authorization</a></li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-4-pkce.html">← Lesson 4</a> · <a href="index.html">Series index</a> · <a href="final-test.html">Final Test (12 questions) →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback');
+          var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+      });
+    }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question');
+      var fb = (q ? q.querySelector('.fillin-feedback') : null) || document.getElementById(input.dataset.feedback);
+      function check() {
+        var ans = (input.value || '').trim().toLowerCase().replace(/[_\-\s]/g, '');
+        var expected = (input.dataset.answer || '').toLowerCase().replace(/[_\-\s]/g, '');
+        if (!expected) return;
+        if (ans === expected) {
+          input.classList.remove('wrong'); input.classList.add('correct');
+          if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; }
+        } else {
+          input.classList.remove('correct'); input.classList.add('wrong');
+          if (fb) { fb.textContent = (input.dataset.feedbackBad || ('✗ Expected: ' + input.dataset.answer)) + (input.dataset.feedbackRef ? ' ' + input.dataset.feedbackRef : ''); fb.className = 'fillin-feedback wrong-fb'; }
+        }
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Test — OAuth 2.0</title>
+  <style>    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .recap { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; margin: 1rem 0; }
+    .recap-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.78rem; }
+    .recap-item .l { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .recap-item .v { font-weight: 600; color: var(--text); }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .score-box { background: var(--accent-light); border: 2px solid var(--accent); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; text-align: center; display: none; }
+    .score-box.show { display: block; }
+    .score-box .big { font-size: 1.8rem; font-weight: 700; color: var(--accent); margin: 0.2rem 0; }
+    .score-box .small { font-size: 0.85rem; color: var(--muted); }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } }
+</style>
+</head>
+<body>
+  <p class="lesson-meta">Final Test · OAuth 2.0 Series · 12 questions cumulative across all 5 lessons</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a></p>
+  <h1>📝 Final Test</h1>
+
+  <div class="concept">
+    <div class="label">Instructions</div>
+    <p>This is a cumulative test — every question can be answered from material in Lessons 1–5. Q1–Q9 are multiple choice. Q10–Q12 are fill-in-the-blank. Click an MCQ option to mark it; type into each blank and press Enter to check. Score tracks MCQs only (blanks are checked manually).</p>
+  </div>
+
+  <h2>Concept recap</h2>
+  <div class="recap">
+    <div class="recap-item"><div class="l">L1</div><div class="v">4 roles</div></div>
+    <div class="recap-item"><div class="l">L1</div><div class="v">AuthN ≠ AuthZ</div></div>
+    <div class="recap-item"><div class="l">L2</div><div class="v">Authz Code flow</div></div>
+    <div class="recap-item"><div class="l">L2</div><div class="v">state (CSRF)</div></div>
+    <div class="recap-item"><div class="l">L3</div><div class="v">JWT vs opaque</div></div>
+    <div class="recap-item"><div class="l">L3</div><div class="v">scope least-priv</div></div>
+    <div class="recap-item"><div class="l">L3</div><div class="v">refresh token</div></div>
+    <div class="recap-item"><div class="l">L4</div><div class="v">PKCE (S256)</div></div>
+    <div class="recap-item"><div class="l">L5</div><div class="v">client_credentials</div></div>
+    <div class="recap-item"><div class="l">L5</div><div class="v">implicit deprecated</div></div>
+    <div class="recap-item"><div class="l">L5</div><div class="v">protected resource metadata</div></div>
+    <div class="recap-item"><div class="l">L5</div><div class="v">confused deputy</div></div>
+  </div>
+
+  <hr>
+
+  <div id="scoreBox" class="score-box">
+    <div class="small">MCQ Score</div>
+    <div class="big">0 / 0</div>
+    <div class="small">Keep going through all 12 questions.</div>
+  </div>
+
+  <div class="quiz">
+    <h2>📚 Part A · Multiple choice (9 questions)</h2>
+
+    <div class="quiz-question">
+      <p><strong>Q1. (L1)</strong> In OAuth's four-role model, which role stores the protected data?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="The AS issues tokens; the user's data is held by the RS.">(a) Authorization server</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The Resource Server holds the protected data and accepts access tokens.">(b) Resource server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — the client is the requester, not the data holder.">(c) Client</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — the resource owner owns the data conceptually but does not host the API.">(d) Resource owner</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2. (L1)</strong> What defining trait separates a "public" OAuth client from a "confidential" one under OAuth 2.1?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Public clients can also be written in native code. That doesn't determine public vs confidential.">(a) It's a browser-based JavaScript application</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The OAuth 2.1 simplification: does the client have a way to keep credentials? If not, public. <sup>[R3]</sup>">(b) It cannot keep client credentials confidential</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — both client types use HTTPS in modern OAuth.">(c) It doesn't use TLS</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — public clients can support most flows, just not with secret-based authentication.">(d) It supports only the implicit grant</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3. (L2)</strong> Why does the authorization code flow return a short-lived <em>code</em> to the browser instead of returning the access token directly?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Codes are short-lived for security, not because of size.">(a) Authorization codes are lighter-weight than access tokens</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The code is opaque, single-use, ~30s. It keeps the access token off the browser path entirely. <sup>[R1]</sup>">(b) The token exchange happens server-to-server, so only the code ever crosses the browser</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Codes ARE encrypted in transit, but that's not the why.">(c) Codes are end-to-end encrypted; tokens are not</label>
+      <label class="quiz-option" data-correct="false" data-feedback="That's the workflow but not the *reason*. The reason is keeping tokens out of the browser.">(d) It makes implementing the state parameter simpler</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4. (L2)</strong> An MCP server returns 401 with <code>WWW-Authenticate: Bearer resource_metadata="…"</code>. What is the client's correct next step?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the metadata URL comes from the header, not from a hardcoded location.">(a) Hardcode a redirect to the authorization server's /login endpoint</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The client fetches the metadata URL from the header (RFC 9728), learns the AS location, then fetches AS metadata (RFC 8414) for /authorize and /token. <sup>[R8] [R9]</sup>">(b) Fetch the resource_metadata URL → AS metadata → begin authorization code flow</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — wrong direction. The AS doesn't know the MCP server's auth needs.">(c) Immediately POST credentials to the MCP server to authenticate</label>
+      <label class="quiz-option" data-correct="false" data-feedback="DCR is one of the registration options in MCP, but it's not the first step — discovery comes first.">(d) Send a client registration request to a default registration_endpoint URL</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q5. (L3)</strong> A leaked access token with scope <code>*</code> is far worse than a leaked token with scope <code>files:read</code>. Which OAuth guidance captures this?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="OAuth 2.1 doesn't relax scope rules — it tightens them.">(a) OAuth 2.1's "minimum scope by default" applies only to public clients</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. RFC 9700: access tokens must be restricted to the minimum scope necessary. Scope = blast radius. <sup>[R2]</sup>">(b) RFC 9700 requires access tokens be restricted to minimum scope necessary</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — opaque tokens don't change the scope question.">(c) Opaque tokens are inherently less dangerous than JWTs</label>
+      <label class="quiz-option" data-correct="false" data-feedback="JWT can be bearer only — DPoP is unrelated to scope here.">(d) JWTs are always scoped to a single resource</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q6. (L3)</strong> A refresh token for a public client is stolen. According to OAuth 2.1, the safest mitigation pattern is:</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Longer TTL makes the leak worse, not better.">(a) Increase refresh-token TTL so the client refreshes less often</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. OAuth 2.1 §'Refresh tokens for public clients must either be sender-constrained or one-time use'. Rotation catches a stolen token on first reuse. <sup>[R3]</sup>">(b) Sender-constrain or rotate the refresh token (one-time-use)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Rotation is the actual fix; this just describes how it works.">(c) Reissue the same refresh token without rotation</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — embedding in JS only worsens XSS risk.">(d) Embed it in a JavaScript bundle for safekeeping</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q7. (L4)</strong> A developer implements the auth code flow but skips PKCE because they think "we're a confidential server-side client, we don't need it." What's the correct response?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Historically true, but OAuth 2.1 raised the bar.">(a) Correct — PKCE is only needed for public clients without secrets</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. OAuth 2.1: PKCE is required for ALL clients using the authorization code flow. Stops both code injection and CSRF. <sup>[R3]</sup>">(b) OAuth 2.1 requires PKCE for all clients using the auth code flow, public or confidential</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Open redirectors are a separate vulnerability with its own mitigations.">(c) PKCE prevents open-redirector attacks</label>
+      <label class="quiz-option" data-correct="false" data-feedback="It defends against code injection and CSRF — but those aren't the only benefits. PKCE is required, period.">(d) PKCE only protects against CSRF, which is already covered by state</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q8. (L4)</strong> In the PKCE flow, which of these is <em>never</em> transmitted in the URL during the <code>/authorize</code> request?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — that's exactly what crosses the wire (with S256, hashed).">(a) The code_challenge</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The verifier stays on the client until token exchange. Only SHA-256(verifier) — the challenge — goes over the wire. <sup>[R4]</sup>">(b) The code_verifier</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — client_id is required in the authorize URL.">(c) The client_id</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong — code_challenge_method=S256 is in the URL.">(d) The code_challenge_method</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q9. (L5)</strong> A colleague writes a security review that lists "we use OAuth implicit grant" as a strength. What's the right feedback?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Wrong direction — implicit is deprecated BECAUSE of its insecurity.">(a) Good call — implicit is more secure because the token never reaches a server</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. RFC 9700 deprecates implicit; OAuth 2.1 drops it entirely. The modern replacement is authorization code + PKCE. <sup>[R2] [R3]</sup>">(b) Implicit grant is deprecated — it leaks tokens via URL fragments, browser history, and referer headers</label>
+      <label class="quiz-option" data-correct="false" data-feedback="TLS isn't the issue — the issue is the browser-side exposure of the token itself.">(c) Implicit is fine as long as you use TLS</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the opposite is true.">(d) Implicit provides better defense-in-depth than authorization code</label>
+    
+      <div class="quiz-feedback"></div></div>
+  </div>
+
+  <div class="quiz">
+    <h2>✍️ Part B · Fill in the blank (3 questions)</h2>
+
+    <div class="quiz-question">
+      <p><strong>Q10. (L1+L2)</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">OAuth is strictly about <input class="fillin" type="text" data-answer="authorization" data-feedback-ok="✓ Right. OAuth = authorization, not authentication." data-feedback-bad="OAuth handles permission, not identity. The word is 'authorization'." data-feedback-ref="<sup>[R1]</sup>">__</code> (granting permission to do something) — never identity, which is a separate concept.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q11. (L3+L4)</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">The two long-lived credentials in an OAuth system are the <input class="fillin" type="text" data-answer="refresh token" data-feedback-ok="✓ Right. Refresh tokens are long-lived (days–months) and used to mint access tokens." data-feedback-bad="The long-lived credential that mints new access tokens is the 'refresh token'." data-feedback-ref="<sup>[R1]</sup>">__</code> (used to mint new access tokens) and the <input class="fillin" type="text" data-answer="client secret" data-feedback-ok="✓ Right. The client secret is the long-lived credential authenticating the client." data-feedback-bad="The long-lived credential authenticating the client is the 'client secret'." data-feedback-ref="<sup>[R1]</sup>">__</code> (used to authenticate the client itself).</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q12. (L4+L5)</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">PKCE's recommended challenge method, <input class="fillin" type="text" data-answer="S256" data-feedback-ok="✓ Right. S256 — SHA-256 + Base64URL — is the only challenge method RFC 9700 recommends." data-feedback-bad="The cryptographic challenge method that never exposes the verifier is 'S256'." data-feedback-ref="<sup>[R2]</sup>">__, hashes the verifier with SHA-256 so the original secret never crosses the wire.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+  </div>
+
+  <button id="revealBtn" class="quiz-reveal" style="margin-top:0;">Reveal all answers</button>
+
+  <div class="footer" style="margin-top:1.5rem;">
+    <a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-5-flows-pitfalls.html">Re-read Lesson 5 →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+        updateScore();
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback');
+          var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+        updateScore();
+      });
+    }
+    function updateScore() {
+      // Only count MCQ (questions with .quiz-option[data-correct])
+      var mcqs = document.querySelectorAll('.quiz-question');
+      var answered = 0, correct = 0;
+      mcqs.forEach(function(q){
+        var sel = q.querySelector('.quiz-option.correct.wrong');
+        var onlyCorrect = q.querySelector('.quiz-option.correct:not(.wrong)');
+        var correctOpt = q.querySelector('.quiz-option[data-correct="true"]');
+        if (!correctOpt || q.querySelector('.fillin')) return; // skip fillin-only
+        if (sel) { answered++; if (sel.dataset.correct === 'true') correct++; }
+        else if (onlyCorrect && onlyCorrect.classList.contains('correct') && q.querySelectorAll('.quiz-option.wrong').length === 0) {
+          // user clicked the right one without clicking anything else; answered++; correct++;
+        }
+      });
+      var sb = document.getElementById('scoreBox');
+      if (sb && answered > 0) {
+        sb.classList.add('show');
+        sb.querySelector('.big').textContent = correct + ' / ' + answered;
+      }
+    }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question');
+      var fb = (q ? q.querySelector('.fillin-feedback') : null) || document.getElementById(input.dataset.feedback);
+      function check() {
+        var ans = (input.value || '').trim().toLowerCase().replace(/[_\-\s]/g, '');
+        var expected = (input.dataset.answer || '').toLowerCase().replace(/[_\-\s]/g, '');
+        if (!expected) return;
+        if (ans === expected) {
+          input.classList.remove('wrong'); input.classList.add('correct');
+          if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; }
+        } else {
+          input.classList.remove('correct'); input.classList.add('wrong');
+          if (fb) { fb.textContent = (input.dataset.feedbackBad || ('✗ Expected: ' + input.dataset.answer)) + (input.dataset.feedbackRef ? ' ' + input.dataset.feedbackRef : ''); fb.className = 'fillin-feedback wrong-fb'; }
+        }
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2 — The Authorization Code Flow</title>
+  <style>    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; color: var(--text); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; }
+    .scenario p { margin-bottom: 0.5rem; }
+    .scenario p:last-child { margin-bottom: 0; }
+    .scenario strong { color: var(--accent); }
+    .step-list { counter-reset: step; list-style: none; padding: 0; margin: 1rem 0; }
+    .step-list li { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem 0.9rem 3rem; margin: 0.6rem 0; counter-increment: step; position: relative; font-size: 0.92rem; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0.8rem; top: 0.85rem; background: var(--accent); color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+    .step-list li strong { color: var(--accent); }
+    .step-list li .who { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 0.4rem; }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.5rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 2 of 5 · OAuth 2.0 Series</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-1-why.html">← Lesson 1</a></p>
+  <h1>The Authorization Code Flow</h1>
+
+  <div class="scenario">
+    <p>Continuing the Google Calendar example. The todo app's backend can't just call <code>accounts.google.com/oauth/authorize</code> from its server — the user needs to type their password into <em>Google's</em> UI, not the todo app's. So we redirect the user's browser to Google.</p>
+    <p>The whole flow is a choreography of redirects: browser ↔ authorization server ↔ client backend ↔ resource server. By the end, the todo app has an access token and has never touched the user's password.</p>
+  </div>
+
+  <h2>The happy path — 6 steps</h2>
+
+  <p>Here's the full HTTP sequence as it would look for a confidential web client (todo app backend). <sup>[R1]</sup></p>
+
+  <ol class="step-list">
+    <li>
+      <span class="who">User</span> clicks <em>"Connect Google Calendar"</em> in the todo app. The todo app <strong>generates a random <code>state</code> value</strong> (for CSRF protection) and stores it in the user's session.
+    </li>
+    <li>
+      <span class="who">Browser</span> is redirected (HTTP 302) by the todo app to the authorization server's <code>/authorize</code> endpoint:
+<pre><code>GET https://accounts.google.com/o/oauth2/v2/auth
+    ?response_type=code
+    &client_id=todo-app-123
+    &redirect_uri=https://todo.example.com/callback
+    &scope=https://www.googleapis.com/auth/calendar.readonly
+    &state=xyz123
+    &code_challenge=BASE64URL(SHA256(verifier))   ← Lesson 4 adds this
+    &code_challenge_method=S256</code></pre>
+    </li>
+    <li>
+      <span class="who">User ↔ Google</span> authenticates (enters password / MFA) and sees the <strong>consent screen</strong>: <em>"todo app wants to read your calendar"</em>. User clicks <em>Allow</em>.
+    </li>
+    <li>
+      <span class="who">Browser</span> is redirected back to <code>redirect_uri</code> with a short-lived <strong>authorization code</strong>:
+<pre><code>GET https://todo.example.com/callback
+    ?code=4/0AVMBsJ...           ← ~30s, single-use
+    &state=xyz123                ← todo app verifies this matches</code></pre>
+    </li>
+    <li>
+      <span class="who">Todo app backend</span> exchanges the code for tokens at the token endpoint <strong>over a server-to-server HTTPS POST</strong> (never via the browser — the browser has the code, but the app has the client secret):
+<pre><code>POST https://oauth2.googleapis.com/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code=4/0AVMBsJ...
+&redirect_uri=https://todo.example.com/callback
+&client_id=todo-app-123
+&client_secret=GOCSPX-...     ← confidential client only
+&code_verifier=...             ← PKCE; Lesson 4</code></pre>
+    </li>
+    <li>
+      <span class="who">AS → Todo app</span> responds with:
+<pre><code>{
+  "access_token": "ya29.a0...",        ← ~1 hour
+  "refresh_token": "1//0eX...",        ← weeks–months
+  "expires_in": 3600,
+  "token_type": "Bearer",
+  "scope": "https://www.googleapis.com/auth/calendar.readonly"
+}</code></pre>
+    </li>
+  </ol>
+
+  <p>The todo app now calls the Google Calendar API with the access token:</p>
+<pre><code>GET https://www.googleapis.com/calendar/v3/calendars/primary/events
+Authorization: Bearer ya29.a0...</code></pre>
+
+  <div class="concept note">
+    <div class="label">Why a code, not the token directly?</div>
+    <p>The whole flow exists because <strong>the browser is the only place where the user's password can be entered</strong>, but the browser is also the leakiest part of the system. Two redirect legs sandwich an <em>opaque</em> single-use code between browser and client. The actual token crosses only over a TLS-protected server-to-server call — never the browser. <sup>[R1] [R2]</sup></p>
+    <p style="margin-top:.5rem;">RFC 9700 explicitly forbids returning access tokens in the URI fragment (the implicit grant) for exactly this reason. <sup>[R2]</sup></p>
+  </div>
+
+  <h2>Parameters you'll see in every authorize request</h2>
+
+  <div class="concept">
+    <div class="label">Required</div>
+    <p><code>response_type=code</code> · <code>client_id</code> · <code>redirect_uri</code> · <code>scope</code></p>
+  </div>
+
+  <div class="concept">
+    <div class="label">Strongly recommended</div>
+    <p><code>state</code> (CSRF token — RFC 9700 mandates CSRF protection on the client side; PKCE is one acceptable form <sup>[R2]</sup>)</p>
+    <p><code>code_challenge</code> + <code>code_challenge_method=S256</code> — PKCE (Lesson 4). Mandatory for public clients and recommended for all in OAuth 2.1. <sup>[R3]</sup></p>
+  </div>
+
+  <div class="concept">
+    <div class="label">Discovery — getting the endpoints</div>
+    <p>Most clients don't hardcode <code>https://accounts.google.com/o/oauth2/v2/auth</code>. They fetch <strong>Authorization Server Metadata</strong> from a known discovery URL: <sup>[R7]</sup></p>
+<pre><code>GET https://accounts.google.com/.well-known/oauth-authorization-server</code></pre>
+    <p>The response is a JSON document listing <code>authorization_endpoint</code>, <code>token_endpoint</code>, <code>code_challenge_methods_supported</code>, and so on. <em>This is exactly the mechanism MCP uses too.</em></p>
+  </div>
+
+  <h2>The MCP connection</h2>
+
+  <div class="concept mcp">
+    <div class="label">MCP · How this lesson maps</div>
+    <p>MCP's authorization spec describes exactly this flow as the <em>required</em> mechanism for HTTP-based MCP transports. <sup>[R9]</sup></p>
+    <ol style="margin: 0.6rem 0 0 1.2rem; font-size: 0.9rem;">
+      <li>MCP client discovers authorization server via the MCP server's 401 → <code>WWW-Authenticate: Bearer resource_metadata="…"</code> header.</li>
+      <li>MCP client fetches Protected Resource Metadata (RFC 9728), gets the AS URL.</li>
+      <li>MCP client fetches AS metadata (RFC 8414), learns the <code>/authorize</code> and <code>/token</code> endpoints.</li>
+      <li>MCP client runs the authorization code flow — with PKCE (Lesson 4) and the <code>resource</code> parameter (RFC 9728 §2) binding the token to the MCP server's URL.</li>
+      <li>MCP client uses the access token as <code>Authorization: Bearer …</code> on requests to the MCP server.</li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 1</h2>
+    <p><strong>OAuth</strong> · protocol for delegated authorization that lets a third-party app act on your behalf <em>without</em> your password.</p>
+    <p><strong>Authentication ≠ Authorization</strong> · OAuth is strictly about the latter (AuthZ = permission).</p>
+    <p><strong>Resource Owner</strong> · the human (you) — the only party that can grant access.</p>
+    <p><strong>Confidential vs Public client</strong> · Confidential = can hold a secret; public = cannot.</p>
+    <p><strong>Resource Server</strong> · the API that holds the protected data and accepts access tokens.</p>
+  </div>
+
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Q1–Q4 are multiple choice. Q5 is a fill-in-the-blank: type the missing term and press Enter.</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> In the authorization code flow, why does the browser receive a short-lived <em>code</em> rather than the access token directly?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Tokens are usually longer-lived than codes — the duration is unrelated to why codes are used.">a) Access tokens are too large to fit in a URL</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The token is returned only over a server-to-server POST, never across the browser. The code is a single-use, short-lived handoff value. <sup>[R1]</sup>">b) The browser is leak-prone; the code is an opaque, single-use handoff that the client exchanges server-side for the real token</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the code IS specifically designed so that downstream compromise can't yield the token.">c) Authorization codes are end-to-end encrypted</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> The authorization request includes <code>scope=calendar.readonly</code>. What does this parameter do?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — scopes are a list of permissions, not a single action. The 's' isn't a typo, it's plural.">a) It names the single OAuth scope the user must approve</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Scopes are space-delimited permissions. RFC 6749 §3.3. <sup>[R1]</sup>">b) It lists the permissions the client is requesting (space-delimited)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — that's authorization_endpoint discovery, not scope.">c) It tells the AS which discovery endpoint to use</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> What is the purpose of the <code>state</code> parameter?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="state has no role in PKCE — different mechanism.">a) It carries the PKCE verifier to the authorization server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="It's opaque to the server — both client and server must compare it to a client-stored value.">a) It identifies the server-side session directly visible to the authorization server</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. state is a CSRF token: randomized per request and validated by the client on the callback. <sup>[R1] [R2]</sup>">b) CSRF protection: a per-request random value the client verifies on the callback</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the state stays in the URL of the redirect, no separate channel.">c) Out-of-band notification of the request origin</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Why does the client perform the code → token exchange over a server-to-server POST instead of a browser-side fetch?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="TLS protects the wire, but doesn't help if the browser itself is hostile or compromised.">a) TLS only works between servers, not browsers</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The secret would be exposed in any browser-executed call. The server-to-server POST keeps the secret and the access token in confidential-client territory. <sup>[R1] [R3]</sup>">b) The client secret is too sensitive to expose to any browser-executed code, and the access token should not touch the browser either</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Tokens are usually valid for an hour, codes for ~30s — backwards.">c) Authorization codes expire in ~1 hour; tokens in ~30 seconds, so the exchange must be fast</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">The browser receives a single-use, short-lived value (the <input class="fillin" type="text" data-answer="authorization code" data-feedback-ok="✓ Right. The authorization code is the one-time handoff the client exchanges server-side for tokens." data-feedback-bad="The browser receives a one-time handoff value — the OAuth term is 'authorization code'." data-feedback-ref="<sup>[R1]</sup>">__) that the client then redeems at the token endpoint for the access token.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc6749">[R1] RFC 6749 — The OAuth 2.0 Authorization Framework</a> — Section 1.3 (grant types), Section 4.1 (authorization code grant), Section 4.1.3 (access token response)</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc9700">[R2] RFC 9700 — OAuth 2.0 Security Best Current Practice</a> — Section 2.1.1 (authorization code grant requirements), Section 2.1 (redirect URI exact matching)</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc8414">[R7] RFC 8414 — OAuth 2.0 Authorization Server Metadata</a> — the discovery document clients fetch</li>
+      <li><a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization">[R9] MCP Authorization Specification (2025-11-25)</a> — Section 7 "Authorization Flow Steps"</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-1-why.html">← Lesson 1</a> · <a href="index.html">Series index</a> · <a href="lesson-3-tokens.html">Lesson 3: Tokens, Scopes &amp; Refresh →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback');
+          var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+      });
+    }
+    // fill-in-blank: check on blur or Enter
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question');
+      var fb = (q ? q.querySelector('.fillin-feedback') : null) || document.getElementById(input.dataset.feedback);
+      function check() {
+        var ans = (input.value || '').trim().toLowerCase().replace(/[_-]/g, '');
+        var expected = (input.dataset.answer || '').toLowerCase().replace(/[_-]/g, '');
+        if (!expected) return;
+        if (ans === expected) {
+          input.classList.remove('wrong'); input.classList.add('correct');
+          if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; }
+        } else {
+          input.classList.remove('correct'); input.classList.add('wrong');
+          if (fb) { fb.textContent = (input.dataset.feedbackBad || ('✗ Expected: ' + input.dataset.answer)) + (input.dataset.feedbackRef ? ' ' + input.dataset.feedbackRef : ''); fb.className = 'fillin-feedback wrong-fb'; }
+        }
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+
+</body>
+</html>

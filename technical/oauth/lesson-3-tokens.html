@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3 — Tokens, Scopes &amp; Refresh</title>
+  <style>    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; color: var(--text); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; }
+    .scenario p { margin-bottom: 0.5rem; }
+    .scenario p:last-child { margin-bottom: 0; }
+    .scenario strong { color: var(--accent); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.5rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 3 of 5 · OAuth 2.0 Series</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-2-auth-code.html">← Lesson 2</a></p>
+  <h1>Tokens, Scopes &amp; Refresh</h1>
+
+  <div class="scenario">
+    <p>The todo app now has an access token from Lesson 2's flow. Three new questions arise:</p>
+    <p><strong>1.</strong> What's actually <em>in</em> that token? Can the todo app read its claims, or is it opaque?<br>
+       <strong>2.</strong> What is the token allowed to do? Can we narrow the blast radius if it leaks?<br>
+       <strong>3.</strong> It expires in an hour. Does the user have to re-consent every hour?</p>
+    <p>This lesson answers all three.</p>
+  </div>
+
+  <h2>What is an access token?</h2>
+
+  <div class="concept">
+    <div class="label">Definition</div>
+    <h3>An access token is a credential the client presents to the resource server</h3>
+    <p>It's just a string. The format is up to the AS — the only requirement is that the RS can validate it. There are two widely-used shapes:</p>
+  </div>
+
+  <div class="concept note">
+    <div class="label">Opaque token</div>
+    <p>A random string with no intrinsic meaning. The RS calls back to the AS (or checks a local cache) to introspect it. Google uses opaque tokens for many of its APIs.</p>
+<pre><code>Authorization: Bearer ya29.a0AfH6SMB...   ← random, no information inside</code></pre>
+  </div>
+
+  <div class="concept note">
+    <div class="label">JWT (JSON Web Token) · RFC 7519</div>
+    <p>Three Base64-URL segments separated by dots. The middle segment is a JSON claim set the RS can verify locally with a public key. Self-contained = no introspection round-trip.</p>
+<pre><code>eyJhbGciOiJSUzI1NiIs...        ← header (algorithm, key id)
+.eyJzdWIiOiJ1c2VyXzEyMyIs...  ← claims (sub, scope, exp, aud, ...)
+.dBjftJeZ4CVP-mB92K27uh...    ← signature</code></pre>
+    <p style="margin-top:.5rem;">Header decodes to:</p>
+<pre><code>{ "alg": "RS256", "kid": "abc123", "typ": "JWT" }</code></pre>
+    <p style="margin-top:.5rem;">Claims decodes to:</p>
+<pre><code>{
+  "iss": "https://auth.example.com",
+  "sub": "user_123",
+  "aud": "https://mcp.example.com",
+  "exp": 1735689600,
+  "iat": 1735686000,
+  "scope": "files:read files:write",
+  "client_id": "https://app.example.com/oauth/metadata.json"
+}</code></pre>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Choosing between them</div>
+    <p>JWTs look convenient (the RS doesn't need to call back), but they make revocation hard — the RS has no way to ask "is this token still valid?" without checking a denylist or accepting the JWT until <code>exp</code>. Opaque tokens are easier to revoke; just delete them server-side. <sup>[R2]</sup></p>
+    <p style="margin-top:.5rem;">RFC 9700 prefers introspection-based approaches for sensitive workloads. <sup>[R2]</sup></p>
+  </div>
+
+  <h2>Scopes: least privilege by default</h2>
+
+  <p>A <strong>scope</strong> is a string the AS understands as a permission. The client requests what it needs; the user consents to exactly that set; the AS records the granted set in the token's claims.</p>
+
+  <div class="concept">
+    <div class="label">Examples by domain</div>
+<pre><code>Google:    https://www.googleapis.com/auth/calendar.readonly
+GitHub:    repo  read:user  workflow
+Slack:     channels:read  chat:write  files:read
+MCP:       files:read  files:write  user:profile</code></pre>
+    <p style="margin-top:.5rem;">Scopes are space-delimited, opaque strings — each AS defines its own vocabulary. There is no central registry. <sup>[R1]</sup></p>
+  </div>
+
+  <div class="concept note">
+    <div class="label">RFC 9700: scope = the security boundary</div>
+    <p>"Access tokens <em>must</em> be restricted to the minimum scope necessary." If your client only reads, request only the read scope — not <code>*</code>, not a wildcard. Broad tokens that leak are catastrophic. <sup>[R2]</sup></p>
+  </div>
+
+  <h2>Refresh tokens</h2>
+
+  <div class="concept">
+    <div class="label">The problem with short-lived access tokens</div>
+    <h3>If access tokens live an hour and the user is active all day, something has to extend the session without re-prompting them every hour.</h3>
+    <p>That's the refresh token's job. It's a long-lived credential (days to months) that the client uses to mint new access tokens at the token endpoint — with no user interaction.</p>
+<pre><code>POST https://auth.example.com/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&refresh_token=1//0eX...
+&client_id=todo-app-123
+&client_secret=GOCSPX-...</code></pre>
+    <p>The AS returns a fresh access token (and optionally rotates the refresh token).</p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Refresh tokens are secrets</div>
+    <p>Treat refresh tokens <em>more carefully than access tokens</em>. An access token leak is bounded by <code>exp</code> (often &lt; 1h). A refresh token leak = unlimited new access tokens until revocation. <sup>[R2]</sup></p>
+    <p style="margin-top:.5rem;">OAuth 2.1 mandates: refresh tokens for <strong>public clients must</strong> be either sender-constrained or one-time-use (rotation). The leak surface is too large otherwise. <sup>[R3]</sup></p>
+  </div>
+
+  <div class="concept mcp">
+    <div class="label">MCP · Scope challenges &amp; step-up</div>
+    <p>MCP servers can ask for more scope mid-session. From the spec: <sup>[R9]</sup></p>
+<pre><code>HTTP/1.1 403 Forbidden
+WWW-Authenticate: Bearer error="insufficient_scope",
+                         scope="files:read files:write user:profile",
+                         resource_metadata="https://mcp.example.com/.well-known/oauth-protected-resource"</code></pre>
+    <p>If the MCP client tries a tool call that needs <code>files:write</code> but only has <code>files:read</code>, the RS rejects with 403 and lists the scopes it would have accepted. The client should then run <em>step-up authorization</em> — re-engage the user to consent to the additional scope.</p>
+  </div>
+
+  <h2>Revocation</h2>
+
+  <div class="concept">
+    <div class="label">RFC 7009</div>
+    <p>Some ASes expose a <code>/revoke</code> endpoint. Either the user revokes via the AS account dashboard, or the client signals "I'm done with this token." Revocation of an opaque token is cheap. Revocation of a JWT before its <code>exp</code> requires extra infrastructure (denylist or short-lived JWTs).</p>
+  </div>
+
+  <hr>
+
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 2</h2>
+    <p><strong>Authorization code flow</strong> · browser → /authorize → consent → browser gets code → client exchanges code at /token → access token returned server-side.</p>
+    <p><strong>Why a code (not the token) crosses the browser</strong> · the browser is the leakiest part of the system; the code is opaque, single-use, and expires in ~30 s.</p>
+    <p><strong>state parameter</strong> · CSRF token, random per request, validated by the client on callback.</p>
+    <p><strong>Discovery</strong> · OAuth clients fetch <code>/.well-known/oauth-authorization-server</code> to learn endpoints instead of hardcoding them.</p>
+    <p><strong>PKCE hint</strong> · <code>code_challenge</code> + <code>code_challenge_method=S256</code> on the /authorize URL (full mechanics next lesson).</p>
+  </div>
+
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Q1–Q3 are multiple choice. Q4 and Q5 are fill-in-the-blank.</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> Which statement best describes an <em>opaque</em> access token?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="That's a JWT — opaque means the opposite: no readable content.">a) A token whose claims can be decoded by anyone who receives it</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Opaque tokens carry no client-readable claims; the RS must call back to the AS (introspection) or look up locally to validate.">b) A token that is a random string with no intrinsic meaning; the RS must introspect it with the AS to learn what's inside</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Opaque is the opposite of self-contained — that's JWT's appeal.">c) A self-contained token that includes all the information the resource server needs, with no callback required</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> The user's MCP client requests <code>files:read</code> but the RS rejects a tool call with <code>HTTP 403</code> and <code>WWW-Authenticate: Bearer error="insufficient_scope", scope="files:read files:write"</code>. What's the correct next step?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the 403 is not a network error, it's an explicit scope challenge. The current token works fine for other scopes.">a) Retry the same call until the network recovers</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The 403 + scope challenge is exactly the pattern MCP authorizes: re-engage the user with a new consent screen for the missing scope. <sup>[R9]</sup>">b) Run step-up authorization: ask the user to grant the additional scope <code>files:write</code> before retrying</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — that abandons all the work of authorization for a far worse user experience and security posture.">c) Throw away the access token and start the full reauthorization flow again</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> RFC 9700's stance on scopes is: <em>"Access tokens must be restricted to the minimum scope necessary."</em> Which real-world consequence follows?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — broad scopes are the opposite of least privilege.">a) Convenience for the developer: request every scope you'll ever need, up front</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Scopes are the blast radius of a leaked token. Granting the minimum limits damage. <sup>[R2]</sup>">b) If the client only reads, request only the read scope; a leaked token then can't write or delete</label>
+      <label class="quiz-option" data-correct="false" data-feedback="RFC 9700 doesn't require a single-scope token at a time — it's about minimum necessary.">c) Every scope must be requested in a separate access token</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">A <input class="fillin" type="text" data-answer="refresh token" data-feedback-ok="✓ Right. Refresh tokens are long-lived credentials used to mint new access tokens without user interaction." data-feedback-bad="OAuth's term for long-lived tokens that mint fresh access tokens is 'refresh token'." data-feedback-ref="<sup>[R1]</sup>">__ is a long-lived credential used to mint new access tokens without re-prompting the user.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">In OAuth, a <input class="fillin" type="text" data-answer="scope" data-feedback-ok="✓ Right. A scope is a permission unit — the AS records granted scopes in the token's claims." data-feedback-bad="The OAuth term for one unit of granted permission is 'scope'." data-feedback-ref="<sup>[R1]</sup>">__ is a permission unit (space-delimited in the authorize request) that defines what a token is allowed to do.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc6749">[R1] RFC 6749 — The OAuth 2.0 Authorization Framework</a> — Section 3.3 (Access Token Scope), Section 6 (Refresh Token)</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc9700">[R2] RFC 9700 — OAuth 2.0 Security Best Current Practice</a> — Section 2.2 (Token Replay), Section 2.6 (Resource Owner Password Credentials)</li>
+      <li><a href="https://oauth.net/2.1/">[R3] OAuth 2.1</a> — Section "Refresh tokens for public clients must either be sender-constrained or one-time use"</li>
+      <li><a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization">[R9] MCP Authorization Specification (2025-11-25)</a> — Section 6 "Scope Selection Strategy", Section 10 "Error Handling / Scope Challenge Handling"</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-2-auth-code.html">← Lesson 2</a> · <a href="index.html">Series index</a> · <a href="lesson-4-pkce.html">Lesson 4: PKCE &amp; Public Clients →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback');
+          var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+      });
+    }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question');
+      var fb = (q ? q.querySelector('.fillin-feedback') : null) || document.getElementById(input.dataset.feedback);
+      function check() {
+        var ans = (input.value || '').trim().toLowerCase().replace(/[_\-\s]/g, '');
+        var expected = (input.dataset.answer || '').toLowerCase().replace(/[_\-\s]/g, '');
+        if (!expected) return;
+        if (ans === expected) {
+          input.classList.remove('wrong'); input.classList.add('correct');
+          if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; }
+        } else {
+          input.classList.remove('correct'); input.classList.add('wrong');
+          if (fb) { fb.textContent = (input.dataset.feedbackBad || ('✗ Expected: ' + input.dataset.answer)) + (input.dataset.feedbackRef ? ' ' + input.dataset.feedbackRef : ''); fb.className = 'fillin-feedback wrong-fb'; }
+        }
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+
+</body>
+</html>

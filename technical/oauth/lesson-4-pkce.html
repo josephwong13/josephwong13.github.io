@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4 — PKCE &amp; Public Clients</title>
+  <style>    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; color: var(--text); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; }
+    .scenario p { margin-bottom: 0.5rem; }
+    .scenario p:last-child { margin-bottom: 0; }
+    .scenario strong { color: var(--accent); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.5rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 4 of 5 · OAuth 2.0 Series</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-3-tokens.html">← Lesson 3</a></p>
+  <h1>PKCE &amp; Public Clients</h1>
+
+  <div class="scenario">
+    <p>Lessons 1–3 assumed a <em>confidential</em> client with a server-side backend. The client posts its secret at the token endpoint, and that proves the redemption request is from the same client that received the code.</p>
+    <p>But a browser SPA cannot keep a secret — anyone can View Source. A mobile app's "secret" is in a binary anyone can decompile. What protects <em>them</em>?</p>
+    <p>That is the entire point of <strong>PKCE</strong> (Proof Key for Code Exchange, RFC 7636): prove the redemption request is from the same client, <em>without</em> using a shared secret. <sup>[R4]</sup></p>
+  </div>
+
+  <h2>The attack PKCE prevents</h2>
+
+  <div class="concept warning">
+    <div class="label">Authorization code interception</div>
+    <h3>The classic SPA / mobile attack</h3>
+    <p>Imagine a SPA running on <code>https://todo.example.com/app</code> that initiates the authorization code flow. The AS redirects back to that redirect URI with <code>?code=...</code>.</p>
+    <p>A malicious browser extension, a custom URL scheme hijacker (mobile), or simply a confused URL handler on a shared device can read the code from the URL bar — or grab it from browser history. Without PKCE, the attacker can then redeem the code at the token endpoint, because the client's "secret" (in a SPA, none) provides no barrier.</p>
+    <p style="margin-top:.5rem;">PKCE binds the code to the client that started the flow — even if the attacker steals the code, they cannot redeem it.</p>
+  </div>
+
+  <h2>How PKCE works</h2>
+
+  <p>The client creates a random secret, sends a derivative of it in the authorize request, and proves knowledge of the original secret when redeeming the code. <sup>[R4]</sup></p>
+
+  <ol class="step-list" style="counter-reset: step; list-style: none; padding: 0; margin: 1rem 0;">
+    <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem 0.9rem 3rem; margin: 0.6rem 0; counter-increment: step; position: relative; font-size: 0.92rem;">
+      <strong style="color: var(--accent);">Client generates a verifier</strong>
+<pre><code>code_verifier = BASE64URL( random 32 bytes )
+                // e.g. "dBjftJeZ4CVP-mB92K27uhxUJ0C1LprW..."</code></pre>
+    </li>
+    <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem 0.9rem 3rem; margin: 0.6rem 0; counter-increment: step; position: relative; font-size: 0.92rem;">
+      <strong style="color: var(--accent);">Client derives a challenge</strong>
+<pre><code>code_challenge = BASE64URL( SHA256(code_verifier) )
+                 // e.g. "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"</code></pre>
+    </li>
+    <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem 0.9rem 3rem; margin: 0.6rem 0; counter-increment: step; position: relative; font-size: 0.92rem;">
+      <strong style="color: var(--accent);">Send challenge in authorize request</strong>
+<pre><code>GET https://accounts.google.com/o/oauth2/v2/auth
+    ?response_type=code
+    &client_id=todo-spa
+    &redirect_uri=https://todo.example.com/callback
+    &scope=calendar.readonly
+    &state=xyz123
+    &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+    &code_challenge_method=S256</code></pre>
+      The AS stores the challenge alongside the issued code.
+    </li>
+    <li style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem 0.9rem 3rem; margin: 0.6rem 0; counter-increment: step; position: relative; font-size: 0.92rem;">
+      <strong style="color: var(--accent);">Redeem code WITH the original verifier</strong>
+<pre><code>POST https://oauth2.googleapis.com/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code=4/0AVMBsJ...
+&redirect_uri=https://todo.example.com/callback
+&client_id=todo-spa
+&code_verifier=dBjftJeZ4CVP-mB92K27uhxUJ0C1LprW...</code></pre>
+      The AS recomputes SHA-256(verifier) and checks it matches the stored challenge. Only the original client has the verifier. The attacker's stolen code = useless.
+    </li>
+  </ol>
+
+  <h2>S256 vs plain</h2>
+
+  <div class="concept">
+    <div class="label">two <code>code_challenge_method</code> values</div>
+    <p><code>plain</code> — challenge = verifier (transmitted in the URL). <em>If the attacker can read the authorize URL, they have the verifier.</em> Useless for the threat model.</p>
+    <p style="margin-top:.5rem;"><code>S256</code> — challenge = SHA-256(verifier). The verifier never crosses the network. RFC 9700 says S256 is the <em>only</em> acceptable method. <sup>[R2]</sup></p>
+  </div>
+
+  <div class="concept note">
+    <div class="label">OAuth 2.1 makes PKCE required</div>
+    <p>"<em>PKCE is required for all OAuth clients using the authorization code flow.</em>" Even confidential clients. The protection is cheap, has no downside, and stops both code-injection attacks and (as a bonus) authorization-code-replay CSRF. <sup>[R3]</sup></p>
+    <p style="margin-top:.5rem;">If your client supports the authorization code flow and is NOT using PKCE, your implementation is out of date.</p>
+  </div>
+
+  <h2>Other public-client requirements</h2>
+
+  <div class="concept">
+    <div class="label">Beyond PKCE</div>
+    <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.9rem;">
+      <li><strong>Loopback redirect URIs</strong> — mobile apps should claim <code>http://127.0.0.1:PORT/callback</code> (or private-use URI schemes), not fake <code>https://</code> URLs they don't own (RFC 8252). <sup>[R5]</sup></li>
+      <li><strong>Refresh token rotation</strong> — public clients must use sender-constrained or one-time-use refresh tokens (OAuth 2.1). <sup>[R3]</sup></li>
+      <li><strong>No client secret</strong> — never invent a "secret" embedded in a SPA bundle. It's not a secret.</li>
+    </ul>
+  </div>
+
+  <h2>The MCP connection</h2>
+
+  <div class="concept mcp">
+    <div class="label">MCP · PKCE is non-negotiable</div>
+    <p>MCP clients are typically public clients (Claude Desktop is a desktop app, IDE plugins are desktop apps, web-based MCP UIs are SPAs). RFC 9700 mandates PKCE for public clients. Therefore <strong>every MCP flow uses PKCE</strong>. <sup>[R2] [R9] [R11]</sup></p>
+    <p style="margin-top:.5rem;">Concretely, every MCP authorization request includes:</p>
+<pre><code>&code_challenge=BASE64URL(SHA256(verifier))
+&code_challenge_method=S256</code></pre>
+    <p style="margin-top:.5rem;">And the token request includes the matching <code>code_verifier</code>. As Aembit notes, PKCE was originally written for mobile; MCP extends it as the universal public-client protection. <sup>[R11]</sup></p>
+  </div>
+
+  <hr>
+
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 3</h2>
+    <p><strong>Access token</strong> · credential presented at the RS. Opaque (RS introspects via AS) or self-contained (JWT, RS validates locally).</p>
+    <p><strong>Refresh token</strong> · long-lived credential used to mint new access tokens without re-prompting the user. Treat it as a high-value secret.</p>
+    <p><strong>Scope</strong> · space-delimited permission unit; RFC 9700 mandates minimum-necessary scopes. Blast radius of a leaked token = its scopes.</p>
+    <p><strong>Step-up authorization</strong> · a 403 with <code>error="insufficient_scope"</code> + new <code>scope=</code> in <code>WWW-Authenticate</code> asks the client to obtain additional consent.</p>
+    <p><strong>Revocation</strong> · opaque tokens can be killed server-side instantly; JWTs need denylists or short TTLs.</p>
+  </div>
+
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Q1–Q3 are multiple choice. Q4 and Q5 are fill-in-the-blank.</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> What attack does PKCE specifically prevent?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Phishing is countered by other layers (passkeys, webauthn); PKCE is about *code interception*, not phishing.">a) Phishing of the user's password at the AS login screen</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. PKCE prevents an attacker who steals the authorization code from redeeming it, by binding the code to the client that started the flow. <sup>[R4]</sup>">b) An attacker intercepting the authorization code (e.g., via URL bar history or a malicious app) from redeeming it for a token</label>
+      <label class="quiz-option" data-correct="false" data-feedback="CSRF is countered by state/nonce — not PKCE specifically.">c) Cross-site request forgery on the OAuth callback</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> Which <code>code_challenge_method</code> is the only one RFC 9700 recommends?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="No — 'plain' transmits the verifier in the URL, defeating the whole point.">a) plain</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. S256 never exposes the verifier on the wire; only the SHA-256 hash is in the authorize URL. <sup>[R2]</sup>">b) S256</label>
+      <label class="quiz-option" data-correct="false" data-feedback="There is no MD5 option in RFC 7636; only 'plain' and 'S256' exist.">c) MD5</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> Per OAuth 2.1, which clients must use PKCE?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Public clients *do* need PKCE — but so do confidential clients in OAuth 2.1.">a) Only public clients (SPAs, mobile apps)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Confidential clients in OAuth 2.0 sometimes skipped PKCE. OAuth 2.1 raises the bar to 'all clients'.">b) Only confidential clients with server-side backends</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. 'PKCE is required for all OAuth clients using the authorization code flow.' <sup>[R3]</sup>">c) All clients using the authorization code flow — public and confidential alike</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">The client computes <code>code_challenge = BASE64URL( SHA256( _verifier_ ) )</code>, sends the challenge in the authorize request, and reveals the <input class="fillin" type="text" data-answer="code verifier" data-feedback-ok="✓ Right. The verifier is the original random secret; SHA-256 of it is what crosses the wire." data-feedback-bad="The original random secret the client generates and keeps until token-exchange is the 'code verifier'." data-feedback-ref="<sup>[R4]</sup>">__</code> at token-exchange time.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank.</p>
+      <p style="margin-top:.5rem;">The default-and-only-recommended challenge method is <input class="fillin" type="text" data-answer="S256" data-feedback-ok="✓ Right. S256 is the cryptographic challenge method; 'plain' is no longer acceptable per RFC 9700." data-feedback-bad="The challenge method that hashes the verifier with SHA-256 is 'S256'." data-feedback-ref="<sup>[R2]</sup>">__.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc7636">[R4] RFC 7636 — Proof Key for Code Exchange (PKCE)</a> — Section 4 (protocol), Section 4.2 (S256 example)</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc9700">[R2] RFC 9700 — OAuth 2.0 Security Best Current Practice</a> — Section 2.1.1 (PKCE requirements), Section 2.1.1 ("clients SHOULD use PKCE code challenge methods that do not expose the PKCE verifier")</li>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc8252">[R5] RFC 8252 — OAuth 2.0 for Native Apps</a> — loopback redirect URIs, custom URL schemes</li>
+      <li><a href="https://oauth.net/2.1/">[R3] OAuth 2.1</a> — Section "PKCE is required for all OAuth clients using the authorization code flow"</li>
+      <li><a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization">[R9] MCP Authorization Specification (2025-11-25)</a> — Section 11 "Security Considerations — Authorization Code Protection"</li>
+      <li><a href="https://aembit.io/blog/mcp-oauth-2-1-pkce-and-the-future-of-ai-authorization/">[R11] Aembit — MCP, OAuth 2.1, PKCE, and the Future of AI Authorization</a></li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-3-tokens.html">← Lesson 3</a> · <a href="index.html">Series index</a> · <a href="lesson-5-flows-pitfalls.html">Lesson 5: Other Flows &amp; Pitfalls →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback');
+          var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+      });
+    }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question');
+      var fb = (q ? q.querySelector('.fillin-feedback') : null) || document.getElementById(input.dataset.feedback);
+      function check() {
+        var ans = (input.value || '').trim().toLowerCase().replace(/[_\-\s]/g, '');
+        var expected = (input.dataset.answer || '').toLowerCase().replace(/[_\-\s]/g, '');
+        if (!expected) return;
+        if (ans === expected) {
+          input.classList.remove('wrong'); input.classList.add('correct');
+          if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; }
+        } else {
+          input.classList.remove('correct'); input.classList.add('wrong');
+          if (fb) { fb.textContent = (input.dataset.feedbackBad || ('✗ Expected: ' + input.dataset.answer)) + (input.dataset.feedbackRef ? ' ' + input.dataset.feedbackRef : ''); fb.className = 'fillin-feedback wrong-fb'; }
+        }
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+
+</body>
+</html>

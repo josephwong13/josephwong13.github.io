@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — Why OAuth Exists</title>
+  <style>
+    :root {
+      --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+      --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+      --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --measure: 40rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; color: var(--text); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; }
+    .scenario p { margin-bottom: 0.5rem; }
+    .scenario p:last-child { margin-bottom: 0; }
+    .scenario strong { color: var(--accent); }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 1 of 5 · OAuth 2.0 Series</p>
+  <p class="back-link"><a href="index.html">← Back to OAuth 2.0 series</a></p>
+  <h1>Why OAuth Exists</h1>
+
+  <div class="scenario">
+    <p><strong>The problem.</strong> You click <em>"Sign in with Google"</em> on a todo app. The todo app needs to read your calendar. But you don't want to give the todo app your Google password — that would let it do <em>anything</em> with your Google account, forever.</p>
+    <p>You want the todo app to act on your behalf, but only within a narrow window: read calendar for the next hour, nothing else. And you want to be able to revoke that access without changing your Google password.</p>
+    <p>That's what OAuth solves. It's a protocol for <strong>delegated authorization</strong> — letting a third-party app act on your behalf without handing over your password.</p>
+  </div>
+
+  <h2>The core distinction: authentication ≠ authorization</h2>
+
+  <div class="concept">
+    <div class="label">Authentication (AuthN)</div>
+    <h3>"Who are you?"</h3>
+    <p>Proving identity. Logging in with a username + password, or a magic link, is authentication. The answer is always a single bit of data: an identity assertion.</p>
+  </div>
+
+  <div class="concept">
+    <div class="label">Authorization (AuthZ)</div>
+    <h3>"What are you allowed to do?"</h3>
+    <p>Granting permission to perform specific actions on specific resources. OAuth is exclusively about authorization — it never tells you <em>who</em> the user is, only what they have consented to let some client do.</p>
+  </div>
+
+  <div class="concept note">
+    <div class="label">Why this matters</div>
+    <p>You can layer identity on top of OAuth (OpenID Connect does this — Lesson 5 touches on it). But raw OAuth 2.0 only handles authorization. Confusing the two is the source of most OAuth design mistakes. <sup>[R1]</sup></p>
+  </div>
+
+  <h2>The four roles in OAuth</h2>
+
+  <p>RFC 6749 (the original OAuth 2.0 spec) defines four cooperating roles. Every OAuth flow involves all of them, even if some are co-located. <sup>[R1]</sup></p>
+
+  <div class="concept">
+    <div class="label">Role 1 · Resource Owner</div>
+    <h3>The user — you</h3>
+    <p>The person (or system) that owns the data sitting behind the resource server. <em>You</em>, in the Google Calendar example. The resource owner is the only one who can grant access.</p>
+  </div>
+
+  <div class="concept">
+    <div class="label">Role 2 · Client</div>
+    <h3>The app that wants access</h3>
+    <p>The third-party application requesting permission to act on the resource owner's behalf. <em>The todo app</em>. Clients are split into two types:</p>
+    <ul style="margin: 0.4rem 0 0 1.2rem; font-size: 0.9rem;">
+      <li><strong>Confidential client</strong> — can keep a secret (server-side backend, native app with secure storage)</li>
+      <li><strong>Public client</strong> — cannot keep a secret (browser SPA, mobile app where anyone can decompile the binary). OAuth 2.1 simplifies this to "has client credentials or doesn't". <sup>[R3]</sup></li>
+    </ul>
+  </div>
+
+  <div class="concept">
+    <div class="label">Role 3 · Authorization Server (AS)</div>
+    <h3>The trusted middleman</h3>
+    <p>Issues tokens after the user consents. <em>Google's auth server</em> in the example. Hosts the <code>/authorize</code> and <code>/token</code> endpoints, and the consent screen.</p>
+  </div>
+
+  <div class="concept">
+    <div class="label">Role 4 · Resource Server (RS)</div>
+    <h3>The API holding the data</h3>
+    <p>Accepts access tokens and returns protected data. <em>Google Calendar API</em>. The RS and AS are often run by the same vendor but are logically separate — and MCP keeps them strictly separate. <sup>[R9]</sup></p>
+  </div>
+
+  <h2>The big idea: delegation, not impersonation</h2>
+
+  <div class="scenario">
+    <p><strong>The todo app never sees your Google password.</strong> Google shows you a consent screen listing the exact scopes requested (e.g., <em>"Read your calendar"</em>). You click <em>Allow</em>. Google gives the todo app a short-lived token that means <em>"this user said yes to read-calendar until 3pm"</em>.</p>
+    <p>The token is not your password. It's a limited, revocable, scoped permission slip.</p>
+  </div>
+
+  <div class="concept warning">
+    <div class="label">Common failure mode</div>
+    <p>Don't let the client log in <em>as</em> the user. Let it act <em>on behalf of</em> the user. The difference looks pedantic until you realize: with the password, the client can change the password, delete the account, and do everything the user can. With an OAuth token, it can only do what the granted scopes allow, until the token expires.</p>
+  </div>
+
+  <h2>The MCP connection</h2>
+
+  <div class="concept mcp">
+    <div class="label">MCP · How this lesson maps</div>
+    <p>The MCP authorization spec (2025-11-25) explicitly casts MCP clients, MCP servers, and authorization servers into these four roles: <sup>[R9]</sup></p>
+    <ul style="margin: 0.4rem 0 0 1.2rem; font-size: 0.9rem;">
+      <li><strong>MCP server</strong> = OAuth 2.1 resource server (accepts bearer tokens)</li>
+      <li><strong>MCP client</strong> = OAuth 2.1 client (Claude Desktop, an IDE plugin, etc.)</li>
+      <li><strong>Authorization server</strong> = third-party AS (Auth0, Keycloak, GitHub, etc.) — MCP explicitly allows the AS to live separately from the MCP server <sup>[R9]</sup></li>
+      <li><strong>Resource owner</strong> = the human who owns the data the MCP server protects</li>
+    </ul>
+    <p style="margin-top: 0.6rem;">So when you connect an MCP client to a restricted MCP server, you're walking through exactly the same OAuth flow as <em>"Sign in with Google"</em> — just with a machine-readable scope instead of a human one.</p>
+  </div>
+
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Click an answer — green = correct, red = wrong. References: <sup>[R1]</sup> RFC 6749, <sup>[R3]</sup> OAuth 2.1.</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> A user clicks <em>"Sign in with GitHub"</em> on a CI dashboard. What does OAuth give the dashboard?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Not quite — OAuth never gives the client the user's password. That's the whole point of delegation.">a) The user's GitHub password, so the dashboard can authenticate as the user</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The token is a limited, revocable permission slip — not credentials. <sup>[R1]</sup>">b) An access token with scoped permissions to act on the user's behalf</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — that's a session cookie, not an OAuth artifact. OAuth uses tokens issued by an authorization server.">c) A signed session cookie that the user's browser sends back</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> Which role is responsible for actually storing the protected data (e.g., your Google Calendar events)?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="The authorization server issues tokens and handles consent. It doesn't hold the calendar data.">a) Authorization Server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="The client is the *requesting* app — it's asking for data, not holding it.">b) Client</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The resource server hosts the protected API. <sup>[R1]</sup>">c) Resource Server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="The resource owner *owns* the data but doesn't host the API.">d) Resource Owner</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> What's the difference between authentication and authorization?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Not quite — they handle different questions.">a) They're synonyms; both answer "who are you?"</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. AuthN = identity proof. AuthZ = permission. OAuth is exclusively about AuthZ. <sup>[R1]</sup>">b) Authentication proves identity ("who are you"); authorization grants permission ("what may you do")</label>
+      <label class="quiz-option" data-correct="false" data-feedback="The direction is reversed — authorization is the narrower, more scoped concept.">c) Authorization is a superset of authentication</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> An MCP server hosts protected tools. Which role does it play?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The MCP spec explicitly maps MCP server → OAuth 2.1 resource server. <sup>[R9]</sup>">a) Resource Server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the AS is a separate component that issues tokens.">b) Authorization Server</label>
+      <label class="quiz-option" data-correct="false" data-feedback="No — the *MCP client* (e.g., Claude Desktop) is the OAuth client.">c) Client</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> According to OAuth 2.1, what defines a "public client"?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="Not exactly. Native apps are often public clients too because their binary can be decompiled.">a) Any client written in JavaScript that runs in a browser</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. OAuth 2.1 simplifies the public/confidential split to *can the client keep a secret?* If not, it's public. <sup>[R3]</sup>">b) A client that cannot keep its client credentials confidential (e.g., browser SPA, mobile app)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="Public clients aren't exclusive to OAuth — almost all OAuth clients use HTTPS.">c) A client that doesn't use TLS</label>
+    
+      <div class="quiz-feedback"></div></div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://datatracker.ietf.org/doc/html/rfc6749">[R1] RFC 6749 — The OAuth 2.0 Authorization Framework</a> — Section 1.1 (Roles), Section 1.3 (Authorization Grant)</li>
+      <li><a href="https://oauth.net/2.1/">[R3] OAuth 2.1 (oauth.net)</a> — Major differences from OAuth 2.0; the simplified public/confidential definition</li>
+      <li><a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization">[R9] MCP Authorization Specification (2025-11-25)</a> — Section 2 "Roles"; how MCP maps to OAuth 2.1</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← Back to OAuth 2.0 series</a> · <a href="lesson-2-auth-code.html">Lesson 2: The Authorization Code Flow →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    document.getElementById('revealBtn').addEventListener('click', function(){
+      document.querySelectorAll('.quiz-question').forEach(function(q){
+        q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+        var fb = q.querySelector('.quiz-feedback');
+        var co = q.querySelector('.quiz-option[data-correct="true"]');
+        if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+      });
+    });
+  </script>
+</body>
+</html>
