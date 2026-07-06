@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2 — The Thought Cabinet</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.story { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box { margin: 1.2rem 0 0; padding: 0.9rem 1rem; background: var(--card-bg); border: 1px solid var(--green); border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
+.score-box .summary-line { font-family: var(--mono); font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; word-break: break-word; }
+.score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
+.score-box .copy-btn:hover { background: #d4ead9; }
+.score-box .copy-btn.copied { background: var(--green); color: white; }
+.score-box .wrong-line{font-family:var(--mono);font-size:.88rem;color:#7a1a1a;margin-bottom:.6rem;word-break:break-word;display:none}
+.score-box .wrong-line.show{display:block}
+.score-box .wrong-line .label{color:#7a1a1a;font-weight:600}
+.score-box .wrong-line.none{color:var(--muted)}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .story { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 2 of 5 · Series: Disco Elysium</p>
+<p class="back-link"><a href="index.html">← Back to Disco Elysium</a></p>
+
+<h1>The Thought Cabinet</h1>
+
+<div class="story">
+  <p>In Harry du Bois's head, the doors are open. All of them.</p>
+
+  <p>Electrochemistry whispers sweet poison in his ear. Rhetoric crafts elegant justifications for every failure. Inland Empire speaks in riddles about a world of hidden meaning. A <span class="highlight">dissonant</span> chorus of voices — each one him, each one a stranger — argues over every move before he makes it.</p>
+
+  <p>He has become deeply <span class="highlight">introspective</span>, but not by choice. Every conversation is a therapy session. Every doorway is a puzzle. He reaches for a bottle and must negotiate with himself: Volition says no, Electrochemistry says yes, Logic calculates the odds of being caught. The inner parliament never adjourns.</p>
+
+  <p>At his core, a single skill holds him upright: <span class="highlight">volition</span> — the power of conscious will, the thing that says <em>I choose</em> even when everything inside him screams <em>I can't</em>. It is the last line between the man he could be and the man he was.</p>
+
+  <p>Kim Kitsuragi, his partner, watches the detective talk to himself. "You need to <span class="highlight">pull yourself together</span>, Harry," he says, his voice flat and kind. And the voices do not stop — but the question they <span class="highlight">call into question</span> is the deepest one: whether a shattered man can will himself whole again.</p>
+</div>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">dissonant <button class="speak-btn" onclick="speak('dissonant', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈdɪs.ə.nənt/ · DIS-ə-nənt · <em>adjective</em> · 不和諧的，衝突的，刺耳的</div>
+  <div class="definition">Lacking harmony or agreement; marked by conflicting sounds, ideas, or feelings that clash against each other.</div>
+  <div class="example">↳ From the story: A <span class="highlight">dissonant</span> chorus of voices — each one him, each one a stranger — argued over every move.</div>
+  <div class="more-examples">
+    <table><tr><td>🎵 Music:</td><td>The composer used <em>dissonant</em> chords to create a feeling of unease that resolved only in the final movement.</td></tr>
+    <tr><td>💼 Work:</td><td>There was a <em>dissonant</em> clash between the design team's vision and the engineering team's timeline.</td></tr>
+    <tr><td>💬 Debate:</td><td>The panel's opinions were sharply <em>dissonant</em> — each expert contradicted the last without acknowledging the others.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">introspective <button class="speak-btn" onclick="speak('introspective', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˌɪn.trəˈspek.tɪv/ · in-trə-SPEK-tiv · <em>adjective</em> · 內省的，自省的</div>
+  <div class="definition">Inclined to examine one's own thoughts, feelings, and mental processes; given to looking inward rather than outward.</div>
+  <div class="example">↳ From the story: He had become deeply <span class="highlight">introspective</span>, but not by choice — every conversation was a therapy session.</div>
+  <div class="more-examples">
+    <table><tr><td>📝 Writing:</td><td>Her <em>introspective</em> memoir spent three hundred pages unpacking a single childhood summer.</td></tr>
+    <tr><td>💼 Work:</td><td>After the project failure, the team became unusually <em>introspective</em>, examining every decision that led to the collapse.</td></tr>
+    <tr><td>🎭 Career:</td><td>Actors often become <em>introspective</em> as they dig into a character's psychology, finding pieces of themselves they didn't know existed.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">volition <button class="speak-btn" onclick="speak('volition', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/vəˈlɪʃ.ən/ · və-LISH-ən · <em>noun</em> · 意志力，自主意志</div>
+  <div class="definition">The power of conscious choice and decision; the act of willing or choosing to do something through one's own deliberate agency.</div>
+  <div class="example">↳ From the story: A single skill held him upright: <span class="highlight">volition</span> — the power of conscious will that says <em>I choose</em>.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>She stayed at the company of her own <em>volition</em> — no one pressured her, no golden handcuffs; she simply believed in the mission.</td></tr>
+    <tr><td>🎓 Learning:</td><td>Learning a language requires sustained <em>volition</em> — the conscious choice to practise even when motivation fades.</td></tr>
+    <tr><td>⚖️ Law:</td><td>The contract was signed under duress, so the court ruled it was not an act of free <em>volition</em>.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">pull yourself together <button class="speak-btn" onclick="speak('pull yourself together', event)" title="Listen">🔊</button></div>
+  <div class="definition">To regain control over your emotions and behaviour after a period of distress, panic, or collapse; to compose yourself.<br>· 振作起來，冷靜下來</div>
+  <div class="example">↳ From the story: "You need to <span class="highlight">pull yourself together</span>, Harry," Kim said, his voice flat and kind.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>After the presentation disaster, his manager told him to <em>pull himself together</em> — there was a second pitch in an hour and no time to spiral.</td></tr>
+    <tr><td>❤️ Personal:</td><td>She sat on the bathroom floor for ten minutes, took three deep breaths, and told herself to <em>pull herself together</em> before facing her family.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">call into question <button class="speak-btn" onclick="speak('call into question', event)" title="Listen">🔊</button></div>
+  <div class="definition">To raise doubts about the validity, truth, or reliability of something; to make people question whether something is true or acceptable.<br>· 質疑，對...提出懷疑</div>
+  <div class="example">↳ From the story: The deepest question the voices <span class="highlight">call into question</span> is whether a shattered man can will himself whole again.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The whistleblower's report <em>calls into question</em> the integrity of the entire quality assurance process.</td></tr>
+    <tr><td>🔬 Science:</td><td>The new study <em>calls into question</em> decades of accepted wisdom about how memory is stored in the brain.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<h2>🔄 Review from Lesson 1</h2>
+
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+<p style="margin-bottom:0.5rem;"><strong>Quick recall — do you remember these from Lesson 1?</strong></p>
+
+<p><strong>disheveled</strong> · 蓬頭垢面的 <em>— "He was utterly disheveled — three days of stubble, one shoe missing."</em></p>
+<p><strong>delirious</strong> · 神志不清的 <em>— "He was delirious, half-convinced the body in the garden was connected to his fractured memories."</em></p>
+<p><strong>dissolute</strong> · 放蕩的 <em>— "He had lived a dissolute life — a decade of bad decisions fossilised into muscle memory."</em></p>
+<p><strong>at a loss</strong> · 不知所措 <em>— "He was at a loss for words, memories, the basic architecture of who he was."</em></p>
+<p><strong>wrestle with</strong> · 與之搏鬥 <em>— "He must wrestle with the fragments and piece together a self from the debris."</em></p>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 2. Q4–Q5 review Lesson 1. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question" data-correct-answer="dissonant"><p><strong>Q1 (Lesson 2).</strong> <em>The composer used deliberately _____ chords to create tension, resolving them only in the final movement.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'introspective' means inward-examining, not musically clashing.">a) introspective</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dissonant' means lacking harmony or agreement — especially in music, clashing sounds.">b) dissonant</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' (from L1) means morally self-indulgent, not clashing.">c) dissolute</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="introspective"><p><strong>Q2 (Lesson 2).</strong> <em>After the argument, he became quiet and _____ — replaying everything he had said and wondering where it went wrong.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissonant' describes clashing, not inward reflection.">a) dissonant</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Introspective' means inclined to examine one's own thoughts and feelings.">b) introspective</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'delirious' (from L1) means confused or hallucinating, not reflective.">c) delirious</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="volition"><p><strong>Q3 (Lesson 2).</strong> <em>She quit her job of her own _____ — no one pushed her, no one begged her; she simply decided it was time.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Volition' means the power of conscious choice and deliberate decision.">a) volition</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'pull yourself together' is about regaining composure, not making a choice.">b) pulling herself together</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'call into question' means to raise doubts, not exercise will.">c) calling into question</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="pull yourself together"><p><strong>Q4 (Lesson 2).</strong> <em>He sat in the stairwell, hands shaking, trying to _____ before walking back into the meeting.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'call into question' means to raise doubts about something, not compose yourself.">a) call himself into question</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Pull yourself together' means to regain control of your emotions and composure.">b) pull himself together</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'wrestle with' (from L1) means to struggle with a problem, not compose oneself.">c) wrestle with himself</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="call into question"><p><strong>Q5 (Lesson 2).</strong> <em>The leaked documents _____ the government's official account of what happened that night.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'call into question' means to raise doubts, and 'pull yourself together' is about composure.">a) pull into question</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Call into question' means to raise doubts about the reliability or truth of something.">b) call into question</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'at a loss' (from L1) describes uncertainty, not active doubting.">c) are at a loss</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">disco elysium lesson 2 completed: correct answer - (0) incorrect answer (0)</div>
+    <div class="wrong-line" id="wrongLine"><span class="label">Wrong answer to review later:</span> <span id="wrongList"></span></div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Disco Elysium</a></div>
+
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+(function(){
+  var SERIES='disco elysium';
+  var LESSON_N=2;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    var total=document.querySelectorAll('.quiz-question').length;
+    var wrongItems=[];
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong'){wrong++;wrongItems.push(q.dataset.correctAnswer)}
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+    var wl=document.getElementById('wrongLine');
+    var list=document.getElementById('wrongList');
+    if(wrong>0){wl.classList.add('show');wl.classList.remove('none');list.textContent=wrongItems.join(', ')}else if(total>0&&correct+wrong===total){wl.classList.add('show');wl.classList.add('none');list.textContent='none'}else{wl.classList.remove('show');wl.classList.remove('none')}
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var btn=document.getElementById('copyBtn');
+    var wl=document.getElementById('wrongLine');
+    var text=document.getElementById('summaryLine').textContent;
+    if(wl.classList.contains('show')){text+='\n'+wl.textContent}
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
+</script>
+</body>
+</html>

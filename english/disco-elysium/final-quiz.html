@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>🏁 Final Quiz — Disco Elysium</title>
+<style>
+:root{--text:#1a1a1a;--muted:#6b6b6b;--accent:#8b3a3a;--accent-light:#f5e6e6;--border:#d4d4d4;--bg:#fafaf8;--card-bg:#fff;--green:#2d6a4f;--green-light:#e8f5e9;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--measure:38rem}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);padding:1.5rem 1rem;max-width:var(--measure);margin:0 auto;-webkit-font-smoothing:antialiased}
+h1{font-size:1.5rem;font-weight:700;margin:1.5rem 0 0.3rem;line-height:1.2}
+h2{font-size:1.1rem;font-weight:600;margin:1.5rem 0 0.6rem;color:var(--accent)}p{margin:0 0 0.8rem}
+.quiz-meta{font-size:.75rem;color:var(--muted);margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.quiz-intro{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0 1.5rem;font-size:.9rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.quiz-intro .word-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem 1rem;font-size:.85rem;margin-top:.5rem}
+.quiz-intro .word-grid span{padding:.1rem 0}
+.quiz-intro .word-grid .l{color:var(--accent);font-weight:600}
+.quiz-intro .word-grid .p{color:var(--green);font-weight:600}
+.quiz-intro .label{font-size:.72rem;color:var(--muted);margin-top:.5rem}
+hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.quiz{margin:0}.quiz-question{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.1rem;margin:1rem 0}
+.quiz-question p{margin-bottom:.4rem;font-size:.92rem}
+.quiz-option{display:flex;align-items:center;padding:.65rem .8rem;margin:.35rem 0;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .12s;user-select:none;-webkit-tap-highlight-color:transparent;min-height:44px}
+.quiz-option:hover{background:#f0f0ee;border-color:#bbb}
+.quiz-option.correct{background:var(--green-light);border-color:var(--green);font-weight:600}
+.quiz-option.wrong{background:#fde8e8;border-color:#9b2226}
+.quiz-feedback{margin-top:.5rem;padding:.5rem .7rem;border-radius:6px;font-size:.82rem;line-height:1.5;display:none}
+.quiz-feedback.show{display:block}.quiz-feedback.correct-fb{background:var(--green-light);border-left:3px solid var(--green);color:#1a4a2e}
+.quiz-feedback.wrong-fb{background:#fde8e8;border-left:3px solid #9b2226;color:#7a1a1a}
+.quiz-reveal{margin:1rem 0;padding:.7rem 1.2rem;background:var(--accent-light);border:1px solid var(--accent);border-radius:8px;font-size:.88rem;cursor:pointer;font-family:var(--sans);font-weight:600;color:var(--accent);transition:background .15s;width:100%;min-height:44px;-webkit-tap-highlight-color:transparent}
+.quiz-reveal:hover{background:#e8d0d0}
+.score-box{background:var(--card-bg);border:2px solid var(--accent);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;text-align:center;display:none}
+.score-box.show{display:block}.score-box .score-num{font-size:2rem;font-weight:700;color:var(--accent)}
+.score-box .score-label{font-size:.85rem;color:var(--muted);margin-top:.2rem}
+.footer{margin-top:2rem;font-size:.8rem;color:var(--muted);text-align:center}.footer a{color:var(--accent);text-decoration:none}
+@media(max-width:480px){body{padding:1rem .75rem;font-size:16px}h1{font-size:1.3rem}.quiz-intro .word-grid{grid-template-columns:1fr}.quiz-question{padding:.8rem .9rem}.quiz-question p{font-size:.88rem}.quiz-option{font-size:.85rem;padding:.6rem .7rem;min-height:44px}}
+</style></head><body>
+<p class="quiz-meta">🏁 Cumulative Quiz · Disco Elysium</p>
+<h1>Final Quiz</h1>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem;">12 questions covering all 15 words + 10 phrases from Lessons 1–5.</p>
+
+<div class="quiz-intro">
+<strong>📚 Refresh your memory:</strong>
+<div class="word-grid">
+<span><span class="l">disheveled</span> · <span class="l">delirious</span> · <span class="l">dissolute</span></span><span><span class="p">at a loss</span> · <span class="p">wrestle with</span></span>
+<span><span class="l">dissonant</span> · <span class="l">introspective</span> · <span class="l">volition</span></span><span><span class="p">pull yourself together</span> · <span class="p">call into question</span></span>
+<span><span class="l">ephemeral</span> · <span class="l">amorphous</span> · <span class="l">imperceptible</span></span><span><span class="p">blur the line</span> · <span class="p">hang in the balance</span></span>
+<span><span class="l">incendiary</span> · <span class="l">vindictive</span> · <span class="l">unyielding</span></span><span><span class="p">bear the brunt of</span> · <span class="p">draw a line in the sand</span></span>
+<span><span class="l">catharsis</span> · <span class="l">atone</span> · <span class="l">sovereign</span></span><span><span class="p">come to terms with</span> · <span class="p">exorcise one's demons</span></span>
+</div>
+<div class="label">🔴 Words · 🟢 Phrases</div></div>
+<hr>
+
+<div class="quiz" id="quiz">
+<div class="quiz-question"><p><strong>Q1.</strong> <em>He stumbled into the office looking _____ — wrinkled shirt, untucked tie, hair pointing in three directions.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'delirious' (L1) means confused, not dishevelled in appearance.">a) delirious</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Disheveled' means untidy and ruffled in appearance, especially from neglect.">b) disheveled</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' (L1) describes a morally self-indulgent lifestyle, not appearance.">c) dissolute</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q2.</strong> <em>The composer used _____ chords to unsettle the audience — a deliberate clash that made everyone shift in their seats.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'amorphous' (L3) means shapeless, not clashing.">a) amorphous</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dissonant' means lacking harmony or agreement — especially musically clashing.">b) dissonant</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ephemeral' (L3) means short-lived, not clashing.">c) ephemeral</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q3.</strong> <em>The consultant's plan was too _____ — full of buzzwords but lacking any concrete structure, budget, or timeline.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'imperceptible' (L3) means undetectable, not shapeless.">a) imperceptible</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Amorphous' means having no definite shape or clear structure — vague.">b) amorphous</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'unyielding' (L4) means refusing to compromise, not shapeless.">c) unyielding</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q4.</strong> <em>The politician's _____ speech — calling for direct action against the government — led to two days of unrest.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'vindictive' (L4) means revenge-seeking, not provocative.">a) vindictive</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Incendiary' means designed to stir up conflict or strong emotion.">b) incendiary</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' (L1) means self-indulgent, not provocative.">c) dissolute</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q5.</strong> <em>She made the decision of her own _____ — no one pressured her, no one convinced her; it was her choice alone.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'sovereign' (L5) means autonomous, but 'volition' is the noun for the act of choosing.">a) sovereign will</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Volition' means the power of conscious choice and deliberate decision.">b) volition</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'catharsis' (L5) means emotional release, not the power to choose.">c) catharsis</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q6.</strong> <em>When the scandal broke, junior staff _____ the blame even though the decisions were made by executives.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'draw a line in the sand' (L4) means to set a boundary, not endure the worst.">a) drew a line in the sand for</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Bear the brunt of' means to endure the worst impact of something.">b) bore the brunt of</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'call into question' (L2) means to raise doubts, not to take the worst impact.">c) called into question</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q7.</strong> <em>The village had to _____ the fact that the river would never return to its old course — the earthquake had changed everything.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'bear the brunt of' (L4) means endure the worst, not accept something difficult.">a) bear the brunt of</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Come to terms with' means to gradually accept and emotionally process a painful reality.">b) come to terms with</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'wrestle with' (L1) means to struggle, not to accept.">c) wrestle with</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q8.</strong> <em>After years of regret, he decided to _____ by volunteering at the shelter he had once vandalised.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'exorcise his demons' (L5) means confronting inner psychological struggles, not making amends.">a) exorcise his demons</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Atone' means to make amends or reparation for a wrongdoing.">b) atone</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'catharsis' (L5) is emotional release, not the act of making amends.">c) achieve catharsis</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q9.</strong> <em>The CEO was _____ in his refusal to cut safety spending — no shareholder pressure, no profit target would change his mind.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'sovereign' (L5) means autonomous, not firm in a principle.">a) sovereign</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'introspective' (L2) means reflective, not resolute.">b) introspective</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Unyielding' means firm and not giving way to pressure or persuasion.">c) unyielding</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q10.</strong> <em>The change was so gradual as to be _____ — no single day felt different, but after a year, everything had shifted.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'ephemeral' (L3) means short-lived, not subtle.">a) ephemeral</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'amorphous' (L3) means shapeless, not undetectable.">b) amorphous</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Imperceptible' means so slight or gradual that it cannot be detected by the senses.">c) imperceptible</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q11.</strong> <em>He needed to _____ — take a deep breath, stop spiralling, and walk back into that room like he belonged there.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'exorcise his demons' (L5) is about confronting deep trauma, not composure.">a) exorcise his demons</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'wrestle with it' (L1) means to struggle over time, not to compose yourself in the moment.">b) wrestle with it</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Pull yourself together' means to regain control of your emotions and compose yourself.">c) pull himself together</label>
+<div class="quiz-feedback"></div></div>
+
+<div class="quiz-question"><p><strong>Q12.</strong> <em>The court ruling _____ decades of legal precedent — suddenly, what everyone thought was settled law was open again.</em></p>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'blurred the line' (L3) means to make categories unclear, not to challenge validity.">a) blurred the line of</label>
+<label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Call into question' means to raise doubts about the validity or truth of something.">b) called into question</label>
+<label class="quiz-option" data-correct="false" data-feedback="Not quite — 'draw a line in the sand' (L4) means to set a boundary, not to challenge.">c) drew a line in the sand</label>
+<div class="quiz-feedback"></div></div>
+
+<button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+</div>
+
+<div class="score-box" id="scoreBox">
+<div class="score-num" id="scoreNum">0/12</div>
+<div class="score-label" id="scoreLabel"></div></div>
+
+<div class="footer"><a href="index.html">← Back to Disco Elysium</a></div>
+
+<script>
+let answered={},score=0,total=12;
+document.querySelectorAll('.quiz-option').forEach(function(el){el.addEventListener('click',function(){var p=this.closest('.quiz-question'),qi=Array.from(p.parentElement.querySelectorAll('.quiz-question')).indexOf(p);if(answered[qi])return;answered[qi]=true;p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});if(this.dataset.correct==='true'){this.classList.add('correct');score++}else{this.classList.add('wrong');p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct')}var fb=p.querySelector('.quiz-feedback');if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')};if(Object.keys(answered).length===total)showScore()})});
+document.getElementById('revealBtn').addEventListener('click',function(){document.querySelectorAll('.quiz-question').forEach(function(q,i){if(answered[i])return;answered[i]=true;q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}});showScore()});
+function showScore(){var b=document.getElementById('scoreBox');document.getElementById('scoreNum').textContent=score+'/'+total;var pct=Math.round(score/total*100),l='';if(pct===100)l='🏆 Perfect! You have mastered all 25 expressions!';else if(pct>=80)l='🌟 Excellent! Review the ones you missed and you\'ll be all set.';else if(pct>=60)l='👍 Good job! Some words need more practice.';else l='💪 Keep studying! Try reviewing the lessons and retake the quiz.';document.getElementById('scoreLabel').textContent=l;b.classList.add('show')}
+</script>
+</body></html>

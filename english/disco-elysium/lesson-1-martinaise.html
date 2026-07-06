@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — Martinaise</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.story { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.story p { margin-bottom: 0.5rem; }
+.story p:last-child { margin-bottom: 0; }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box { margin: 1.2rem 0 0; padding: 0.9rem 1rem; background: var(--card-bg); border: 1px solid var(--green); border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
+.score-box .summary-line { font-family: var(--mono); font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; word-break: break-word; }
+.score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
+.score-box .copy-btn:hover { background: #d4ead9; }
+.score-box .copy-btn.copied { background: var(--green); color: white; }
+.score-box .wrong-line{font-family:var(--mono);font-size:.88rem;color:#7a1a1a;margin-bottom:.6rem;word-break:break-word;display:none}
+.score-box .wrong-line.show{display:block}
+.score-box .wrong-line .label{color:#7a1a1a;font-weight:600}
+.score-box .wrong-line.none{color:var(--muted)}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .story { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 1 of 5 · Series: Disco Elysium</p>
+<p class="back-link"><a href="index.html">← Back to Disco Elysium</a></p>
+
+<h1>Martinaise</h1>
+
+<div class="story">
+  <p>A man wakes up on a trashed hostel floor in a fishing village called Martinaise. He has no memory. His shirt is torn. His breath could strip paint.</p>
+
+  <p>He is utterly <span class="highlight">disheveled</span> — three days of stubble, one shoe missing, a necktie that looks like it survived a war. The room around him mirrors his state: bottles everywhere, a broken lamp, the lingering scent of something spilled and regretted.</p>
+
+  <p>The thoughts come in fragments — a woman's face, a statuette from Kishaasi, the clatter of a ceiling fan — but nothing connects. He is <span class="highlight">delirious</span>, half-convinced the body in the garden behind the hostel is somehow related to the storm of images in his skull. His own name is a mystery.</p>
+
+  <p>He has lived a <span class="highlight">dissolute</span> life — that much is clear from the wreckage around him. A decade, maybe two, of bad decisions fossilised into muscle memory. The kind of life that leaves you waking up in places you don't recognise, next to people whose names you never learned.</p>
+
+  <p>He is <span class="highlight">at a loss</span> — for words, for memories, for the basic architecture of who he is. But somewhere beneath the hangover, a detective's instinct stirs. He must <span class="highlight">wrestle with</span> the fragments, piece together a self from the debris, and find out who — if anyone — is worth becoming.</p>
+</div>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">disheveled <button class="speak-btn" onclick="speak('disheveled', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/dɪˈʃɛv.əld/ · di-SHEV-əld · <em>adjective</em> · 蓬頭垢面的，衣冠不整的</div>
+  <div class="definition">Untidy, disordered, and ruffled in appearance — typically describing hair or clothing that has been neglected or roughed up.</div>
+  <div class="example">↳ From the story: He was utterly <span class="highlight">disheveled</span> — three days of stubble, one shoe missing, a necktie that looked like it survived a war.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>After the all-nighter, the entire team looked <em>disheveled</em> — wrinkled shirts, coffee-stained notes, and eyes half-closed.</td></tr>
+    <tr><td>🌧️ Weather:</td><td>She arrived at the meeting <em>disheveled</em>, soaked from the sudden downpour and clutching a dripping umbrella.</td></tr>
+    <tr><td>🔍 Investigation:</td><td>The detective's <em>disheveled</em> appearance made witnesses underestimate him — until he asked the one question no one expected.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">delirious <button class="speak-btn" onclick="speak('delirious', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/dɪˈlɪr.i.əs/ · di-LEER-ee-əs · <em>adjective</em> · 神志不清的，胡言亂語的</div>
+  <div class="definition">In a state of confused and disoriented mental agitation, often caused by fever, intoxication, or trauma; marked by incoherent thoughts and hallucinations.</div>
+  <div class="example">↳ From the story: He was <span class="highlight">delirious</span>, half-convinced the body in the garden was connected to the storm of images in his skull.</div>
+  <div class="more-examples">
+    <table><tr><td>💊 Health:</td><td>The patient was <em>delirious</em> with fever, muttering about people who weren't in the room and reaching for phantoms.</td></tr>
+    <tr><td>🎭 Career:</td><td>After three days without sleep, the actor became <em>delirious</em> on stage — reciting lines from the wrong play before stumbling off.</td></tr>
+    <tr><td>❤️ Emotion:</td><td>He was <em>delirious</em> with joy when he heard the news, laughing and crying at the same time.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">dissolute <button class="speak-btn" onclick="speak('dissolute', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈdɪs.ə.luːt/ · DIS-ə-loot · <em>adjective</em> · 放蕩的，墮落的</div>
+  <div class="definition">Given to immoral or self-indulgent behaviour; lacking moral restraint in the pursuit of pleasure, especially alcohol, drugs, or casual relationships.</div>
+  <div class="example">↳ From the story: He had lived a <span class="highlight">dissolute</span> life — a decade of bad decisions fossilised into muscle memory.</div>
+  <div class="more-examples">
+    <table><tr><td>🎭 History:</td><td>The poet lived a <em>dissolute</em> life in 1920s Paris — gambling, absinthe, and affairs — before dying penniless at thirty-eight.</td></tr>
+    <tr><td>📰 News:</td><td>The heir's <em>dissolute</em> lifestyle made headlines: yachts, scandals, and a different companion every week.</td></tr>
+    <tr><td>💼 Work:</td><td>After years of <em>dissolute</em> spending, the company's coffers were empty and bankruptcy was inevitable.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">at a loss <button class="speak-btn" onclick="speak('at a loss', event)" title="Listen">🔊</button></div>
+  <div class="definition">To be uncertain, confused, or unable to understand or decide what to do; without a clear path forward.<br>· 不知所措，困惑</div>
+  <div class="example">↳ From the story: He was <span class="highlight">at a loss</span> — for words, for memories, for the basic architecture of who he was.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>When the investor pulled out last minute, the startup founder was <em>at a loss</em> for how to save the deal.</td></tr>
+    <tr><td>🎓 Education:</td><td>The student was <em>at a loss</em> during the exam — she had studied the wrong chapter and none of the questions looked familiar.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">wrestle with <button class="speak-btn" onclick="speak('wrestle with', event)" title="Listen">🔊</button></div>
+  <div class="definition">To struggle or contend with something difficult — a problem, a decision, a memory, or a feeling — often over an extended period.<br>· 與...搏鬥，努力解決</div>
+  <div class="example">↳ From the story: He must <span class="highlight">wrestle with</span> the fragments and piece together a self from the debris.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The engineering team <em>wrestled with</em> the scalability problem for months before finding a workable solution.</td></tr>
+    <tr><td>❤️ Personal:</td><td>She <em>wrestled with</em> the decision to leave her hometown, knowing it meant leaving her aging parents behind.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Five questions covering every word and phrase from this lesson. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question" data-correct-answer="disheveled"><p><strong>Q1.</strong> <em>After sleeping in his clothes on a park bench, he was so _____ that strangers offered him spare change.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'delirious' describes mental confusion, not dishevelled appearance.">a) delirious</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Disheveled' means untidy and ruffled in appearance, especially from neglect.">b) disheveled</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' describes a morally self-indulgent lifestyle, not appearance.">c) dissolute</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="delirious"><p><strong>Q2.</strong> <em>The hiker was found _____ after three days without water — he kept talking about a library in the middle of the desert.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'disheveled' describes messy appearance, not mental confusion.">a) disheveled</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Delirious' means in a confused, agitated, hallucinatory state.">b) delirious</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' describes self-indulgent immorality, not confusion.">c) dissolute</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="dissolute"><p><strong>Q3.</strong> <em>His _____ years in the city had left him with nothing — no savings, no dignity, and a string of broken relationships.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Dissolute' means given to immoral, self-indulgent behaviour.">a) dissolute</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'delirious' describes a temporary state of confusion, not a lifestyle.">b) delirious</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'disheveled' describes untidy appearance, not moral character.">c) disheveled</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="at a loss"><p><strong>Q4.</strong> <em>When the interviewer asked about his greatest weakness, he was _____ for words — he hadn't prepared for that question at all.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'wrestle with' means to struggle over time, not to be momentarily uncertain.">a) wrestling with</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'At a loss' means uncertain, confused, or unable to find an answer in the moment.">b) at a loss</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'dissolute' describes a lifestyle, not a state of confusion.">c) dissolute</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="wrestle with"><p><strong>Q5.</strong> <em>For years, the historian had to _____ the question of whether the documents were authentic or forged.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'at a loss' is about being momentarily uncertain, not sustained struggle.">a) be at a loss about</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Wrestle with' means to struggle or contend persistently with a difficult problem.">b) wrestle with</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'delirious' is a state of confusion, not a process of struggle.">c) be delirious about</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">disco elysium lesson 1 completed: correct answer - (0) incorrect answer (0)</div>
+    <div class="wrong-line" id="wrongLine"><span class="label">Wrong answer to review later:</span> <span id="wrongList"></span></div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Disco Elysium</a></div>
+
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+(function(){
+  var SERIES='disco elysium';
+  var LESSON_N=1;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    var total=document.querySelectorAll('.quiz-question').length;
+    var wrongItems=[];
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong'){wrong++;wrongItems.push(q.dataset.correctAnswer)}
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+    var wl=document.getElementById('wrongLine');
+    var list=document.getElementById('wrongList');
+    if(wrong>0){wl.classList.add('show');wl.classList.remove('none');list.textContent=wrongItems.join(', ')}else if(total>0&&correct+wrong===total){wl.classList.add('show');wl.classList.add('none');list.textContent='none'}else{wl.classList.remove('show');wl.classList.remove('none')}
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var btn=document.getElementById('copyBtn');
+    var wl=document.getElementById('wrongLine');
+    var text=document.getElementById('summaryLine').textContent;
+    if(wl.classList.contains('show')){text+='\n'+wl.textContent}
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
+</script>
+</body>
+</html>
