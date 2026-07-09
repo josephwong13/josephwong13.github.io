@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Wong Mun Hin — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:       #17699E;
+    --blue-dark:  #0f5070;
+    --beige:      #F5F0EB;
+    --beige-mid:  #EDE8E3;
+    --white:      #FFFFFF;
+    --black:      #1a1a1a;
+    --grey:       #555;
+    --grey-light: #888;
+  }
+
+  body {
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+    background: #fff;
+    color: var(--black);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── Page wrapper A4 ─────────────────────────────────────────────────────── */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Top & Bottom blue bars ─────────────────────────────────────────────── */
+  .top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 11mm;
+    background: var(--blue);
+    z-index: 2;
+  }
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 18mm;
+    background: var(--blue);
+    z-index: 2;
+  }
+
+  /* ── Body: two columns ─────────────────────────────────────────────────── */
+  .body {
+    display: flex;
+    flex: 1;
+    padding-top: 11mm;
+  }
+
+  /* ── LEFT COLUMN ─────────────────────────────────────────────────────────── */
+  .left {
+    width: 78mm;
+    background: var(--beige);
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 18mm 0;
+    position: relative;
+    /* The beige photo zone sits in the upper-left of the left column */
+  }
+
+  /* Photo zone — top portion of left column, full-width beige block */
+  .photo-zone {
+    width: 100%;
+    height: 58mm;
+    background: var(--beige);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .photo-circle {
+    width: 44mm;
+    height: 44mm;
+    border-radius: 50%;
+    background: var(--beige-mid);
+    border: 3px solid var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-initials {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--blue);
+    letter-spacing: 1px;
+  }
+
+  /* Left column content below photo */
+  .left-content {
+    padding: 6mm 6mm 0 7mm;
+    display: flex;
+    flex-direction: column;
+    gap: 5mm;
+  }
+
+  /* ── Section header (left col) ─── */
+  .lc-section {
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+    margin-bottom: 1.5mm;
+  }
+
+  .lc-section-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 8.5px;
+    letter-spacing: 2.5px;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+
+  .lc-blue-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--blue);
+    flex-shrink: 0;
+    position: relative;
+    top: 0;
+  }
+
+  /* Contact */
+  .contact-block { display: flex; flex-direction: column; gap: 1.5mm; }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2mm;
+    font-size: 11px;
+    color: var(--grey);
+    line-height: 1.4;
+  }
+
+  .contact-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Education */
+  .edu-item { margin-bottom: 3.5mm; }
+  .edu-item:last-child { margin-bottom: 0; }
+
+  .edu-degree {
+    font-weight: 700;
+    font-size: 11.5px;
+    color: var(--black);
+    line-height: 1.3;
+  }
+
+  .edu-school {
+    font-size: 11px;
+    color: var(--grey);
+    margin-top: 0.5mm;
+  }
+
+  .edu-major {
+    font-size: 10.5px;
+    color: var(--grey-light);
+    margin-top: 0.5mm;
+  }
+
+  /* Skills */
+  .skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+  }
+
+  .skill-item {
+    font-size: 10.5px;
+    color: var(--grey);
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+    line-height: 1.3;
+  }
+
+  .skill-bullet {
+    width: 5px;
+    height: 5px;
+    background: var(--blue);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  /* Certs */
+  .cert-item { margin-bottom: 3mm; }
+  .cert-item:last-child { margin-bottom: 0; }
+
+  .cert-name {
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--black);
+    line-height: 1.3;
+  }
+
+  .cert-org {
+    font-size: 10px;
+    color: var(--grey-light);
+    margin-top: 0.5mm;
+  }
+
+  /* ── RIGHT COLUMN ─────────────────────────────────────────────────────────── */
+  .right {
+    flex: 1;
+    padding: 8mm 8mm 8mm 7mm;
+    display: flex;
+    flex-direction: column;
+    gap: 5mm;
+  }
+
+  /* Header area */
+  .right-header {
+    padding-top: 2mm;
+  }
+
+  .full-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--black);
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+  }
+
+  .job-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.5px;
+    margin-top: 1.5mm;
+  }
+
+  /* About / Experience section blocks */
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5mm;
+  }
+
+  /* Section header row with beige block */
+  .rc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+    background: var(--beige);
+    padding: 1.5mm 2.5mm 1.5mm 2mm;
+    border-left: none;
+    position: relative;
+  }
+
+  .rc-section-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+
+  .rc-blue-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* About text */
+  .about-text {
+    font-size: 11.5px;
+    color: var(--grey);
+    line-height: 1.6;
+    padding: 0 1mm;
+  }
+
+  /* Job entries */
+  .job-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5mm;
+    padding: 0 1mm;
+  }
+
+  .job-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    flex-wrap: wrap;
+  }
+
+  .job-name {
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--black);
+  }
+
+  .job-company {
+    font-size: 11px;
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  .job-dates {
+    font-size: 10.5px;
+    color: var(--grey-light);
+    white-space: nowrap;
+  }
+
+  .job-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 1mm;
+    margin-top: 1mm;
+    padding-left: 1mm;
+  }
+
+  .job-bullet {
+    font-size: 10.5px;
+    color: var(--grey);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5mm;
+  }
+
+  .job-bullet::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--blue);
+    border-radius: 1px;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .job-highlight {
+    font-size: 10.5px;
+    color: var(--grey);
+    line-height: 1.5;
+    padding-left: 1mm;
+    font-style: italic;
+  }
+
+  /* Placeholder */
+  .placeholder {
+    font-size: 10.5px;
+    color: #aaa;
+    font-style: italic;
+    padding-left: 1mm;
+  }
+
+  /* Spacer row */
+  .section-gap { height: 4mm; }
+
+  /* Divider line in right column */
+  .divider {
+    height: 0.5px;
+    background: #ddd;
+    margin: 1mm 1mm;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; }
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TOP BLUE BAR -->
+  <div class="top-bar"></div>
+
+  <div class="body">
+
+    <!-- ═══ LEFT COLUMN ═══════════════════════════════════════════════════ -->
+    <div class="left">
+
+      <!-- Photo zone -->
+      <div class="photo-zone">
+        <div class="photo-circle">
+          <!-- Replace src with actual photo URL or keep initials as placeholder -->
+          <img src="photo.jpg" alt="Joseph Wong"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="photo-initials" style="display:none">JW</div>
+        </div>
+      </div>
+
+      <!-- Left column content -->
+      <div class="left-content">
+
+        <!-- CONTACT -->
+        <div>
+          <div class="lc-section">
+            <div class="lc-blue-dot"></div>
+            <div class="lc-section-name">Contact</div>
+          </div>
+          <div class="contact-block" style="margin-top:2mm">
+            <div class="contact-item">
+              <!-- Email icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#17699E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="M2 7l10 7 10-7"/>
+              </svg>
+              <span>josephwong2004@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <!-- Phone icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#17699E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.1 1.2 2 2 0 012.1 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.9v2z"/>
+              </svg>
+              <span>53775711</span>
+            </div>
+            <div class="contact-item">
+              <!-- Location icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#17699E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+              <span>3109 Tower 5B, Century Link,<br>Tung Chung</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div>
+          <div class="lc-section">
+            <div class="lc-blue-dot"></div>
+            <div class="lc-section-name">Education</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">Master of Computer Science</div>
+            <div class="edu-school">The University of Hong Kong</div>
+            <div class="edu-major">Major: Cyber &amp; Security</div>
+          </div>
+          <div class="edu-item" style="margin-top:3mm">
+            <div class="edu-degree">Bachelor of Engineering</div>
+            <div class="edu-school">The University of Hong Kong</div>
+            <div class="edu-major">Major: Logistic Engineering</div>
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div>
+          <div class="lc-section">
+            <div class="lc-blue-dot"></div>
+            <div class="lc-section-name">Skills</div>
+          </div>
+          <div class="skill-list">
+            <div class="skill-item"><div class="skill-bullet"></div>OpenShift / Kubernetes</div>
+            <div class="skill-item"><div class="skill-bullet"></div>Docker / Container / S2I</div>
+            <div class="skill-item"><div class="skill-bullet"></div>Jenkins / CI/CD / GitOps</div>
+            <div class="skill-item"><div class="skill-bullet"></div>Java / Groovy</div>
+            <div class="skill-item"><div class="skill-bullet"></div>JavaScript / Node.js / React / Angular</div>
+            <div class="skill-item"><div class="skill-bullet"></div>Python / TensorFlow</div>
+            <div class="skill-item"><div class="skill-bullet"></div>AWS / Azure</div>
+            <div class="skill-item"><div class="skill-bullet"></div>SCA / SAST / IAST</div>
+          </div>
+        </div>
+
+        <!-- CERTIFICATIONS -->
+        <div>
+          <div class="lc-section">
+            <div class="lc-blue-dot"></div>
+            <div class="lc-section-name">Certifications</div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-name">AWS Certified Solutions<br>Architect – Professional</div>
+            <div class="cert-org">AWS SAP</div>
+          </div>
+          <div class="cert-item" style="margin-top:3mm">
+            <div class="cert-name">Azure 305 Professional<br>Architect</div>
+            <div class="cert-org">Microsoft Azure</div>
+          </div>
+        </div>
+
+      </div><!-- /left-content -->
+    </div><!-- /left -->
+
+    <!-- ═══ RIGHT COLUMN ═══════════════════════════════════════════════════ -->
+    <div class="right">
+
+      <!-- Name header -->
+      <div class="right-header">
+        <div class="full-name">JOSEPH<br>WONG MUN HIN</div>
+        <div class="job-title">Senior Manager, Cloud &amp; AIOps Engineering</div>
+      </div>
+
+      <!-- ABOUT ME -->
+      <div class="right-section">
+        <div class="rc-section-header">
+          <div class="rc-blue-dot"></div>
+          <div class="rc-section-name">About Me</div>
+        </div>
+        <div class="about-text">
+          A developer inspired to achieve excellence in DevSecOps practices to deliver
+          high-quality software products and services. Passionate about automating secure
+          software delivery, building scalable cloud infrastructure, and embedding security
+          into every stage of the development lifecycle.
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="right-section">
+        <div class="rc-section-header">
+          <div class="rc-blue-dot"></div>
+          <div class="rc-section-name">Experience</div>
+        </div>
+
+        <!-- FWD Senior Manager -->
+        <div class="job-entry">
+          <div class="job-title-row">
+            <span class="job-name">Senior Manager, Cloud &amp; AIOps Engineering</span>
+          </div>
+          <div class="job-company">FWD Group Management Holding Limited</div>
+          <div class="job-dates">Apr 2026 – Current</div>
+          <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
+        </div>
+
+        <!-- FWD Manager -->
+        <div class="job-entry">
+          <div class="job-title-row">
+            <span class="job-name">Manager, Cloud DevOps Engineering</span>
+          </div>
+          <div class="job-company">FWD Group Management Holding Limited</div>
+          <div class="job-dates">Nov 2023 – Mar 2026</div>
+          <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
+        </div>
+
+        <!-- Cathay Pacific — Solution Analyst -->
+        <div class="job-entry">
+          <div class="job-title-row">
+            <span class="job-name">Solution Analyst / Specialist (B2E Solution)</span>
+          </div>
+          <div class="job-company">Cathay Pacific Airways — Platform Ops Lead (DevSecOps)</div>
+          <div class="job-dates">Sept 2022 – Oct 2023</div>
+          <div class="job-bullets">
+            <div class="job-bullet">Design, develop and support full-stack web/mobile applications with NodeJS, AngularJs and Ionic framework</div>
+            <div class="job-bullet">Lead the design and implementation of DevSecOps pipeline for efficient, automated and secure solution delivery</div>
+            <div class="job-bullet">Collaborate with cross-functional scrum teams in agile environment with designers, product owners, and security team</div>
+          </div>
+          <div class="job-highlight">
+            Highlights: SPA CI/CD pipeline, legacy cloud migration, multi-region enablement;
+            ITSC chatbot, Digital Service Management, Service Excellence Element Platform
+          </div>
+        </div>
+
+        <!-- Cathay Pacific — ITGT Governance -->
+        <div class="job-entry">
+          <div class="job-title-row">
+            <span class="job-name">IT Graduate Trainee — Governance DevSecOps</span>
+          </div>
+          <div class="job-company">Cathay Pacific Airways</div>
+          <div class="job-dates">Sept 2019 – Aug 2022</div>
+          <div class="job-bullets">
+            <div class="job-bullet">Governance DevSecOps practices in PDLC: vulnerability scanning, SAST, SCA, IAST</div>
+            <div class="job-bullet">Support DevSecOps platforms: Jenkins, OpenShift, AWS, GitLab, ELK, Snyk, Seeker, Conjur</div>
+            <div class="job-bullet">Coordinate and guide a small team of DevOps engineers; manage overseas development vendor tasks</div>
+          </div>
+        </div>
+
+        <!-- Cathay Pacific — ITGT Various -->
+        <div class="job-entry">
+          <div class="job-title-row">
+            <span class="job-name">IT Graduate Trainee — Various Roles</span>
+          </div>
+          <div class="job-company">Cathay Pacific Airways</div>
+          <div class="job-dates">Aug 2017 – Aug 2019</div>
+          <div class="job-bullets">
+            <div class="job-bullet">Rotated across IT departments: application development, business analysis, IT support, project management</div>
+          </div>
+        </div>
+
+      </div><!-- /experience-section -->
+
+    </div><!-- /right -->
+
+  </div><!-- /body -->
+
+  <!-- BOTTOM BLUE BAR -->
+  <div class="bottom-bar"></div>
+
+</div><!-- /page -->
+
+</body>
+</html>
