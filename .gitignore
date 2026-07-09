@@ -1,0 +1,10 @@
+# Generated images (regenerate from HTML)
+*.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
