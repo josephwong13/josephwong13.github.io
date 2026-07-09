@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Joseph Wong Mun Hin — CV</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,7 +19,7 @@
   }
 
   body {
-    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     background: #fff;
     color: var(--black);
     font-size: 13px;
@@ -103,7 +101,7 @@
   }
 
   .photo-initials {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: var(--blue);
@@ -127,7 +125,7 @@
   }
 
   .lc-section-name {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     font-weight: 600;
     font-size: 8.5px;
     letter-spacing: 2.5px;
@@ -242,7 +240,7 @@
   }
 
   .full-name {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     font-weight: 700;
     font-size: 28px;
     color: var(--black);
@@ -251,7 +249,7 @@
   }
 
   .job-title {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     font-weight: 400;
     font-size: 11px;
     color: var(--grey);
@@ -278,7 +276,7 @@
   }
 
   .rc-section-name {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
     font-weight: 600;
     font-size: 9px;
     letter-spacing: 2.5px;
@@ -309,9 +307,48 @@
     padding: 0 1mm;
   }
 
+  /* Company group (grouped by employer) */
+  .company-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1mm;
+    padding: 0 1mm;
+    margin-bottom: 2mm;
+  }
+
+  .company-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2mm;
+    border-bottom: 1px solid #d0ccc6;
+    padding-bottom: 1mm;
+    margin-bottom: 1mm;
+  }
+
+  .company-name {
+    font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 11.5px;
+    color: var(--blue);
+  }
+
+  .company-dates {
+    font-size: 10px;
+    color: var(--grey-light);
+    white-space: nowrap;
+  }
+
+  .company-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+
   .job-title-row {
     display: flex;
     align-items: baseline;
+    justify-content: space-between;
     gap: 2mm;
     flex-wrap: wrap;
   }
@@ -541,67 +578,71 @@
           <div class="rc-section-name">Experience</div>
         </div>
 
-        <!-- FWD Senior Manager -->
-        <div class="job-entry">
-          <div class="job-title-row">
-            <span class="job-name">Senior Manager, Cloud &amp; AIOps Engineering</span>
+        <!-- FWD Group — all roles grouped -->
+        <div class="company-group">
+          <div class="company-header">
+            <span class="company-name">FWD Group Management Holding Limited</span>
+            <span class="company-dates">Nov 2023 – Current</span>
           </div>
-          <div class="job-company">FWD Group Management Holding Limited</div>
-          <div class="job-dates">Apr 2026 – Current</div>
-          <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
+          <div class="company-roles">
+            <div class="job-entry">
+              <div class="job-title-row">
+                <span class="job-name">Senior Manager, Cloud &amp; AIOps Engineering</span>
+                <span class="job-dates">Apr 2026 – Current</span>
+              </div>
+              <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
+            </div>
+            <div class="job-entry">
+              <div class="job-title-row">
+                <span class="job-name">Manager, Cloud DevOps Engineering</span>
+                <span class="job-dates">Nov 2023 – Mar 2026</span>
+              </div>
+              <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
+            </div>
+          </div>
         </div>
 
-        <!-- FWD Manager -->
-        <div class="job-entry">
-          <div class="job-title-row">
-            <span class="job-name">Manager, Cloud DevOps Engineering</span>
+        <!-- Cathay Pacific — all roles grouped -->
+        <div class="company-group">
+          <div class="company-header">
+            <span class="company-name">Cathay Pacific Airways</span>
+            <span class="company-dates">Aug 2017 – Oct 2023</span>
           </div>
-          <div class="job-company">FWD Group Management Holding Limited</div>
-          <div class="job-dates">Nov 2023 – Mar 2026</div>
-          <div class="placeholder">[PLACEHOLDER — Job description to be provided]</div>
-        </div>
-
-        <!-- Cathay Pacific — Solution Analyst -->
-        <div class="job-entry">
-          <div class="job-title-row">
-            <span class="job-name">Solution Analyst / Specialist (B2E Solution)</span>
-          </div>
-          <div class="job-company">Cathay Pacific Airways — Platform Ops Lead (DevSecOps)</div>
-          <div class="job-dates">Sept 2022 – Oct 2023</div>
-          <div class="job-bullets">
-            <div class="job-bullet">Design, develop and support full-stack web/mobile applications with NodeJS, AngularJs and Ionic framework</div>
-            <div class="job-bullet">Lead the design and implementation of DevSecOps pipeline for efficient, automated and secure solution delivery</div>
-            <div class="job-bullet">Collaborate with cross-functional scrum teams in agile environment with designers, product owners, and security team</div>
+          <div class="company-roles">
+            <div class="job-entry">
+              <div class="job-title-row">
+                <span class="job-name">Solution Analyst / Specialist (B2E Solution)</span>
+                <span class="job-dates">Sept 2022 – Oct 2023</span>
+              </div>
+              <div class="job-bullets">
+                <div class="job-bullet">Design, develop and support full-stack web/mobile applications with NodeJS, AngularJs and Ionic framework</div>
+                <div class="job-bullet">Lead the design and implementation of DevSecOps pipeline for efficient, automated and secure solution delivery</div>
+                <div class="job-bullet">Collaborate with cross-functional scrum teams in an agile environment with designers, product owners, and security team</div>
+              </div>
+            </div>
+            <div class="job-entry">
+              <div class="job-title-row">
+                <span class="job-name">IT Graduate Trainee — Governance DevSecOps</span>
+                <span class="job-dates">Sept 2019 – Aug 2022</span>
+              </div>
+              <div class="job-bullets">
+                <div class="job-bullet">Governance DevSecOps practices in product development lifecycle (PDLC), including vulnerability scanning, SAST, SCA, IAST and more</div>
+                <div class="job-bullet">Support various DevSecOps platforms including Jenkins, OpenShift, AWS, GitLab, ELK, Snyk, Seeker, Conjur and more</div>
+                <div class="job-bullet">Coordinate and offer guidance for a small team of DevOps engineers, oversee and organise tasks for overseas development vendor</div>
+              </div>
+            </div>
+            <div class="job-entry">
+              <div class="job-title-row">
+                <span class="job-name">IT Graduate Trainee — Various Roles</span>
+                <span class="job-dates">Aug 2017 – Aug 2019</span>
+              </div>
+              <div class="job-bullets">
+                <div class="job-bullet">Rotated in different IT departments and performed various roles, including application development, analysing business requirements, IT support, project management and more</div>
+              </div>
+            </div>
           </div>
           <div class="job-highlight">
-            Highlights: SPA CI/CD pipeline, legacy cloud migration, multi-region enablement;
-            ITSC chatbot, Digital Service Management, Service Excellence Element Platform
-          </div>
-        </div>
-
-        <!-- Cathay Pacific — ITGT Governance -->
-        <div class="job-entry">
-          <div class="job-title-row">
-            <span class="job-name">IT Graduate Trainee — Governance DevSecOps</span>
-          </div>
-          <div class="job-company">Cathay Pacific Airways</div>
-          <div class="job-dates">Sept 2019 – Aug 2022</div>
-          <div class="job-bullets">
-            <div class="job-bullet">Governance DevSecOps practices in PDLC: vulnerability scanning, SAST, SCA, IAST</div>
-            <div class="job-bullet">Support DevSecOps platforms: Jenkins, OpenShift, AWS, GitLab, ELK, Snyk, Seeker, Conjur</div>
-            <div class="job-bullet">Coordinate and guide a small team of DevOps engineers; manage overseas development vendor tasks</div>
-          </div>
-        </div>
-
-        <!-- Cathay Pacific — ITGT Various -->
-        <div class="job-entry">
-          <div class="job-title-row">
-            <span class="job-name">IT Graduate Trainee — Various Roles</span>
-          </div>
-          <div class="job-company">Cathay Pacific Airways</div>
-          <div class="job-dates">Aug 2017 – Aug 2019</div>
-          <div class="job-bullets">
-            <div class="job-bullet">Rotated across IT departments: application development, business analysis, IT support, project management</div>
+            Highlights: design and implementation of Single Page Application CI/CD pipeline, legacy application cloud migration and multi-region enablement; ITSC chatbot, Digital Service Management, Service Excellence Element Platform
           </div>
         </div>
 
