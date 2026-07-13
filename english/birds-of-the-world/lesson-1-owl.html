@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — The Owl</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.bird-img { width: 100%; max-height: 22rem; object-fit: cover; border-radius: 8px; margin: 0.8rem 0 0.5rem; display: block; }
+.bird-intro { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.5rem 0 1.2rem; font-size: 0.9rem; line-height: 1.7; }
+.bird-intro strong { color: var(--accent); }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box { margin: 1.2rem 0 0; padding: 0.9rem 1rem; background: var(--card-bg); border: 1px solid var(--green); border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
+.score-box .summary-line { font-family: var(--mono); font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; word-break: break-word; }
+.score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
+.score-box .copy-btn:hover { background: #d4ead9; }
+.score-box .copy-btn.copied { background: var(--green); color: white; }
+.score-box .wrong-line{font-family:var(--mono);font-size:.88rem;color:#7a1a1a;margin-bottom:.6rem;word-break:break-word;display:none}
+.score-box .wrong-line.show{display:block}
+.score-box .wrong-line .label{color:#7a1a1a;font-weight:600}
+.score-box .wrong-line.none{color:var(--muted)}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .bird-intro { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 1 of 5 · Series: Birds of the World</p>
+<p class="back-link"><a href="index.html">← Back to Birds of the World</a></p>
+
+<h1>The Owl</h1>
+
+<img src="assets/owl.png" alt="Owl perched on a gnarled branch at dusk" class="bird-img">
+
+<div class="bird-intro">
+<p><strong>Scientific name:</strong> Strigiformes (order) · <strong>Habitat:</strong> Forests, grasslands, deserts, Arctic tundra worldwide · <strong>Diet:</strong> Carnivorous — small mammals, birds, insects, reptiles · <strong>Fun fact:</strong> Owls can rotate their heads up to 270° because they have fixed eye sockets. They are <strong>sagacious</strong> hunters that hunt mostly at dusk — making them <strong>crepuscular</strong> by nature.</p>
+</div>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">sagacious <button class="speak-btn" onclick="speak('sagacious', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/səˈɡeɪ.ʃəs/ · suh-GAY-shəs · <em>adjective</em> · 睿智的，聰慧的</div>
+  <div class="definition">Having or showing keen mental discernment, good judgment, and foresight — like the wise, patient owl surveying its domain.</div>
+  <div class="example">↳ From this lesson: The owl surveyed the snow-covered forest with <span class="highlight">sagacious</span> amber eyes, as if calculating every move of the mouse beneath the frost.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The CEO made a <em>sagacious</em> decision to pivot the product line before the market shifted.</td></tr><tr><td>🎓 Education:</td><td>Her <em>sagacious</em> approach to research — always reading three sources before forming an opinion — impressed every professor.</td></tr><tr><td>❤️ Personal:</td><td>It was <em>sagacious</em> of him to keep an emergency fund, a lesson his parents drilled into him early.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">crepuscular <button class="speak-btn" onclick="speak('crepuscular', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/krɪˈpʌs.kjʊ.lər/ · krih-PUS-kyuh-ler · <em>adjective</em> · 晨昏活動的，薄暮時分的</div>
+  <div class="definition">Active or occurring during twilight — at dawn or dusk — when light is soft and the world hovers between day and night.</div>
+  <div class="example">↳ From this lesson: Owls are <span class="highlight">crepuscular</span> by nature, slipping from shadow to shadow as the sun sinks below the treeline.</div>
+  <div class="more-examples">
+    <table><tr><td>🌊 Nature:</td><td>Deer are <em>crepuscular</em> — you are most likely to spot them grazing at dawn and dusk.</td></tr><tr><td>📰 News:</td><td>The photographer waited until <em>crepuscular</em> light bathed the lighthouse before taking the award-winning shot.</td></tr><tr><td>🏔️ Travel:</td><td>Many desert animals are <em>crepuscular</em> to avoid the brutal midday sun while still having enough light to hunt.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">raptor <button class="speak-btn" onclick="speak('raptor', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈræp.tər/ · RAP-ter · <em>noun</em> · 猛禽，鳥類獵食者</div>
+  <div class="definition">A bird of prey — a carnivorous bird that hunts and kills live prey using sharp talons and a hooked beak. Includes eagles, hawks, falcons, and owls.</div>
+  <div class="example">↳ From this lesson: The owl is a silent <span class="highlight">raptor</span>, descending on mouse and voles with feathered wings that make no sound.</div>
+  <div class="more-examples">
+    <table><tr><td>🏛️ History:</td><td>The <em>raptor</em> was a symbol of power in ancient Rome — the aquila (eagle) adorned military standards.</td></tr><tr><td>🔬 Science:</td><td>Paleontologists debate whether certain dinosaur species were the ancestors of modern <em>raptor</em> birds.</td></tr><tr><td>💼 Work:</td><td>He earned the nickname "<em>Raptor</em>" in the trading floor for his ability to spot weakness in a deal before anyone else.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">nocturnal prowler <button class="speak-btn" onclick="speak('nocturnal prowler', event)" title="Listen">🔊</button></div>
+  <div class="definition">A creature that roams and hunts at night — silent, unseen, and purposeful in the dark.<br>· 夜行獵手</div>
+  <div class="example">↳ From this lesson: By midnight the owl had become a <span class="highlight">nocturnal prowler</span>, ghosting through pine branches in search of its next meal.</div>
+  <div class="more-examples">
+    <table><tr><td>🔍 Investigation:</td><td>Witnesses described a <em>nocturnal prowler</em> near the warehouse the night before the break-in.</td></tr><tr><td>🏟️ Sport:</td><td>The defender was a <em>nocturnal prowler</em> on the field — always appearing from the shadows to steal the ball.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">hoot at the moon <button class="speak-btn" onclick="speak('hoot at the moon', event)" title="Listen">🔊</button></div>
+  <div class="definition">To make loud, meaningless noise or complaints — like an owl calling into the night sky for no practical purpose.<br>· 對月號叫，無的放矢</div>
+  <div class="example">↳ From this lesson: Critics who merely <span class="highlight">hoot at the moon</span> rarely produce anything as elegant as a single perfect hunt.</div>
+  <div class="more-examples">
+    <table><tr><td>💬 Debate:</td><td>He wasn't solving the problem — he was just <em>hooting at the moon</em> from the sidelines without ever proposing a solution.</td></tr><tr><td>🎓 Education:</td><td>The professor told the student that his theory, while creative, amounted to <em>hooting at the moon</em> without empirical support.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Five questions covering every word and phrase from this lesson. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question" data-correct-answer="sagacious"><p><strong>Q1.</strong> <em>The boardroom fell silent after the CEO's _____ assessment of the company's position — she had clearly thought several years ahead.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'crepuscular' means active at dawn/dusk, not mentally sharp.">a) crepuscular</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'raptor' is a bird of prey, not a description of judgment.">b) raptor</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Sagacious' means showing keen judgment and foresight.">c) sagacious</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="crepuscular"><p><strong>Q2.</strong> <em>The photographer timed the shoot for the _____ hours — that magical window just after sunset when shadows grow long and golden.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Crepuscular' means active or occurring during twilight at dawn or dusk.">a) crepuscular</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'raptor' is a bird of prey, not a description of time of day.">b) raptor</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'sagacious' means wise, not related to time of day.">c) sagacious</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="raptor"><p><strong>Q3.</strong> <em>The falcon perched on the glove of the handler, its hooked beak marking it unmistakably as a _____ of considerable value.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'sagacious' means wise, not a bird of prey.">a) sagacious</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'crepuscular' means active at twilight, not a classification of bird type.">b) crepuscular</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Raptor' is the term for a bird of prey with sharp talons and hooked beak.">c) raptor</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="nocturnal prowler"><p><strong>Q4.</strong> <em>The leopard became a _____ under cover of darkness, slipping between the acacia trees where no safari jeep could follow.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'hoot at the moon' means to make empty complaints, not to move stealthily.">a) hooting at the moon</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Nocturnal prowler' describes a creature that roams stealthily at night.">b) nocturnal prowler</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'crepuscular' describes dawn/dusk activity, not specifically stealthy night movement.">c) crepuscular prowler</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="hoot at the moon"><p><strong>Q5.</strong> <em>Before the meeting, he spent twenty minutes complaining about the industry, but by the end he had offered nothing useful — just _____.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'nocturnal prowler' describes stealthy night movement, not making empty complaints.">a) nocturnal prowling</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Hoot at the moon' means to make loud, meaningless complaints with no practical purpose.">b) hooting at the moon</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'sagacious' means wise, the opposite of pointless noise.">c) sounding sagacious</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">birds of the world lesson 1 completed: correct answer - (0) incorrect answer (0)</div>
+    <div class="wrong-line" id="wrongLine"><span class="label">Wrong answer to review later:</span> <span id="wrongList"></span></div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Birds of the World</a></div>
+
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+(function(){
+  var SERIES='birds of the world';
+  var LESSON_N=1;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    var total=document.querySelectorAll('.quiz-question').length;
+    var wrongItems=[];
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong'){wrong++;wrongItems.push(q.dataset.correctAnswer)}
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+    var wl=document.getElementById('wrongLine');
+    var list=document.getElementById('wrongList');
+    if(wrong>0){wl.classList.add('show');wl.classList.remove('none');list.textContent=wrongItems.join(', ')}else if(total>0&&correct+wrong===total){wl.classList.add('show');wl.classList.add('none');list.textContent='none'}else{wl.classList.remove('show');wl.classList.remove('none')}
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var btn=document.getElementById('copyBtn');
+    var wl=document.getElementById('wrongLine');
+    var text=document.getElementById('summaryLine').textContent;
+    if(wl.classList.contains('show')){text+='\n'+wl.textContent}
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
+</script>
+</body>
+</html>

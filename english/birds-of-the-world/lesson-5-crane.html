@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5 — The Red-Crowned Crane</title>
+  <style>
+:root {
+  --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6;
+  --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --measure: 40rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+h1 { font-size: 1.6rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+p { margin: 0 0 0.8rem; }
+.lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.back-link { margin-bottom: 0.5rem; }
+.back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+.back-link a:hover { text-decoration: underline; }
+.bird-img { width: 100%; max-height: 22rem; object-fit: cover; border-radius: 8px; margin: 0.8rem 0 0.5rem; display: block; }
+.bird-intro { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.5rem 0 1.2rem; font-size: 0.9rem; line-height: 1.7; }
+.bird-intro strong { color: var(--accent); }
+.word-card { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.word-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+.word-card .word { font-size: 1.2rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.word-card .pronounce { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.speak-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: var(--card-bg); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; vertical-align: middle; margin-left: 0.3rem; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.speak-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+.speak-btn:active { transform: scale(0.92); }
+.speak-btn.playing { background: var(--accent-light); border-color: var(--accent); animation: pulse 0.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 58, 0.2); } 50% { box-shadow: 0 0 0 6px rgba(139, 58, 58, 0); } }
+.word-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.word-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.word-card .example .highlight { color: var(--accent); font-weight: 600; font-style: normal; }
+.more-examples { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
+.more-examples table { width: 100%; border-collapse: collapse; font-size: 0.82rem; line-height: 1.5; }
+.more-examples table td { padding: 0.12rem 0; vertical-align: top; }
+.more-examples table td:first-child { width: 5rem; min-width: 5rem; font-weight: 500; color: var(--text); white-space: nowrap; padding-right: 0.4rem; }
+.more-examples table td:last-child { color: var(--text); word-break: break-word; }
+.phrase-card { background: var(--card-bg); border-left: 4px solid var(--green); padding: 0.8rem 1rem; margin: 0.8rem 0; border-radius: 0 8px 8px 0; }
+.phrase-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+.phrase-card .phrase { font-size: 1.1rem; font-weight: 700; margin: 0.15rem 0 0.1rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.phrase-card .definition { margin-top: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+.phrase-card .example { margin-top: 0.4rem; font-size: 0.85rem; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 0.7rem; }
+.phrase-card .example .highlight { color: var(--green); font-weight: 600; font-style: normal; }
+.quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+.quiz h2 { margin-top: 0; }
+.quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+.quiz-question:last-child { border-bottom: none; }
+.quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+.quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+.quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+.quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+.quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+.quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+.quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+.quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+.quiz-reveal:hover { background: #e8d0d0; }
+.score-box { margin: 1.2rem 0 0; padding: 0.9rem 1rem; background: var(--card-bg); border: 1px solid var(--green); border-radius: 8px; font-size: 0.95rem; line-height: 1.5; }
+.score-box .summary-line { font-family: var(--mono); font-size: 0.92rem; color: var(--text); margin-bottom: 0.6rem; word-break: break-word; }
+.score-box .copy-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.8rem; background: var(--green-light); border: 1px solid var(--green); border-radius: 6px; font-size: 0.82rem; font-family: var(--sans); font-weight: 600; color: var(--green); cursor: pointer; -webkit-tap-highlight-color: transparent; min-height: 36px; }
+.score-box .copy-btn:hover { background: #d4ead9; }
+.score-box .copy-btn.copied { background: var(--green); color: white; }
+.score-box .wrong-line{font-family:var(--mono);font-size:.88rem;color:#7a1a1a;margin-bottom:.6rem;word-break:break-word;display:none}
+.score-box .wrong-line.show{display:block}
+.score-box .wrong-line .label{color:#7a1a1a;font-weight:600}
+.score-box .wrong-line.none{color:var(--muted)}
+.score-box .hint{display:block;margin-top:.5rem;font-size:.78rem;color:var(--muted)}
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+.footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .bird-intro { padding: 0.8rem 1rem; font-size: 0.88rem; } .word-card, .phrase-card { padding: 0.7rem 0.8rem; } .quiz { padding: 0.8rem 0.9rem; } .quiz-option { min-height: 44px; } .speak-btn { min-width: 36px; min-height: 36px; width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+
+<p class="lesson-meta">Lesson 5 of 5 · Series: Birds of the World</p>
+<p class="back-link"><a href="index.html">← Back to Birds of the World</a></p>
+
+<h1>The Red-Crowned Crane</h1>
+
+<img src="assets/crane.png" alt="Two red-crowned cranes dancing in a shallow wetland" class="bird-img">
+
+<div class="bird-intro">
+<p><strong>Scientific name:</strong> Grus japonensis · <strong>Habitat:</strong> Hokkaido, Japan and wetlands of East Asia · <strong>Diet:</strong> Aquatic plants, insects, fish, frogs · <strong>Fun fact:</strong> Red-crowned cranes perform elaborate, synchronized dances as part of their courtship — leaping, bowing, and tossing sticks. In Japanese culture they are a symbol of longevity, peace, and good fortune. They mate for life and are considered a powerful symbol of <strong>grace</strong> and fidelity.</p>
+</div>
+
+<hr>
+
+<h2>🔄 Review from Lesson 4</h2>
+
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem 1.3rem; margin:1rem 0; font-size:0.9rem;">
+<p style="margin-bottom:0.5rem;"><strong>Quick recall — do you remember these from Lesson 4?</strong></p>
+<p><strong>iridescent</strong> · ir-ih-DES-ənt · <em>— "The ruby-throat's feathers were <strong>iridescent</strong> — shifting from emerald to ruby."</em></p>
+<p><strong>territorial</strong> · ter-ih-TOR-ee-əl · <em>— "A single male hummingbird can be <strong>territorial</strong> over a dozen flowers."</em></p>
+<p><strong>diminutive</strong> · dih-MIN-yuh-tiv · <em>— "The bee hummingbird holds the title of the world's <strong>diminutive</strong> avian species."</em></p>
+<p><strong>flash of colour</strong> · <em>— "A <strong>flash of colour</strong> streaked past the feeder and was gone."</em></p>
+<p><strong>defend one's ground</strong> · <em>— "The hummingbird <strong>defended its ground</strong> against a jay ten times its size."</em></p>
+</div>
+
+<hr>
+
+<h2>📖 Words</h2>
+
+<div class="word-card">
+  <div class="label">Word 1 of 3</div>
+  <div class="word">grace <button class="speak-btn" onclick="speak('grace', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ɡreɪs/ · gray-s · <em>noun</em> · 優雅，風度，恩典</div>
+  <div class="definition">Elegance, smoothness, and refined beauty in movement, form, or manner — the quality of doing small things beautifully, without apparent effort.</div>
+  <div class="example">↳ From this lesson: The red-crowned crane moved with a <span class="highlight">grace</span> that made every step look rehearsed and every leap look effortless.</div>
+  <div class="more-examples">
+    <table><tr><td>🎵 Music:</td><td>The pianist played the Chopin étude with a <em>grace</em> that belied her years of gruelling practice.</td></tr><tr><td>💼 Work:</td><td>She exited the negotiation with <em>grace</em> — no recriminations, no hard feelings, just a quiet acknowledgment that the deal was not meant to be.</td></tr><tr><td>❤️ Personal:</td><td>He handled the betrayal with <em>grace</em> — he never spoke of it publicly and never let it change who he was.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 2 of 3</div>
+  <div class="word">symmetry <button class="speak-btn" onclick="speak('symmetry', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/ˈsɪm.ə.tri/ · SIM-uh-tree · <em>noun</em> · 對稱，均衡</div>
+  <div class="definition">Exact correspondence or balance between parts on opposite sides of a dividing line, plane, or axis — pleasing proportion through balanced arrangement.</div>
+  <div class="example">↳ From this lesson: The two cranes mirrored each other perfectly — a <span class="highlight">symmetry</span> of motion, two bodies moving as one around a shared centre.</div>
+  <div class="more-examples">
+    <table><tr><td>🏛️ History:</td><td>The <em>symmetry</em> of the Parthenon's façade — every column, every proportion — was designed to express divine order.</td></tr><tr><td>🔬 Science:</td><td>Physicists are fascinated by the <em>symmetry</em> of crystal lattices — repeating patterns that extend infinitely in every direction.</td></tr><tr><td>💼 Work:</td><td>The architect redesigned the floor plan with <em>symmetry</em> in mind — two identical wings flanking a central atrium.</td></tr></table>
+  </div>
+</div>
+
+<div class="word-card">
+  <div class="label">Word 3 of 3</div>
+  <div class="word">fidelity <button class="speak-btn" onclick="speak('fidelity', event)" title="Listen">🔊</button></div>
+  <div class="pronounce">/fɪˈdɛl.ɪ.ti/ · fih-DEL-ih-tee · <em>noun</em> · 忠誠，忠貞，忠實</div>
+  <div class="definition">Loyalty and unwavering commitment — to a person, a cause, a partner, or a principle. In ornithology, birds that pair for life demonstrate high <strong>fidelity</strong> to their mates.</div>
+  <div class="example">↳ From this lesson: The crane's reputation for <span class="highlight">fidelity</span> is well earned — most pairs stay together across multiple breeding seasons until one dies.</div>
+  <div class="more-examples">
+    <table><tr><td>❤️ Personal:</td><td>After twenty years of marriage, their <em>fidelity</em> to each other remained — not as passion, but as quiet, daily devotion.</td></tr><tr><td>💼 Work:</td><td>The editor was known for her <em>fidelity</em> to the original text — she refused to change a single word of the author's intent.</td></tr><tr><td>🎵 Music:</td><td>The recording was praised for its <em>fidelity</em> to the live performance — every nuance of the concert hall captured.</td></tr></table>
+  </div>
+</div>
+
+<h2>💬 Phrases</h2>
+
+<div class="phrase-card">
+  <div class="label">Phrase 1 of 2</div>
+  <div class="phrase">leap of faith <button class="speak-btn" onclick="speak('leap of faith', event)" title="Listen">🔊</button></div>
+  <div class="definition">An act of trusting or committing to something without certainty of the outcome — stepping into the unknown on the basis of hope, belief, or trust.<br>· 勇於嘗試，冒险一试</div>
+  <div class="example">↳ From this lesson: The crane's mid-air leap was a <span class="highlight">leap of faith</span> — a trust in the catch that the partner would be there, every time.</div>
+  <div class="more-examples">
+    <table><tr><td>🎓 Education:</td><td>She described quitting her stable job to study theatre as the biggest <em>leap of faith</em> of her life.</td></tr><tr><td>💼 Work:</td><td>Investing their savings into the startup was a <em>leap of faith</em> — there was no guarantee the market would materialise.</td></tr></table>
+  </div>
+</div>
+
+<div class="phrase-card">
+  <div class="label">Phrase 2 of 2</div>
+  <div class="phrase">grace under pressure <button class="speak-btn" onclick="speak('grace under pressure', event)" title="Listen">🔊</button></div>
+  <div class="definition">To maintain composure, dignity, and effectiveness when circumstances are difficult, dangerous, or highly stressful — not freezing or lashing out, but staying centred.<br>· 處變不驚，泰山崩於前而色不變</div>
+  <div class="example">↳ From this lesson: When the hawk appeared overhead, the crane showed <span class="highlight">grace under pressure</span> — not panicking, but simply watching and repositioning with calm.</div>
+  <div class="more-examples">
+    <table><tr><td>💼 Work:</td><td>The CEO showed <em>grace under pressure</em> when the product launch failed publicly — she took responsibility, thanked the team, and outlined the next step.</td></tr><tr><td>❤️ Personal:</td><td>He showed <em>grace under pressure</em> when the hospital called about his father — he asked clear questions, made decisions, and only allowed himself to break down after hanging up.</td></tr></table>
+  </div>
+</div>
+
+<hr>
+
+<div class="quiz">
+  <h2>🎯 Quiz</h2>
+  <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">Q1–Q3 are from Lesson 5. Q4–Q5 review Lesson 4. <strong>Click any answer</strong> — green = correct, red = wrong.</p>
+
+  <div class="quiz-question" data-correct-answer="grace"><p><strong>Q1 (Lesson 5).</strong> <em>The diplomat conducted the entire crisis negotiation with _____ — never raising his voice, never betraying a hint of frustration.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Grace' here means elegance and composure in difficult circumstances.">a) grace</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'symmetry' means balanced proportion, not composure.">b) symmetry</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'fidelity' means loyalty, not composure.">c) fidelity</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="symmetry"><p><strong>Q2 (Lesson 5).</strong> <em>The Japanese garden was designed with perfect _____ — the left side of the pond mirroring the right in every detail.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'fidelity' means loyalty or accuracy, not balanced proportions.">a) fidelity</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Symmetry' means exact correspondence and balance between opposite parts.">b) symmetry</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'grace' means elegance, not balanced proportions.">c) grace</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="fidelity"><p><strong>Q3 (Lesson 5).</strong> <em>The translation was praised for its _____ to the original — not a single idiom softened, not one metaphor changed.</em></p>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'grace' means elegance, not faithfulness to original text.">a) grace</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'symmetry' means balanced proportions, not accuracy to original.">b) symmetry</label>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Fidelity' means unwavering commitment and accuracy — here to the original text.">c) fidelity</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="territorial"><p><strong>Q4 (Review — Lesson 4).</strong> <em>The senior partner grew _____ about the client relationships, refusing to let anyone else in the room during the pitch.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Territorial' means fiercely protective of a domain or space — applied to guarding client relationships.">a) territorial</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'iridescent' means shimmering with colour, not protective.">b) iridescent</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'diminutive' means very small, not protective.">c) diminutive</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-question" data-correct-answer="flash of colour"><p><strong>Q5 (Review — Lesson 4).</strong> <em>The kingfisher appeared as a _____ — electric blue — before diving into the stream and surfacing with a fish.</em></p>
+    <label class="quiz-option" data-correct="true" data-feedback="✓ Right! 'Flash of colour' means a brief, brilliant burst of vivid hue quickly seen and gone.">a) flash of colour</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'defend one's ground' means holding your position, not a brief appearance.">b) defending its ground</label>
+    <label class="quiz-option" data-correct="false" data-feedback="Not quite — 'iridescent' means shimmering with colour over time, not a brief flash.">c) iridescent streak</label>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <button class="quiz-reveal" id="revealBtn">🔍 Reveal all answers</button>
+
+  <div class="score-box">
+    <div class="summary-line" id="summaryLine">birds of the world lesson 5 completed: correct answer - (0) incorrect answer (0)</div>
+    <div class="wrong-line" id="wrongLine"><span class="label">Wrong answer to review later:</span> <span id="wrongList"></span></div>
+    <button class="copy-btn" id="copyBtn" type="button">📋 Copy summary</button>
+    <span class="hint">Paste this back to Hermes so the next lesson's review focuses on what you missed.</span>
+  </div>
+</div>
+
+<div class="footer"><a href="index.html">← Back to Birds of the World</a></div>
+
+<script>
+function speak(t,e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;u.pitch=1;var v=window.speechSynthesis.getVoices(),ev=v.find(function(v){return v.lang.startsWith('en')});if(ev)u.voice=ev;var b=e?.target?.closest?.('.speak-btn');b&&b.classList.add('playing');u.onend=function(){b&&b.classList.remove('playing')};window.speechSynthesis.speak(u)}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+(function(){
+  var SERIES='birds of the world';
+  var LESSON_N=5;
+  var answered={};
+  function refreshScore(){
+    var correct=0,wrong=0;
+    var total=document.querySelectorAll('.quiz-question').length;
+    var wrongItems=[];
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      var a=answered[q.dataset.correctAnswer];
+      if(a==='right')correct++;
+      else if(a==='wrong'){wrong++;wrongItems.push(q.dataset.correctAnswer)}
+    });
+    document.getElementById('summaryLine').textContent=SERIES+' lesson '+LESSON_N+' completed: correct answer - ('+correct+') incorrect answer ('+wrong+')';
+    var wl=document.getElementById('wrongLine');
+    var list=document.getElementById('wrongList');
+    if(wrong>0){wl.classList.add('show');wl.classList.remove('none');list.textContent=wrongItems.join(', ')}else if(total>0&&correct+wrong===total){wl.classList.add('show');wl.classList.add('none');list.textContent='none'}else{wl.classList.remove('show');wl.classList.remove('none')}
+  }
+  document.querySelectorAll('.quiz-option').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=this.parentElement;
+      var correctAnswer=p.dataset.correctAnswer;
+      p.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong')});
+      if(this.dataset.correct==='true'){
+        this.classList.add('correct');
+        answered[correctAnswer]='right';
+      }else{
+        this.classList.add('wrong');
+        p.querySelector('.quiz-option[data-correct="true"]').classList.add('correct');
+        answered[correctAnswer]='wrong';
+      }
+      var fb=p.querySelector('.quiz-feedback');
+      if(fb){fb.textContent=this.dataset.feedback||'';fb.className='quiz-feedback show '+(this.dataset.correct==='true'?'correct-fb':'wrong-fb')}
+      refreshScore();
+    });
+  });
+  document.getElementById('revealBtn').addEventListener('click',function(){
+    document.querySelectorAll('.quiz-question').forEach(function(q){
+      q.querySelectorAll('.quiz-option').forEach(function(o){o.classList.remove('correct','wrong');if(o.dataset.correct==='true')o.classList.add('correct')});
+      var fb=q.querySelector('.quiz-feedback'),co=q.querySelector('.quiz-option[data-correct="true"]');
+      if(fb&&co){fb.textContent=co.dataset.feedback||'';fb.className='quiz-feedback show correct-fb'}
+      answered[q.dataset.correctAnswer]='right';
+    });
+    refreshScore();
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var btn=document.getElementById('copyBtn');
+    var wl=document.getElementById('wrongLine');
+    var text=document.getElementById('summaryLine').textContent;
+    if(wl.classList.contains('show')){text+='\n'+wl.textContent}
+    var done=function(){btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 Copy summary';btn.classList.remove('copied')},2000)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done()})}else{fallback(text);done()}
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+  });
+})();
+</script>
+</body>
+</html>
