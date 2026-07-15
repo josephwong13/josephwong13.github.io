@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth 2.0 — Neon Cyber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* viewport-base.css — MANDATORY BASE */
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0a0f1c; }
+    .deck-viewport { position: fixed; inset: 0; overflow: hidden; background: #0a0f1c; }
+    .deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; }
+    .slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; }
+    .slide.active { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+    img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+    /* Neon Cyber Theme */
+    :root {
+      --bg: #0a0f1c;
+      --bg-2: #0d1526;
+      --cyan: #00f5ff;
+      --magenta: #ff00ff;
+      --blue: #00a2ff;
+      --green: #00ff88;
+      --purple: #b300ff;
+      --text: #e0f0ff;
+      --text-dim: rgba(224,240,255,0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: 'Rajdhani', sans-serif; background: var(--bg); }
+
+    /* Perspective grid background */
+    .grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      transform: perspective(600px) rotateX(20deg) scale(2);
+      transform-origin: center top;
+    }
+
+    /* Scanline overlay */
+    .scanlines {
+      position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+    }
+
+    /* Navigation */
+    .deck-controls {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 20px; z-index: 1000;
+      background: rgba(0,15,40,0.8); backdrop-filter: blur(12px);
+      padding: 12px 28px; border-radius: 50px;
+      border: 1px solid rgba(0,245,255,0.2);
+      box-shadow: 0 0 20px rgba(0,245,255,0.1);
+    }
+    .deck-controls button {
+      background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.3);
+      color: var(--cyan); font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700;
+      width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .deck-controls button:hover { background: rgba(0,245,255,0.2); box-shadow: 0 0 10px rgba(0,245,255,0.4); }
+    .deck-controls .counter { color: var(--cyan); font-size: 14px; font-weight: 700; letter-spacing: 0.15em; text-shadow: 0 0 10px rgba(0,245,255,0.5); }
+
+    /* Corner accents */
+    .corner-tl { position: absolute; top: 30px; left: 30px; }
+    .corner-tr { position: absolute; top: 30px; right: 30px; }
+    .corner-bl { position: absolute; bottom: 30px; left: 30px; }
+    .corner-br { position: absolute; bottom: 30px; right: 30px; }
+    .corner { width: 20px; height: 20px; position: relative; }
+    .corner::before { content: ''; position: absolute; width: 20px; height: 20px; border-color: var(--cyan); border-style: solid; opacity: 0.4; }
+    .corner-tl::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
+    .corner-tr::before { top: 0; right: 0; border-width: 2px 2px 0 0; }
+    .corner-bl::before { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+    .corner-br::before { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+    /* Neon glow utilities */
+    .glow-cyan { color: var(--cyan); text-shadow: 0 0 20px rgba(0,245,255,0.6), 0 0 40px rgba(0,245,255,0.3); }
+    .glow-magenta { color: var(--magenta); text-shadow: 0 0 20px rgba(255,0,255,0.6); }
+    .glow-green { color: var(--green); text-shadow: 0 0 15px rgba(0,255,136,0.5); }
+
+    /* Slide 1: Title */
+    .s1 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s1 .eyebrow { position: absolute; left: 80px; top: 70px; font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; }
+    .s1 h1 {
+      position: absolute; left: 80px; top: 180px;
+      font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 160px; line-height: 0.85;
+      color: var(--cyan); letter-spacing: -0.02em;
+      text-shadow: 0 0 40px rgba(0,245,255,0.6), 0 0 80px rgba(0,245,255,0.3), 0 0 120px rgba(0,245,255,0.1);
+    }
+    .s1 h1 .dot { color: var(--magenta); text-shadow: 0 0 40px rgba(255,0,255,0.7), 0 0 80px rgba(255,0,255,0.4); }
+    .s1 .subtitle { position: absolute; left: 80px; top: 520px; font-size: 28px; font-weight: 600; color: var(--text-dim); letter-spacing: 0.05em; }
+    .s1 .right-panel { position: absolute; right: 80px; top: 180px; width: 560px; }
+    .s1 .hex-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border: 1px solid rgba(0,245,255,0.3); border-radius: 8px; background: rgba(0,245,255,0.05); margin: 0 8px 8px 0; }
+    .s1 .hex-badge .icon { font-size: 18px; }
+    .s1 .hex-badge .label { font-size: 14px; font-weight: 700; color: var(--text-dim); }
+    .s1 .line-deco { position: absolute; left: 80px; bottom: 120px; display: flex; align-items: center; gap: 16px; }
+    .s1 .line-deco .line { width: 60px; height: 2px; background: linear-gradient(90deg, var(--cyan), transparent); }
+    .s1 .line-deco .text { font-size: 14px; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; }
+    .s1 .corner-tl, .s1 .corner-tr, .s1 .corner-bl, .s1 .corner-br { position: absolute; }
+
+    /* Slide 2: What is OAuth */
+    .s2 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s2 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; border: 1px solid rgba(0,245,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,245,255,0.05); }
+    .s2 h1 { position: absolute; left: 80px; top: 160px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 80px; color: var(--text); line-height: 1; margin-bottom: 40px; }
+    .s2 h1 span { color: var(--cyan); }
+    .s2 .quote-box { position: absolute; left: 80px; top: 340px; right: 80px; border-left: 4px solid var(--magenta); padding: 30px 40px; background: rgba(255,0,255,0.05); border-radius: 0 12px 12px 0; }
+    .s2 .quote-box p { font-size: 24px; color: var(--text); line-height: 1.6; font-weight: 500; }
+    .s2 .quote-box .author { margin-top: 16px; font-size: 14px; color: var(--magenta); font-weight: 700; letter-spacing: 0.1em; }
+    .s2 .bottom-row { position: absolute; left: 80px; right: 80px; bottom: 100px; display: flex; gap: 20px; }
+    .s2 .stat-card { flex: 1; border: 1px solid rgba(0,245,255,0.15); border-radius: 12px; padding: 24px 28px; background: rgba(0,245,255,0.03); text-align: center; }
+    .s2 .stat-card .num { font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900; color: var(--cyan); text-shadow: 0 0 15px rgba(0,245,255,0.5); }
+    .s2 .stat-card .label { font-size: 13px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.05em; }
+
+    /* Slide 3: Four Roles */
+    .s3 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s3 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; border: 1px solid rgba(0,245,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,245,255,0.05); }
+    .s3 h1 { position: absolute; left: 80px; top: 160px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 64px; color: var(--text); line-height: 1; }
+    .s3 .roles-grid { position: absolute; left: 80px; top: 300px; right: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .s3 .role-card { border: 1px solid rgba(0,245,255,0.15); border-radius: 16px; padding: 28px 24px; background: rgba(0,15,40,0.6); position: relative; overflow: hidden; }
+    .s3 .role-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .s3 .role-card:nth-child(1)::before { background: linear-gradient(90deg, var(--cyan), var(--blue)); }
+    .s3 .role-card:nth-child(2)::before { background: linear-gradient(90deg, var(--magenta), var(--purple)); }
+    .s3 .role-card:nth-child(3)::before { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+    .s3 .role-card:nth-child(4)::before { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+    .s3 .role-num { font-family: 'Orbitron', sans-serif; font-size: 48px; font-weight: 900; opacity: 0.15; color: var(--cyan); line-height: 1; margin-bottom: 12px; }
+    .s3 .role-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700; margin-bottom: 8px; }
+    .s3 .role-card:nth-child(1) .role-name { color: var(--cyan); }
+    .s3 .role-card:nth-child(2) .role-name { color: var(--magenta); }
+    .s3 .role-card:nth-child(3) .role-name { color: var(--green); }
+    .s3 .role-card:nth-child(4) .role-name { color: var(--blue); }
+    .s3 .role-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .s3 .role-desc { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+
+    /* Slide 4: Auth Code Flow */
+    .s4 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s4 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; border: 1px solid rgba(0,245,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,245,255,0.05); }
+    .s4 h1 { position: absolute; left: 80px; top: 150px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 52px; color: var(--text); line-height: 1; }
+    .s4 .flow-row { position: absolute; left: 80px; top: 270px; right: 80px; display: flex; gap: 14px; }
+    .s4 .flow-step { flex: 1; border: 1px solid rgba(0,245,255,0.15); border-radius: 14px; padding: 22px 20px; background: rgba(0,15,40,0.6); }
+    .s4 .step-num { font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900; color: rgba(0,245,255,0.2); line-height: 1; margin-bottom: 10px; }
+    .s4 .step-title { font-size: 14px; font-weight: 700; color: var(--cyan); margin-bottom: 8px; }
+    .s4 .step-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 10px; }
+    .s4 .step code { display: block; font-family: 'Courier New', monospace; font-size: 10px; color: var(--magenta); background: rgba(255,0,255,0.08); padding: 8px 10px; border-radius: 6px; }
+    .s4 .arrow-col { display: flex; align-items: center; color: rgba(0,245,255,0.3); font-size: 20px; flex-shrink: 0; padding-top: 40px; }
+    .s4 .key-insight { position: absolute; left: 80px; right: 80px; bottom: 100px; border: 1px solid rgba(0,255,136,0.3); border-radius: 12px; padding: 18px 28px; background: rgba(0,255,136,0.05); display: flex; align-items: center; gap: 16px; }
+    .s4 .key-insight .icon { font-size: 24px; }
+    .s4 .key-insight p { font-size: 15px; color: var(--text-dim); }
+    .s4 .key-insight strong { color: var(--green); }
+
+    /* Slide 5: Tokens */
+    .s5 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s5 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; border: 1px solid rgba(0,245,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,245,255,0.05); }
+    .s5 h1 { position: absolute; left: 80px; top: 150px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 60px; color: var(--text); line-height: 1; }
+    .s5 .left-col { position: absolute; left: 80px; top: 280px; width: 820px; }
+    .s5 .token-card { border: 1px solid rgba(0,245,255,0.2); border-radius: 14px; padding: 24px 28px; margin-bottom: 14px; background: rgba(0,15,40,0.6); }
+    .s5 .token-card .type-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .s5 .badge-opaque { background: rgba(0,245,255,0.15); color: var(--cyan); }
+    .s5 .badge-jwt { background: rgba(179,0,255,0.15); color: var(--purple); }
+    .s5 .badge-refresh { background: rgba(0,255,136,0.1); color: var(--green); }
+    .s5 .token-card h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .s5 .token-card p { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+    .s5 .token-card pre { margin-top: 12px; font-family: 'Courier New', monospace; font-size: 11px; color: var(--cyan); background: rgba(0,245,255,0.05); padding: 10px 14px; border-radius: 6px; overflow-x: auto; }
+    .s5 .right-col { position: absolute; left: 980px; top: 280px; right: 80px; }
+    .s5 .right-col h2 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 18px; }
+    .s5 .comp-row { display: flex; align-items: center; gap: 14px; border: 1px solid rgba(0,245,255,0.1); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; background: rgba(0,15,40,0.4); }
+    .s5 .comp-row .check { font-size: 20px; }
+    .s5 .comp-row h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .s5 .comp-row p { font-size: 12px; color: var(--text-dim); }
+
+    /* Slide 6: PKCE */
+    .s6 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s6 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--magenta); font-weight: 700; border: 1px solid rgba(255,0,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(255,0,255,0.05); }
+    .s6 h1 { position: absolute; left: 80px; top: 150px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 64px; color: var(--text); line-height: 1; }
+    .s6 .attack-banner { position: absolute; left: 80px; right: 80px; top: 260px; border: 1px solid rgba(255,0,255,0.3); border-radius: 14px; padding: 24px 32px; background: rgba(255,0,255,0.06); display: flex; align-items: flex-start; gap: 20px; }
+    .s6 .attack-banner .icon { font-size: 32px; flex-shrink: 0; }
+    .s6 .attack-banner h3 { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: var(--magenta); margin-bottom: 8px; }
+    .s6 .attack-banner p { font-size: 15px; color: var(--text-dim); line-height: 1.55; }
+    .s6 .pkce-diagram { position: absolute; left: 80px; top: 400px; right: 80px; display: flex; gap: 14px; }
+    .s6 .pkce-step { flex: 1; border: 1px solid rgba(0,245,255,0.2); border-radius: 14px; padding: 22px; background: rgba(0,15,40,0.6); }
+    .s6 .pkce-step .step-circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--cyan); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: var(--cyan); margin-bottom: 14px; }
+    .s6 .pkce-step h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .s6 .pkce-step code { display: block; font-family: 'Courier New', monospace; font-size: 10px; color: var(--cyan); background: rgba(0,245,255,0.06); padding: 8px 10px; border-radius: 6px; }
+    .s6 .s256-box { position: absolute; right: 80px; top: 400px; width: 280px; border: 1px solid rgba(0,255,136,0.3); border-radius: 14px; padding: 20px; background: rgba(0,255,136,0.05); text-align: center; }
+    .s6 .s256-box .big { font-family: 'Orbitron', sans-serif; font-size: 52px; font-weight: 900; color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,0.6); display: block; margin-bottom: 8px; }
+    .s6 .s256-box p { font-size: 13px; color: var(--text-dim); }
+    .s6 .oauth21-note { position: absolute; left: 80px; right: 80px; bottom: 100px; border: 1px solid rgba(179,0,255,0.3); border-radius: 12px; padding: 18px 28px; background: rgba(179,0,255,0.05); display: flex; align-items: center; gap: 14px; }
+    .s6 .oauth21-note p { font-size: 15px; color: var(--text-dim); }
+    .s6 .oauth21-note strong { color: var(--purple); }
+
+    /* Slide 7: Scopes & Pitfalls */
+    .s7 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s7 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); font-weight: 700; border: 1px solid rgba(0,245,255,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,245,255,0.05); }
+    .s7 h1 { position: absolute; left: 80px; top: 150px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 56px; color: var(--text); line-height: 1; }
+    .s7 .left-col { position: absolute; left: 80px; top: 280px; width: 800px; }
+    .s7 .left-col h2 { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+    .s7 .scope-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .s7 .scope-row { border: 1px solid rgba(0,245,255,0.15); border-radius: 10px; padding: 16px 18px; background: rgba(0,15,40,0.5); }
+    .s7 .scope-row .provider { font-size: 12px; font-weight: 700; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .s7 .scope-row .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .s7 .scope-pill { padding: 3px 10px; border-radius: 6px; font-size: 11px; font-family: 'Courier New', monospace; background: rgba(0,245,255,0.08); color: var(--text-dim); border: 1px solid rgba(0,245,255,0.15); }
+    .s7 .right-col { position: absolute; left: 960px; top: 280px; right: 80px; }
+    .s7 .right-col h2 { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+    .s7 .pitfall { border: 1px solid rgba(255,0,255,0.2); border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; background: rgba(255,0,255,0.04); }
+    .s7 .pitfall h4 { font-size: 14px; font-weight: 700; color: var(--magenta); margin-bottom: 6px; }
+    .s7 .pitfall p { font-size: 12px; color: var(--text-dim); line-height: 1.45; margin-bottom: 6px; }
+    .s7 .pitfall .fix { font-size: 11px; font-weight: 700; color: var(--green); }
+
+    /* Slide 8: MCP */
+    .s8 .grid-bg { transform: perspective(600px) rotateX(20deg) scale(2); }
+    .s8 .tag { position: absolute; left: 80px; top: 70px; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--green); font-weight: 700; border: 1px solid rgba(0,255,136,0.3); padding: 6px 16px; border-radius: 4px; background: rgba(0,255,136,0.05); }
+    .s8 h1 { position: absolute; left: 80px; top: 150px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 60px; color: var(--text); line-height: 1; }
+    .s8 h1 span { color: var(--green); }
+    .s8 .mcp-flow { position: absolute; left: 80px; top: 280px; width: 1000px; display: flex; flex-direction: column; gap: 14px; }
+    .s8 .mcp-step { display: flex; align-items: center; gap: 20px; }
+    .s8 .step-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: var(--green); flex-shrink: 0; box-shadow: 0 0 10px rgba(0,255,136,0.3); }
+    .s8 .step-content { flex: 1; border: 1px solid rgba(0,255,136,0.2); border-radius: 12px; padding: 16px 24px; background: rgba(0,20,10,0.6); }
+    .s8 .step-content h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .s8 .step-content p { font-size: 13px; color: var(--text-dim); }
+    .s8 .step-content code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--green); }
+    .s8 .rfc-panel { position: absolute; left: 1160px; top: 280px; right: 80px; }
+    .s8 .rfc-panel h2 { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+    .s8 .rfc-list { display: flex; flex-direction: column; gap: 10px; }
+    .s8 .rfc-item { border: 1px solid rgba(0,255,136,0.15); border-radius: 10px; padding: 14px 18px; background: rgba(0,20,10,0.4); display: flex; justify-content: space-between; align-items: center; }
+    .s8 .rfc-item .rfc-num { font-size: 12px; font-weight: 900; color: var(--green); font-family: 'Orbitron', sans-serif; }
+    .s8 .rfc-item .rfc-name { font-size: 13px; color: var(--text-dim); }
+    .s8 .bottom-note { position: absolute; left: 80px; right: 80px; bottom: 100px; border: 1px solid rgba(0,245,255,0.2); border-radius: 12px; padding: 20px 28px; background: rgba(0,245,255,0.04); text-align: center; }
+    .s8 .bottom-note p { font-size: 18px; color: var(--text); font-weight: 600; }
+    .s8 .bottom-note p span { color: var(--cyan); }
+  </style>
+</head>
+<body>
+<div class="deck-viewport">
+  <div class="deck-stage" id="deckStage">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide s1 active" id="slide-1">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="eyebrow">// TECHNICAL SERIES · 5 LESSONS</div>
+      <h1>OAuth<span class="dot">.</span>2</h1>
+      <div class="subtitle">Delegated Authorization from First Principles</div>
+      <div class="right-panel">
+        <div class="hex-badge"><span class="icon">🔐</span><span class="label">AuthN ≠ AuthZ</span></div>
+        <div class="hex-badge"><span class="icon">🎭</span><span class="label">4 Roles</span></div>
+        <div class="hex-badge"><span class="icon">🔑</span><span class="label">Auth Code + PKCE</span></div>
+        <div class="hex-badge"><span class="icon">📛</span><span class="label">JWTs & Scopes</span></div>
+        <div class="hex-badge"><span class="icon">⚡</span><span class="label">OAuth 2.1</span></div>
+        <div class="hex-badge"><span class="icon">🤖</span><span class="label">MCP Composition</span></div>
+      </div>
+      <div class="line-deco">
+        <div class="line"></div>
+        <div class="text">RFC 6749 · 7636 · 9700 · 9728</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: What is OAuth -->
+    <div class="slide s2" id="slide-2">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 01 · CORE CONCEPT</div>
+      <h1>What is <span>OAuth</span>?</h1>
+      <div class="quote-box">
+        <p>"A protocol for delegated authorization — letting a third-party app act on your behalf, within a narrow scope, without handing over your password."</p>
+        <div class="author">— RFC 6749 Abstract</div>
+      </div>
+      <div class="bottom-row">
+        <div class="stat-card">
+          <div class="num">4</div>
+          <div class="label">OAuth roles defined in RFC 6749</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">0</div>
+          <div class="label">Times the password crosses the network</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">∞</div>
+          <div class="label">Revocable scope — revoke any time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Four Roles -->
+    <div class="slide s3" id="slide-3">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 02 · ROLES</div>
+      <h1>The Four Roles</h1>
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="role-num">01</div>
+          <div class="role-name">Role 1</div>
+          <div class="role-title">Resource Owner</div>
+          <div class="role-desc">The user — the only party who can grant access. Owns the data behind the resource server.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-num">02</div>
+          <div class="role-name">Role 2</div>
+          <div class="role-title">Client</div>
+          <div class="role-desc">The third-party app requesting permission. Confidential = keeps a secret. Public = cannot (SPA, mobile).</div>
+        </div>
+        <div class="role-card">
+          <div class="role-num">03</div>
+          <div class="role-name">Role 3</div>
+          <div class="role-title">Authorization Server</div>
+          <div class="role-desc">Issues tokens after consent. Hosts /authorize and /token endpoints and the consent screen.</div>
+        </div>
+        <div class="role-card">
+          <div class="role-num">04</div>
+          <div class="role-name">Role 4</div>
+          <div class="role-title">Resource Server</div>
+          <div class="role-desc">The API holding protected data. Accepts access tokens. Often same vendor as AS — but logically separate.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Auth Code Flow -->
+    <div class="slide s4" id="slide-4">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 03 · AUTH CODE FLOW</div>
+      <h1>The Happy Path — 6 Steps</h1>
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="step-num">01</div>
+          <div class="step-title">User clicks connect</div>
+          <div class="step-desc">Client generates random state for CSRF protection.</div>
+        </div>
+        <div class="arrow-col">→</div>
+        <div class="flow-step">
+          <div class="step-num">02</div>
+          <div class="step-title">Browser → /authorize</div>
+          <div class="step-desc">Redirect with client_id, scope, state, PKCE challenge.</div>
+          <code>?response_type=code<br>&code_challenge=SHA256(…)</code>
+        </div>
+        <div class="arrow-col">→</div>
+        <div class="flow-step">
+          <div class="step-num">03</div>
+          <div class="step-title">User authenticates + consents</div>
+          <div class="step-desc">Enters password at AS. Sees exact scopes. Clicks Allow.</div>
+        </div>
+        <div class="arrow-col">→</div>
+        <div class="flow-step">
+          <div class="step-num">04</div>
+          <div class="step-title">Browser gets CODE</div>
+          <div class="step-desc">~30s expiry. Single-use. Opaque.</div>
+          <code>?code=4/0AVMBs…<br>&state=xyz123</code>
+        </div>
+        <div class="arrow-col">→</div>
+        <div class="flow-step">
+          <div class="step-num">05</div>
+          <div class="step-title">Backend: code → token</div>
+          <div class="step-desc">Server-to-server POST. Client secret never in browser.</div>
+          <code>POST /token<br>code_verifier="…"</code>
+        </div>
+        <div class="arrow-col">→</div>
+        <div class="flow-step">
+          <div class="step-num">06</div>
+          <div class="step-title">Tokens returned</div>
+          <div class="step-desc">access_token ~1h. refresh_token days–months.</div>
+          <code>{ access_token,<br>expires_in, scope }</code>
+        </div>
+      </div>
+      <div class="key-insight">
+        <div class="icon">⚡</div>
+        <p><strong>The key:</strong> The token crosses only a confidential server-to-server call — never the browser. The code is an opaque, single-use handoff.</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Tokens -->
+    <div class="slide s5" id="slide-5">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 04 · TOKENS</div>
+      <h1>Access Tokens — Two Shapes</h1>
+      <div class="left-col">
+        <div class="token-card">
+          <div class="type-badge badge-opaque">Opaque</div>
+          <h3>Random string — no intrinsic meaning</h3>
+          <p>RS calls AS introspection to learn token meaning. Easy to revoke — just delete server-side.</p>
+          <pre>Authorization: Bearer xyz123</pre>
+        </div>
+        <div class="token-card">
+          <div class="type-badge badge-jwt">JWT · RFC 7519</div>
+          <h3>header.claims.signature — self-contained</h3>
+          <p>RS validates locally with AS public key. No round-trip — but harder to revoke before exp.</p>
+          <pre>eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOi…</pre>
+        </div>
+        <div class="token-card">
+          <div class="type-badge badge-refresh">Refresh Token</div>
+          <h3>Long-lived credential (days–months)</h3>
+          <p>Mint new access tokens silently without user interaction. Treat as high-value secret. Rotation required for public clients in OAuth 2.1.</p>
+        </div>
+      </div>
+      <div class="right-col">
+        <h2>Trade-offs</h2>
+        <div class="comp-row">
+          <div class="check">✓</div>
+          <div>
+            <h4>Opaque: instant revocation</h4>
+            <p>Delete from token store = immediate kill. No extra infrastructure.</p>
+          </div>
+        </div>
+        <div class="comp-row">
+          <div class="check">✓</div>
+          <div>
+            <h4>JWT: low latency</h4>
+            <p>No introspection round-trip. Cached public key for validation.</p>
+          </div>
+        </div>
+        <div class="comp-row">
+          <div class="check">⚠</div>
+          <div>
+            <h4>JWT: revocation gap</h4>
+            <p>No way to invalidate before exp without denylist or short TTL.</p>
+          </div>
+        </div>
+        <div class="comp-row">
+          <div class="check">⚠</div>
+          <div>
+            <h4>Refresh: high blast radius</h4>
+            <p>Leak = unlimited token minting. Rotation required for public clients.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PKCE -->
+    <div class="slide s6" id="slide-6">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 05 · PKCE</div>
+      <h1>Proof Key for Code Exchange</h1>
+      <div class="attack-banner">
+        <div class="icon">⚠️</div>
+        <div>
+          <h3>Authorization code interception attack</h3>
+          <p>Malicious browser extension, mobile app hijacker, or confused URL handler reads the code from the URL bar. Without PKCE, the attacker redeems it — the client has no secret to prove legitimacy.</p>
+        </div>
+      </div>
+      <div class="pkce-diagram">
+        <div class="pkce-step">
+          <div class="step-circle">1</div>
+          <h3>Generate verifier</h3>
+          <code>code_verifier = BASE64URL(random(32))</code>
+        </div>
+        <div class="pkce-step">
+          <div class="step-circle">2</div>
+          <h3>Send SHA-256 challenge</h3>
+          <code>code_challenge = BASE64URL(SHA256(verifier))</code>
+        </div>
+        <div class="pkce-step">
+          <div class="step-circle">3</div>
+          <h3>Redeem with verifier</h3>
+          <code>POST /token<br>{ code_verifier: "..." }</code>
+        </div>
+      </div>
+      <div class="s256-box">
+        <span class="big">S256</span>
+        <p>The only acceptable<br>challenge method</p>
+      </div>
+      <div class="oauth21-note">
+        <p><strong>OAuth 2.1:</strong> PKCE required for <em>all</em> clients using auth code flow — public and confidential alike.</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Scopes & Pitfalls -->
+    <div class="slide s7" id="slide-7">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 06 · SCOPES &amp; SECURITY</div>
+      <h1>Scopes &amp; Common Pitfalls</h1>
+      <div class="left-col">
+        <h2>Real-world scopes by provider</h2>
+        <div class="scope-grid">
+          <div class="scope-row">
+            <div class="provider">Google</div>
+            <div class="pills"><span class="scope-pill">calendar.readonly</span><span class="scope-pill">gmail.read</span></div>
+          </div>
+          <div class="scope-row">
+            <div class="provider">GitHub</div>
+            <div class="pills"><span class="scope-pill">repo</span><span class="scope-pill">read:user</span><span class="scope-pill">workflow</span></div>
+          </div>
+          <div class="scope-row">
+            <div class="provider">Slack</div>
+            <div class="pills"><span class="scope-pill">channels:read</span><span class="scope-pill">chat:write</span></div>
+          </div>
+          <div class="scope-row">
+            <div class="provider">MCP</div>
+            <div class="pills"><span class="scope-pill">files:read</span><span class="scope-pill">files:write</span><span class="scope-pill">user:profile</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <h2>Security pitfalls (RFC 9700)</h2>
+        <div class="pitfall">
+          <h4>1 · Open redirect on redirect_uri</h4>
+          <p>Prefix/wildcard matching lets attackers chain through your URL to exfiltrate the code.</p>
+          <div class="fix">✓ RFC 9700: exact string matching only</div>
+        </div>
+        <div class="pitfall">
+          <h4>2 · Missing CSRF (no state)</h4>
+          <p>Without state, attacker initiates flow returning to attacker's account (login CSRF).</p>
+          <div class="fix">✓ Always include random state per request</div>
+        </div>
+        <div class="pitfall">
+          <h4>3 · Confused deputy</h4>
+          <p>Token used legitimately on resources the user didn't consciously delegate.</p>
+          <div class="fix">✓ Narrow scopes + resource parameter (RFC 9728)</div>
+        </div>
+        <div class="pitfall">
+          <h4>4 · Tokens in localStorage</h4>
+          <p>XSS = full token theft. Use HttpOnly cookies or memory-only tokens.</p>
+          <div class="fix">✓ Memory tokens + refresh for persistence</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: MCP -->
+    <div class="slide s8" id="slide-8">
+      <div class="grid-bg"></div>
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="tag">// 07 · MCP COMPOSITION</div>
+      <h1>MCP = <span>OAuth 2.1</span> Composed</h1>
+      <div class="mcp-flow">
+        <div class="mcp-step">
+          <div class="step-circle">1</div>
+          <div class="step-content">
+            <h3>Unauthenticated request → 401 + WWW-Authenticate</h3>
+            <p>RS returns <code>401 + WWW-Authenticate: Bearer resource_metadata="https://mcp.example.com/…"</code></p>
+          </div>
+        </div>
+        <div class="mcp-step">
+          <div class="step-circle">2</div>
+          <div class="step-content">
+            <h3>Fetch Protected Resource Metadata (RFC 9728)</h3>
+            <p>Contains <code>authorization_servers[]</code> — array of AS issuer URLs</p>
+          </div>
+        </div>
+        <div class="mcp-step">
+          <div class="step-circle">3</div>
+          <div class="step-content">
+            <h3>Fetch AS Metadata (RFC 8414)</h3>
+            <p>Discovers <code>/authorize</code>, <code>/token</code>, supported challenge methods</p>
+          </div>
+        </div>
+        <div class="mcp-step">
+          <div class="step-circle">4</div>
+          <div class="step-content">
+            <h3>Run Auth Code + PKCE + resource parameter</h3>
+            <p><code>&resource=https%3A%2F%2Fmcp.example.com</code> binds token audience to this RS</p>
+          </div>
+        </div>
+      </div>
+      <div class="rfc-panel">
+        <h2>MCP composes these RFCs</h2>
+        <div class="rfc-list">
+          <div class="rfc-item"><span class="rfc-num">RFC 7636</span><span class="rfc-name">PKCE</span></div>
+          <div class="rfc-item"><span class="rfc-num">RFC 9728</span><span class="rfc-name">Protected Resource Metadata</span></div>
+          <div class="rfc-item"><span class="rfc-num">RFC 8414</span><span class="rfc-name">AS Metadata</span></div>
+          <div class="rfc-item"><span class="rfc-num">RFC 9728</span><span class="rfc-name">resource parameter (audience)</span></div>
+          <div class="rfc-item"><span class="rfc-num">RFC 7591</span><span class="rfc-name">Dynamic Client Registration</span></div>
+        </div>
+      </div>
+      <div class="bottom-note">
+        <p>No new auth protocol — <span>just careful composition</span> of OAuth 2.1, PKCE, RFC 9728, and RFC 8414.</p>
+      </div>
+    </div>
+
+  </div><!-- /deck-stage -->
+
+  <div class="deck-controls">
+    <button onclick="prevSlide()" aria-label="Previous">←</button>
+    <span class="counter" id="slideCounter">01 / 08</span>
+    <button onclick="nextSlide()" aria-label="Next">→</button>
+  </div>
+</div><!-- /deck-viewport -->
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var current = 0;
+  var total = slides.length;
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
+    slides.forEach(function(s, i) {
+      s.classList.toggle('active', i === index);
+    });
+    current = index;
+    document.getElementById('slideCounter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  window.nextSlide = function() { showSlide(current + 1); };
+  window.prevSlide = function() { showSlide(current - 1); };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  function scaleStage() {
+    var vp = document.querySelector('.deck-viewport');
+    var stage = document.getElementById('deckStage');
+    var vw = vp.clientWidth;
+    var vh = vp.clientHeight;
+    var scaleX = vw / 1920;
+    var scaleY = vh / 1080;
+    var scale = Math.min(scaleX, scaleY);
+    var ox = (vw - 1920 * scale) / 2;
+    var oy = (vh - 1080 * scale) / 2;
+    stage.style.transform = 'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
+  }
+
+  window.addEventListener('resize', scaleStage);
+  scaleStage();
+  showSlide(0);
+})();
+</script>
+</body>
+</html>

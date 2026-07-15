@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth 2.0 — Bold Signal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* viewport-base.css — MANDATORY BASE */
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #1a1a1a; }
+    .deck-viewport { position: fixed; inset: 0; overflow: hidden; background: #1a1a1a; }
+    .deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; }
+    .slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; }
+    .slide.active { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+    img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+    /* Bold Signal Theme */
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+      --card-bg: #FF5722;
+      --text-primary: #ffffff;
+      --text-on-card: #1a1a1a;
+      --text-muted: #9a9a9a;
+      --text-secondary: #cccccc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg-primary); color: var(--text-primary); }
+
+    .deck-viewport { background: var(--bg-gradient); }
+
+    /* Navigation */
+    .deck-controls {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 20px; z-index: 1000;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      padding: 12px 28px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .deck-controls button {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 18px;
+      width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .deck-controls button:hover { background: rgba(255,255,255,0.25); }
+    .deck-controls .counter { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; letter-spacing: 0.1em; min-width: 60px; text-align: center; }
+
+    /* Slide layout helpers */
+    .slide-inner { width: 1920px; height: 1080px; position: relative; overflow: hidden; }
+
+    /* Typography */
+    .archivo { font-family: 'Archivo Black', sans-serif; }
+    .sg { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Slide 1: Title */
+    .s1 { background: var(--bg-gradient); }
+    .s1 .accent-card {
+      position: absolute; left: 0; top: 0; width: 1100px; height: 1080px;
+      background: var(--card-bg); clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+    }
+    .s1 .title-text {
+      position: absolute; left: 140px; top: 280px;
+      font-family: 'Archivo Black', sans-serif; font-size: 140px; line-height: 0.9;
+      color: var(--text-on-card);
+    }
+    .s1 .subtitle-text {
+      position: absolute; left: 140px; top: 560px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 500;
+      color: rgba(26,26,26,0.7); letter-spacing: 0.02em;
+    }
+    .s1 .right-info {
+      position: absolute; right: 100px; top: 300px; width: 500px;
+    }
+    .s1 .right-info p { font-size: 22px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .s1 .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+    .s1 .pill {
+      padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8); letter-spacing: 0.05em;
+    }
+    .s1 .lesson-count {
+      position: absolute; right: 100px; bottom: 100px;
+      font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .s1 .slide-num {
+      position: absolute; left: 80px; top: 60px;
+      font-family: 'Archivo Black', sans-serif; font-size: 200px; color: rgba(255,87,34,0.15);
+      line-height: 1; letter-spacing: -0.05em;
+    }
+
+    /* Slide 2: The Problem */
+    .s2 { background: var(--bg-primary); }
+    .s2 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s2 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s2 .main-card {
+      position: absolute; left: 100px; top: 200px; width: 820px;
+      background: var(--card-bg); border-radius: 24px; padding: 60px;
+    }
+    .s2 .main-card .q-mark { font-family: 'Archivo Black', sans-serif; font-size: 80px; color: rgba(26,26,26,0.2); line-height: 1; margin-bottom: 10px; }
+    .s2 .main-card h1 { font-family: 'Archivo Black', sans-serif; font-size: 48px; color: var(--text-on-card); line-height: 1.1; margin-bottom: 24px; }
+    .s2 .main-card p { font-size: 22px; color: rgba(26,26,26,0.75); line-height: 1.6; }
+    .s2 .right-panel { position: absolute; left: 1060px; top: 200px; right: 80px; }
+    .s2 .right-panel h2 { font-family: 'Archivo Black', sans-serif; font-size: 32px; margin-bottom: 30px; color: #fff; }
+    .s2 .right-panel .comparison { display: flex; flex-direction: column; gap: 20px; }
+    .s2 .wrong-item {
+      background: rgba(255,87,34,0.15); border: 1px solid rgba(255,87,34,0.3);
+      border-radius: 16px; padding: 24px 30px;
+    }
+    .s2 .wrong-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #ff8a65; font-weight: 700; margin-bottom: 8px; }
+    .s2 .wrong-item p { font-size: 18px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .s2 .wrong-item del { color: rgba(255,255,255,0.35); }
+    .s2 .right-item {
+      background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3);
+      border-radius: 16px; padding: 24px 30px;
+    }
+    .s2 .right-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #81c784; font-weight: 700; margin-bottom: 8px; }
+    .s2 .right-item p { font-size: 18px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+    /* Slide 3: AuthN vs AuthZ */
+    .s3 { background: var(--bg-primary); }
+    .s3 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s3 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s3 h1 { position: absolute; left: 100px; top: 140px; font-family: 'Archivo Black', sans-serif; font-size: 72px; color: #fff; }
+    .s3 .card-authn {
+      position: absolute; left: 100px; top: 320px; width: 780px;
+      background: #2a2a2a; border-radius: 24px; padding: 50px 60px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .s3 .card-authz {
+      position: absolute; left: 960px; top: 320px; width: 860px;
+      background: var(--card-bg); border-radius: 24px; padding: 50px 60px;
+    }
+    .s3 .big-q { font-family: 'Archivo Black', sans-serif; font-size: 120px; line-height: 0.85; color: rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .s3 .big-q-dark { font-family: 'Archivo Black', sans-serif; font-size: 120px; line-height: 0.85; color: rgba(26,26,26,0.15); margin-bottom: 20px; }
+    .s3 .card-authn h2 { font-family: 'Archivo Black', sans-serif; font-size: 52px; color: #fff; margin-bottom: 16px; }
+    .s3 .card-authz h2 { font-family: 'Archivo Black', sans-serif; font-size: 52px; color: var(--text-on-card); margin-bottom: 16px; }
+    .s3 .card-authn p { font-size: 22px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .s3 .card-authz p { font-size: 22px; color: rgba(26,26,26,0.7); line-height: 1.6; }
+    .s3 .card-authz .badge { display: inline-block; margin-top: 24px; padding: 8px 20px; background: rgba(26,26,26,0.15); border-radius: 20px; font-size: 14px; font-weight: 700; color: var(--text-on-card); letter-spacing: 0.05em; }
+    .s3 .card-authn .badge { display: inline-block; margin-top: 24px; padding: 8px 20px; background: rgba(255,87,34,0.2); border-radius: 20px; font-size: 14px; font-weight: 700; color: #ff8a65; letter-spacing: 0.05em; }
+
+    /* Slide 4: Four Roles */
+    .s4 { background: var(--bg-primary); }
+    .s4 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s4 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s4 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 60px; color: #fff; }
+    .s4 .roles-grid { position: absolute; left: 100px; top: 280px; display: grid; grid-template-columns: repeat(2, 840px); gap: 24px; }
+    .s4 .role-card { background: #2a2a2a; border-radius: 20px; padding: 40px 48px; border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
+    .s4 .role-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--card-bg); border-radius: 3px 0 0 3px; }
+    .s4 .role-num { font-family: 'Archivo Black', sans-serif; font-size: 80px; color: rgba(255,87,34,0.2); line-height: 1; margin-bottom: 10px; }
+    .s4 .role-name { font-size: 13px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--card-bg); font-weight: 700; margin-bottom: 8px; }
+    .s4 .role-title { font-family: 'Archivo Black', sans-serif; font-size: 30px; color: #fff; margin-bottom: 12px; }
+    .s4 .role-desc { font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.55; }
+
+    /* Slide 5: Auth Code Flow */
+    .s5 { background: var(--bg-primary); }
+    .s5 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s5 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s5 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 56px; color: #fff; }
+    .s5 .flow-steps { position: absolute; left: 100px; top: 280px; display: flex; gap: 16px; align-items: flex-start; }
+    .s5 .step {
+      width: 300px; background: #2a2a2a; border-radius: 16px; padding: 28px;
+      border: 1px solid rgba(255,255,255,0.06); position: relative;
+    }
+    .s5 .step-num { font-family: 'Archivo Black', sans-serif; font-size: 56px; color: var(--card-bg); line-height: 1; margin-bottom: 12px; }
+    .s5 .step h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .s5 .step p { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+    .s5 .step code { display: block; margin-top: 10px; font-family: 'Courier New', monospace; font-size: 11px; color: #ff8a65; background: rgba(255,87,34,0.1); padding: 8px 10px; border-radius: 6px; }
+    .s5 .arrow { display: flex; align-items: center; color: rgba(255,255,255,0.2); font-size: 24px; padding-top: 30px; }
+    .s5 .bottom-note { position: absolute; left: 100px; right: 100px; bottom: 80px; background: rgba(255,87,34,0.1); border: 1px solid rgba(255,87,34,0.3); border-radius: 12px; padding: 20px 28px; display: flex; align-items: center; gap: 16px; }
+    .s5 .bottom-note .icon { font-size: 24px; }
+    .s5 .bottom-note p { font-size: 16px; color: rgba(255,255,255,0.7); }
+    .s5 .bottom-note strong { color: #fff; }
+
+    /* Slide 6: Tokens */
+    .s6 { background: var(--bg-primary); }
+    .s6 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s6 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s6 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 64px; color: #fff; }
+    .s6 .left-panel { position: absolute; left: 100px; top: 300px; width: 820px; }
+    .s6 .token-card { background: #2a2a2a; border-radius: 20px; padding: 36px 44px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+    .s6 .token-card .tag { display: inline-block; padding: 4px 14px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .s6 .tag-opaque { background: rgba(255,87,34,0.15); color: #ff8a65; }
+    .s6 .tag-jwt { background: rgba(76,175,80,0.15); color: #81c784; }
+    .s6 .token-card h3 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .s6 .token-card p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .s6 .token-card pre { margin-top: 14px; font-family: 'Courier New', monospace; font-size: 12px; color: #ff8a65; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
+    .s6 .right-panel { position: absolute; left: 1000px; top: 300px; right: 80px; }
+    .s6 .right-panel h2 { font-family: 'Archivo Black', sans-serif; font-size: 28px; color: #fff; margin-bottom: 24px; }
+    .s6 .trade-card { background: rgba(255,87,34,0.08); border: 1px solid rgba(255,87,34,0.25); border-radius: 14px; padding: 24px 28px; margin-bottom: 12px; }
+    .s6 .trade-card h4 { font-size: 15px; font-weight: 700; color: #ff8a65; margin-bottom: 8px; }
+    .s6 .trade-card p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+    /* Slide 7: Scopes & Refresh */
+    .s7 { background: var(--bg-primary); }
+    .s7 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s7 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s7 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 64px; color: #fff; }
+    .s7 .left-col { position: absolute; left: 100px; top: 300px; width: 820px; }
+    .s7 .scope-table { background: #2a2a2a; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
+    .s7 .scope-row { display: flex; align-items: center; padding: 18px 28px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .s7 .scope-row:last-child { border-bottom: none; }
+    .s7 .scope-provider { width: 120px; font-size: 13px; font-weight: 700; color: var(--card-bg); text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
+    .s7 .scope-scopes { display: flex; flex-wrap: wrap; gap: 6px; }
+    .s7 .scope-pill { padding: 3px 10px; border-radius: 6px; font-size: 12px; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
+    .s7 .right-col { position: absolute; left: 1000px; top: 300px; right: 80px; }
+    .s7 .right-col h2 { font-family: 'Archivo Black', sans-serif; font-size: 28px; color: #fff; margin-bottom: 20px; }
+    .s7 .refresh-card { background: var(--card-bg); border-radius: 20px; padding: 36px; margin-bottom: 16px; }
+    .s7 .refresh-card h3 { font-family: 'Archivo Black', sans-serif; font-size: 22px; color: var(--text-on-card); margin-bottom: 12px; }
+    .s7 .refresh-card p { font-size: 16px; color: rgba(26,26,26,0.7); line-height: 1.6; }
+    .s7 .warning-card { background: rgba(255,87,34,0.12); border: 1px solid rgba(255,87,34,0.35); border-radius: 16px; padding: 24px 28px; }
+    .s7 .warning-card h4 { font-size: 14px; font-weight: 700; color: #ff8a65; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .s7 .warning-card p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+    /* Slide 8: PKCE */
+    .s8 { background: var(--bg-primary); }
+    .s8 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s8 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s8 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 52px; color: #fff; }
+    .s8 .attack-banner { position: absolute; left: 100px; right: 100px; top: 260px; background: rgba(220,50,50,0.12); border: 1px solid rgba(220,50,50,0.35); border-radius: 16px; padding: 24px 36px; display: flex; align-items: flex-start; gap: 20px; }
+    .s8 .attack-banner .icon { font-size: 36px; flex-shrink: 0; }
+    .s8 .attack-banner h3 { font-family: 'Archivo Black', sans-serif; font-size: 22px; color: #ef5350; margin-bottom: 8px; }
+    .s8 .attack-banner p { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.55; }
+    .s8 .pkce-steps { position: absolute; left: 100px; top: 420px; display: flex; gap: 16px; }
+    .s8 .pkce-step { width: 560px; background: #2a2a2a; border-radius: 16px; padding: 28px; border: 1px solid rgba(255,255,255,0.06); }
+    .s8 .pkce-step .step-badge { display: inline-block; width: 32px; height: 32px; border-radius: 50%; background: var(--card-bg); color: var(--text-on-card); font-family: 'Archivo Black', sans-serif; font-size: 16px; text-align: center; line-height: 32px; margin-bottom: 14px; }
+    .s8 .pkce-step h3 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .s8 .pkce-step p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 12px; }
+    .s8 .pkce-step code { display: block; font-family: 'Courier New', monospace; font-size: 12px; color: #ff8a65; background: rgba(255,87,34,0.1); padding: 10px 14px; border-radius: 8px; }
+    .s8 .s256-badge { position: absolute; right: 100px; top: 430px; background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.4); border-radius: 16px; padding: 20px 28px; text-align: center; }
+    .s8 .s256-badge .big { font-family: 'Archivo Black', sans-serif; font-size: 52px; color: #81c784; display: block; margin-bottom: 8px; }
+    .s8 .s256-badge p { font-size: 14px; color: rgba(255,255,255,0.6); }
+    .s8 .oauth21-banner { position: absolute; left: 100px; right: 100px; bottom: 80px; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.35); border-radius: 12px; padding: 18px 28px; display: flex; align-items: center; gap: 16px; }
+    .s8 .oauth21-banner p { font-size: 16px; color: rgba(255,255,255,0.75); }
+    .s8 .oauth21-banner strong { color: #81c784; }
+
+    /* Slide 9: Pitfalls */
+    .s9 { background: var(--bg-primary); }
+    .s9 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s9 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s9 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 60px; color: #fff; }
+    .s9 .pitfalls-grid { position: absolute; left: 100px; top: 280px; display: grid; grid-template-columns: repeat(3, 540px); gap: 18px; }
+    .s9 .pitfall { background: rgba(220,50,50,0.08); border: 1px solid rgba(220,50,50,0.25); border-radius: 16px; padding: 28px; }
+    .s9 .pitfall-num { font-family: 'Archivo Black', sans-serif; font-size: 48px; color: rgba(220,50,50,0.3); line-height: 1; margin-bottom: 10px; }
+    .s9 .pitfall h3 { font-size: 17px; font-weight: 700; color: #ef5350; margin-bottom: 8px; }
+    .s9 .pitfall p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .s9 .pitfall .fix { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #81c784; font-weight: 600; }
+    .s9 .pitfall .fix::before { content: '✓'; }
+
+    /* Slide 10: MCP */
+    .s10 { background: var(--bg-gradient); }
+    .s10 .slide-num { position: absolute; right: 60px; top: 30px; font-size: 300px; font-family: 'Archivo Black', sans-serif; color: rgba(255,87,34,0.08); line-height: 1; }
+    .s10 .section-label { position: absolute; left: 100px; top: 70px; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--card-bg); font-weight: 600; }
+    .s10 h1 { position: absolute; left: 100px; top: 130px; font-family: 'Archivo Black', sans-serif; font-size: 56px; color: #fff; }
+    .s10 .mcp-flow { position: absolute; left: 100px; top: 280px; display: flex; flex-direction: column; gap: 14px; width: 1100px; }
+    .s10 .mcp-step { display: flex; align-items: center; gap: 20px; }
+    .s10 .mcp-step .step-circle { width: 48px; height: 48px; border-radius: 50%; background: var(--card-bg); color: var(--text-on-card); font-family: 'Archivo Black', sans-serif; font-size: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .s10 .mcp-step .step-content { background: #2a2a2a; border-radius: 14px; padding: 16px 24px; flex: 1; border: 1px solid rgba(255,255,255,0.06); }
+    .s10 .mcp-step .step-content h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .s10 .mcp-step .step-content p { font-size: 14px; color: rgba(255,255,255,0.55); }
+    .s10 .mcp-step .step-content code { font-family: 'Courier New', monospace; font-size: 12px; color: #ff8a65; }
+    .s10 .mcp-step .arrow { color: rgba(255,255,255,0.15); font-size: 20px; padding-top: 0; }
+    .s10 .right-panel { position: absolute; left: 1280px; top: 280px; right: 80px; }
+    .s10 .right-panel h2 { font-family: 'Archivo Black', sans-serif; font-size: 28px; color: #fff; margin-bottom: 20px; }
+    .s10 .rfc-list { display: flex; flex-direction: column; gap: 10px; }
+    .s10 .rfc-item { background: rgba(255,87,34,0.08); border: 1px solid rgba(255,87,34,0.2); border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .s10 .rfc-item .rfc-num { font-size: 12px; font-weight: 700; color: var(--card-bg); letter-spacing: 0.05em; }
+    .s10 .rfc-item .rfc-name { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .s10 .composition-badge { position: absolute; right: 80px; bottom: 80px; background: var(--card-bg); border-radius: 16px; padding: 20px 28px; text-align: center; }
+    .s10 .composition-badge p { font-family: 'Archivo Black', sans-serif; font-size: 20px; color: var(--text-on-card); }
+  </style>
+</head>
+<body>
+<div class="deck-viewport">
+  <div class="deck-stage" id="deckStage">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide s1 active" id="slide-1">
+      <div class="slide-inner">
+        <div class="slide-num">01</div>
+        <div class="accent-card"></div>
+        <div class="title-text">OAuth<br>2.0</div>
+        <div class="subtitle-text">Delegated Authorization</div>
+        <div class="right-info">
+          <p>A 5-part technical series on delegated authorization — from first principles to MCP composability.</p>
+          <div class="pill-row">
+            <span class="pill">Authorization Code</span>
+            <span class="pill">PKCE</span>
+            <span class="pill">JWTs</span>
+            <span class="pill">Scopes</span>
+            <span class="pill">OAuth 2.1</span>
+            <span class="pill">MCP Auth</span>
+          </div>
+        </div>
+        <div class="lesson-count">5 LESSONS · 10 KEY CONCEPTS</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: The Problem -->
+    <div class="slide s2" id="slide-2">
+      <div class="slide-inner">
+        <div class="slide-num">02</div>
+        <div class="section-label">The Problem</div>
+        <div class="main-card">
+          <div class="q-mark">?</div>
+          <h1>The todo app needs your calendar.</h1>
+          <p>But you don't want to hand over your Google password. That would let it do <em>anything</em> with your account — forever.</p>
+        </div>
+        <div class="right-panel">
+          <h2>Two very different worlds</h2>
+          <div class="comparison">
+            <div class="wrong-item">
+              <div class="label">❌ Password sharing</div>
+              <p>The app gets your password. It can change it, delete the account, do <del>everything</del> anything. Forever.</p>
+            </div>
+            <div class="right-item">
+              <div class="label">✓ OAuth delegation</div>
+              <p>A limited, revocable permission slip — scoped to "read calendar for 1 hour" — nothing more.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: AuthN vs AuthZ -->
+    <div class="slide s3" id="slide-3">
+      <div class="slide-inner">
+        <div class="slide-num">03</div>
+        <div class="section-label">Core Distinction</div>
+        <h1>Authentication ≠ Authorization</h1>
+        <div class="card-authn">
+          <div class="big-q">"</div>
+          <h2>"Who are you?"</h2>
+          <p>Proving identity — username + password, magic link, biometric. The answer is always a single bit: an identity assertion.</p>
+          <div class="badge">AuthN</div>
+        </div>
+        <div class="card-authz">
+          <div class="big-q-dark">"</div>
+          <h2>"What may you do?"</h2>
+          <p>OAuth's domain exclusively. The access token says: "this user consented to read-calendar until 3pm." Nothing about who the user is.</p>
+          <div class="badge">AuthZ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Four Roles -->
+    <div class="slide s4" id="slide-4">
+      <div class="slide-inner">
+        <div class="slide-num">04</div>
+        <div class="section-label">The Four Roles</div>
+        <h1>Every OAuth flow has all four</h1>
+        <div class="roles-grid">
+          <div class="role-card">
+            <div class="role-num">01</div>
+            <div class="role-name">Role 1</div>
+            <div class="role-title">Resource Owner</div>
+            <div class="role-desc">The user — the only party who can grant access. Owns the data behind the resource server.</div>
+          </div>
+          <div class="role-card">
+            <div class="role-num">02</div>
+            <div class="role-name">Role 2</div>
+            <div class="role-title">Client</div>
+            <div class="role-desc">The third-party app requesting permission. Confidential = has a secret. Public = cannot keep one (SPA, mobile).</div>
+          </div>
+          <div class="role-card">
+            <div class="role-num">03</div>
+            <div class="role-name">Role 3</div>
+            <div class="role-title">Authorization Server</div>
+            <div class="role-desc">Issues tokens after consent. Hosts the /authorize and /token endpoints, and the consent screen.</div>
+          </div>
+          <div class="role-card">
+            <div class="role-num">04</div>
+            <div class="role-name">Role 4</div>
+            <div class="role-title">Resource Server</div>
+            <div class="role-desc">The API holding the protected data. Accepts access tokens and returns data. RS and AS often same vendor — but logically separate.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Auth Code Flow -->
+    <div class="slide s5" id="slide-5">
+      <div class="slide-inner">
+        <div class="slide-num">05</div>
+        <div class="section-label">Authorization Code Flow</div>
+        <h1>The happy path — 6 steps</h1>
+        <div class="flow-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h3>User clicks connect</h3>
+            <p>Client generates random state value for CSRF protection, stores in session.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h3>Browser → AS /authorize</h3>
+            <p>Redirect with client_id, scope, state, PKCE challenge.</p>
+            <code>response_type=code<br>code_challenge=SHA256(verifier)</code>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h3>User authenticates + consents</h3>
+            <p>Enters password at AS UI. Sees exact scopes requested. Clicks Allow.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <h3>Browser gets short-lived CODE</h3>
+            <p>~30 second expiry. Single-use. Opaque — no information in the value itself.</p>
+            <code>GET /callback?code=4/0AVM…<br>&state=xyz123</code>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <h3>Backend exchanges code → token</h3>
+            <p>Server-to-server HTTPS POST. Client secret never touches the browser.</p>
+            <code>POST /token<br>code_verifier=…</code>
+          </div>
+          <div class="arrow">→</div>
+          <div class="step">
+            <div class="step-num">6</div>
+            <h3>Access + Refresh tokens</h3>
+            <p>Access token ~1h. Refresh token days–months. Token never crossed the browser.</p>
+            <code>{ access_token, expires_in,<br>refresh_token, scope }</code>
+          </div>
+        </div>
+        <div class="bottom-note">
+          <div class="icon">🔑</div>
+          <p><strong>The key insight:</strong> The browser carries the code — not the token. The token crosses only via a confidential server-to-server call. If the code is intercepted, it's useless without the code_verifier that only the legitimate client holds.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Tokens -->
+    <div class="slide s6" id="slide-6">
+      <div class="slide-inner">
+        <div class="slide-num">06</div>
+        <div class="section-label">Tokens</div>
+        <h1>Two shapes of access token</h1>
+        <div class="left-panel">
+          <div class="token-card">
+            <div class="tag tag-opaque">Opaque</div>
+            <h3>Random string — no intrinsic meaning</h3>
+            <p>RS must call the AS introspection endpoint to learn what the token means. Easy to revoke — just delete server-side.</p>
+            <pre>Authorization: Bearer ***
+
+(no info inside)</pre>
+          </div>
+          <div class="token-card">
+            <div class="tag tag-jwt">JWT</div>
+            <h3>Self-contained: header.claims.signature</h3>
+            <p>RS validates locally with AS public key. No introspection round-trip — but hard to revoke before exp. Requires short TTL or denylist.</p>
+            <pre>eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOi…</pre>
+          </div>
+        </div>
+        <div class="right-panel">
+          <h2>Trade-offs</h2>
+          <div class="trade-card">
+            <h4>Opaque tokens win on revocation</h4>
+            <p>Server-side delete = instant kill. No infrastructure needed beyond token store.</p>
+          </div>
+          <div class="trade-card">
+            <h4>JWTs win on latency</h4>
+            <p>No introspection round-trip per request. RS validates signature with cached public key.</p>
+          </div>
+          <div class="trade-card">
+            <h4>RFC 9700 preference</h4>
+            <p>Introspection-based approaches preferred for sensitive workloads. JWTs need explicit revocation infrastructure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Scopes & Refresh -->
+    <div class="slide s7" id="slide-7">
+      <div class="slide-inner">
+        <div class="slide-num">07</div>
+        <div class="section-label">Scopes &amp; Refresh</div>
+        <h1>Least privilege by default</h1>
+        <div class="left-col">
+          <h2 style="font-family:'Archivo Black',sans-serif;font-size:22px;color:#fff;margin-bottom:16px;">Real-world scope examples</h2>
+          <div class="scope-table">
+            <div class="scope-row">
+              <div class="scope-provider">Google</div>
+              <div class="scope-scopes">
+                <span class="scope-pill">calendar.readonly</span>
+                <span class="scope-pill">gmail.read</span>
+              </div>
+            </div>
+            <div class="scope-row">
+              <div class="scope-provider">GitHub</div>
+              <div class="scope-scopes">
+                <span class="scope-pill">repo</span>
+                <span class="scope-pill">read:user</span>
+                <span class="scope-pill">workflow</span>
+              </div>
+            </div>
+            <div class="scope-row">
+              <div class="scope-provider">Slack</div>
+              <div class="scope-scopes">
+                <span class="scope-pill">channels:read</span>
+                <span class="scope-pill">chat:write</span>
+              </div>
+            </div>
+            <div class="scope-row">
+              <div class="scope-provider">MCP</div>
+              <div class="scope-scopes">
+                <span class="scope-pill">files:read</span>
+                <span class="scope-pill">files:write</span>
+                <span class="scope-pill">user:profile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right-col">
+          <div class="refresh-card">
+            <h3>Refresh Tokens</h3>
+            <p>Long-lived credentials (days–months) used to mint new access tokens without re-prompting the user. High-value secrets — treat accordingly.</p>
+          </div>
+          <div class="warning-card">
+            <h4>OAuth 2.1 · Public clients</h4>
+            <p>Refresh tokens must be sender-constrained or one-time-use (rotation). One compromise = unlimited token minting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: PKCE -->
+    <div class="slide s8" id="slide-8">
+      <div class="slide-inner">
+        <div class="slide-num">08</div>
+        <div class="section-label">PKCE</div>
+        <h1>Proof Key for Code Exchange</h1>
+        <div class="attack-banner">
+          <div class="icon">⚠️</div>
+          <div>
+            <h3>The attack: Authorization code interception</h3>
+            <p>A malicious browser extension, mobile app hijacker, or confused URL handler reads the code from the URL bar. Without PKCE, the attacker redeems it — the client has no secret to prove legitimacy.</p>
+          </div>
+        </div>
+        <div class="pkce-steps">
+          <div class="pkce-step">
+            <div class="step-badge">1</div>
+            <h3>Generate code_verifier</h3>
+            <p>Random 32-byte secret, Base64-URL encoded.</p>
+            <code>code_verifier = BASE64URL(random(32))</code>
+          </div>
+          <div class="pkce-step">
+            <div class="step-badge">2</div>
+            <h3>Send SHA-256 challenge</h3>
+            <p>Challenge goes in the authorize URL. Verifier never leaves the client until token exchange.</p>
+            <code>code_challenge = BASE64URL(SHA256(verifier))<br>code_challenge_method = S256</code>
+          </div>
+        </div>
+        <div class="s256-badge">
+          <span class="big">S256</span>
+          <p>The only acceptable<br>challenge method</p>
+        </div>
+        <div class="oauth21-banner">
+          <p><strong>OAuth 2.1:</strong> PKCE is required for <em>all</em> clients using the authorization code flow — public and confidential alike.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Pitfalls -->
+    <div class="slide s9" id="slide-9">
+      <div class="slide-inner">
+        <div class="slide-num">09</div>
+        <div class="section-label">Security Pitfalls</div>
+        <h1>Common mistakes — and fixes</h1>
+        <div class="pitfalls-grid">
+          <div class="pitfall">
+            <div class="pitfall-num">1</div>
+            <h3>Open redirect on redirect_uri</h3>
+            <p>Prefix/wildcard matching lets attackers chain through your URL to exfiltrate the code.</p>
+            <div class="fix">RFC 9700: exact string matching only</div>
+          </div>
+          <div class="pitfall">
+            <div class="pitfall-num">2</div>
+            <h3>Missing CSRF (no state)</h3>
+            <p>Without state, an attacker can trick a logged-in user's browser into starting a flow that returns the code to the attacker's account.</p>
+            <div class="fix">Always include a random state per request</div>
+          </div>
+          <div class="pitfall">
+            <div class="pitfall-num">3</div>
+            <h3>Confused deputy</h3>
+            <p>Client uses token legitimately, but on resources the user didn't consciously delegate.</p>
+            <div class="fix">Narrow scopes, clear consent, resource parameter</div>
+          </div>
+          <div class="pitfall">
+            <div class="pitfall-num">4</div>
+            <h3>Tokens in URL fragments</h3>
+            <p>Implicit grant leaked tokens via browser history, referer headers, extensions.</p>
+            <div class="fix">Auth code + PKCE for every client type</div>
+          </div>
+          <div class="pitfall">
+            <div class="pitfall-num">5</div>
+            <h3>Refresh token reuse allowed</h3>
+            <p>A compromised device with a reusable refresh token = unlimited access until revocation.</p>
+            <div class="fix">Rotation or sender-constrained for public clients</div>
+          </div>
+          <div class="pitfall">
+            <div class="pitfall-num">6</div>
+            <h3>Tokens in localStorage</h3>
+            <p>XSS = full token theft. HttpOnly cookies + CSRF tokens better. Best: tokens in memory.</p>
+            <div class="fix">Memory-only tokens + refresh for persistence</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: MCP -->
+    <div class="slide s10" id="slide-10">
+      <div class="slide-inner">
+        <div class="slide-num">10</div>
+        <div class="section-label">MCP Authorization</div>
+        <h1>How MCP composes OAuth 2.1</h1>
+        <div class="mcp-flow">
+          <div class="mcp-step">
+            <div class="step-circle">1</div>
+            <div class="step-content">
+              <h3>MCP client makes unauthenticated request</h3>
+              <p>RS returns <code>401 + WWW-Authenticate: Bearer resource_metadata="…"</code></p>
+            </div>
+          </div>
+          <div class="mcp-step">
+            <div class="step-circle">2</div>
+            <div class="step-content">
+              <h3>Fetch Protected Resource Metadata (RFC 9728)</h3>
+              <p>Contains <code>authorization_servers[]</code> — array of AS issuer URLs</p>
+            </div>
+          </div>
+          <div class="mcp-step">
+            <div class="step-circle">3</div>
+            <div class="step-content">
+              <h3>Fetch Authorization Server Metadata (RFC 8414)</h3>
+              <p>Discovers <code>/authorize</code>, <code>/token</code>, supported methods</p>
+            </div>
+          </div>
+          <div class="mcp-step">
+            <div class="step-circle">4</div>
+            <div class="step-content">
+              <h3>Run Authorization Code + PKCE + resource parameter</h3>
+              <p><code>&resource=https%3A%2F%2Fmcp.example.com</code> binds audience to this RS</p>
+            </div>
+          </div>
+        </div>
+        <div class="right-panel">
+          <h2>MCP = OAuth 2.1 composed from</h2>
+          <div class="rfc-list">
+            <div class="rfc-item"><span class="rfc-num">RFC 7636</span><span class="rfc-name">PKCE</span></div>
+            <div class="rfc-item"><span class="rfc-num">RFC 9728</span><span class="rfc-name">Protected Resource Metadata</span></div>
+            <div class="rfc-item"><span class="rfc-num">RFC 8414</span><span class="rfc-name">AS Metadata</span></div>
+            <div class="rfc-item"><span class="rfc-num">RFC 9728</span><span class="rfc-name">resource parameter (audience binding)</span></div>
+            <div class="rfc-item"><span class="rfc-num">RFC 7591</span><span class="rfc-name">Dynamic Client Registration</span></div>
+          </div>
+        </div>
+        <div class="composition-badge">
+          <p>No new auth protocol — just careful composition</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /deck-stage -->
+
+  <div class="deck-controls">
+    <button onclick="prevSlide()" aria-label="Previous">←</button>
+    <span class="counter" id="slideCounter">01 / 10</span>
+    <button onclick="nextSlide()" aria-label="Next">→</button>
+  </div>
+</div><!-- /deck-viewport -->
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
+    slides.forEach(function(s, i) {
+      s.classList.toggle('active', i === index);
+    });
+    current = index;
+    document.getElementById('slideCounter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  window.nextSlide = function() { showSlide(current + 1); };
+  window.prevSlide = function() { showSlide(current - 1); };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  // Scale stage to fit viewport
+  function scaleStage() {
+    const vp = document.querySelector('.deck-viewport');
+    const stage = document.getElementById('deckStage');
+    const vw = vp.clientWidth;
+    const vh = vp.clientHeight;
+    const scaleX = vw / 1920;
+    const scaleY = vh / 1080;
+    const scale = Math.min(scaleX, scaleY);
+    stage.style.transform = 'translate(' + ((vw - 1920 * scale) / 2) + 'px,' + ((vh - 1080 * scale) / 2) + 'px) scale(' + scale + ')';
+  }
+
+  window.addEventListener('resize', scaleStage);
+  scaleStage();
+  showSlide(0);
+})();
+</script>
+</body>
+</html>

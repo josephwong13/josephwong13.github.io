@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OAuth 2.0 — Notebook Tabs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* viewport-base.css — MANDATORY BASE */
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #2d2d2d; }
+    .deck-viewport { position: fixed; inset: 0; overflow: hidden; background: #2d2d2d; }
+    .deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; }
+    .slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; }
+    .slide.active { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+    img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+    /* Notebook Tabs Theme */
+    :root {
+      --bg-outer: #2d2d2d;
+      --bg-page: #f8f6f1;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --tab-1: #98d4bb;
+      --tab-2: #c7b8ea;
+      --tab-3: #f4b8c5;
+      --tab-4: #a8d8ea;
+      --tab-5: #ffe6a7;
+      --tab-6: #f0b4d4;
+      --accent: #8b3a3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg-outer); }
+
+    /* Navigation */
+    .deck-controls {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 20px; z-index: 1000;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      padding: 10px 28px; border-radius: 50px;
+    }
+    .deck-controls button {
+      background: transparent; border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.8); font-family: 'DM Sans', sans-serif; font-size: 16px;
+      width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .deck-controls button:hover { background: rgba(255,255,255,0.15); }
+    .deck-controls .counter { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; letter-spacing: 0.1em; }
+
+    /* Ring decoration */
+    .ring-decoration {
+      position: absolute; left: 60px; top: 0; bottom: 0;
+      width: 40px; display: flex; flex-direction: column; align-items: center;
+      padding-top: 60px; gap: 80px;
+    }
+    .ring { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(200,200,200,0.4); background: transparent; }
+
+    /* Slide inner paper card */
+    .paper {
+      position: absolute; left: 140px; right: 60px; top: 40px; bottom: 40px;
+      background: var(--bg-page); border-radius: 4px 16px 16px 4px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    /* Right-side tab strip */
+    .tab-strip {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      width: 64px; display: flex; flex-direction: column; align-items: center;
+      padding-top: 40px; gap: 14px;
+    }
+    .tab {
+      width: 48px; border-radius: 8px 0 0 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+      writing-mode: vertical-rl; text-orientation: mixed;
+      transition: all 0.2s;
+    }
+    .tab.active { filter: brightness(0.9); }
+    .tab-1 { background: var(--tab-1); color: #2a4a3e; }
+    .tab-2 { background: var(--tab-2); color: #3a2a5a; }
+    .tab-3 { background: var(--tab-3); color: #4a2a3a; }
+    .tab-4 { background: var(--tab-4); color: #2a3a4a; }
+    .tab-5 { background: var(--tab-5); color: #4a4a2a; }
+    .tab-6 { background: var(--tab-6); color: #4a2a4a; }
+
+    /* Typography */
+    .serif-display { font-family: 'Bodoni Moda', serif; }
+    .sans { font-family: 'DM Sans', sans-serif; }
+
+    /* Slide 1: Title */
+    .s1 .paper { padding: 80px 100px; }
+    .s1 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 24px; }
+    .s1 h1 { font-family: 'Bodoni Moda', serif; font-size: 130px; font-weight: 700; line-height: 0.88; color: var(--text-primary); margin-bottom: 24px; }
+    .s1 .subtitle { font-size: 24px; color: var(--text-secondary); margin-bottom: 16px; max-width: 600px; line-height: 1.4; }
+    .s1 .tagline { font-size: 18px; color: var(--text-muted); font-style: italic; margin-bottom: 48px; }
+    .s1 .tab-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .s1 .tag { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1.5px solid; }
+    .s1 .divider { width: 80px; height: 3px; background: var(--accent); margin: 40px 0; }
+    .s1 .meta { font-size: 13px; color: var(--text-muted); }
+    .s1 .ring-decoration .ring:nth-child(1) { margin-top: 20px; }
+
+    /* Slide 2: The Problem */
+    .s2 .paper { padding: 80px 100px; }
+    .s2 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
+    .s2 h1 { font-family: 'Bodoni Moda', serif; font-size: 72px; font-weight: 700; line-height: 1; color: var(--text-primary); margin-bottom: 40px; }
+    .s2 .scenario-box { background: #fff; border: 1px solid #e0ddd8; border-radius: 12px; padding: 36px 44px; margin-bottom: 32px; }
+    .s2 .scenario-box .icon { font-size: 36px; margin-bottom: 16px; }
+    .s2 .scenario-box p { font-size: 20px; color: var(--text-secondary); line-height: 1.65; }
+    .s2 .scenario-box strong { color: var(--text-primary); }
+    .s2 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .s2 .wrong-box { background: #fff5f5; border: 1px solid #f0d4d4; border-radius: 12px; padding: 24px 28px; }
+    .s2 .wrong-box h3 { font-size: 14px; font-weight: 700; color: #9b2226; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .s2 .wrong-box p { font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+    .s2 .right-box { background: #f0faf4; border: 1px solid #d4ecd8; border-radius: 12px; padding: 24px 28px; }
+    .s2 .right-box h3 { font-size: 14px; font-weight: 700; color: #2d6a4f; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .s2 .right-box p { font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Slide 3: Four Roles */
+    .s3 .paper { padding: 70px 90px; }
+    .s3 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
+    .s3 h1 { font-family: 'Bodoni Moda', serif; font-size: 60px; font-weight: 700; line-height: 1; color: var(--text-primary); margin-bottom: 36px; }
+    .s3 .roles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .s3 .role-card { background: #fff; border: 1px solid #e8e4de; border-radius: 12px; padding: 30px 32px; position: relative; }
+    .s3 .role-card::before { content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 4px; border-radius: 2px; }
+    .s3 .role-card:nth-child(1)::before { background: var(--tab-1); }
+    .s3 .role-card:nth-child(2)::before { background: var(--tab-2); }
+    .s3 .role-card:nth-child(3)::before { background: var(--tab-3); }
+    .s3 .role-card:nth-child(4)::before { background: var(--tab-4); }
+    .s3 .role-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 8px; }
+    .s3 .role-title { font-family: 'Bodoni Moda', serif; font-size: 28px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+    .s3 .role-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* Slide 4: Auth Code Flow */
+    .s4 .paper { padding: 70px 90px; }
+    .s4 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
+    .s4 h1 { font-family: 'Bodoni Moda', serif; font-size: 58px; font-weight: 700; line-height: 1; color: var(--text-primary); margin-bottom: 32px; }
+    .s4 .flow-steps { display: flex; flex-direction: column; gap: 12px; }
+    .s4 .flow-step { display: flex; align-items: flex-start; gap: 20px; }
+    .s4 .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; }
+    .s4 .step-content { flex: 1; }
+    .s4 .step-content h3 { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .s4 .step-content p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+    .s4 .step-content code { display: inline-block; margin-top: 6px; font-family: 'Courier New', monospace; font-size: 11px; background: #f0ede8; padding: 4px 8px; border-radius: 4px; color: var(--accent); }
+    .s4 .step-connector { width: 2px; height: 12px; background: #d4d0ca; margin-left: 17px; }
+
+    /* Slide 5: Tokens & Scopes */
+    .s5 .paper { padding: 70px 90px; }
+    .s5 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
+    .s5 h1 { font-family: 'Bodoni Moda', serif; font-size: 62px; font-weight: 700; line-height: 1; color: var(--text-primary); margin-bottom: 32px; }
+    .s5 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .s5 .col h2 { font-family: 'Bodoni Moda', serif; font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+    .s5 .token-box { background: #fff; border: 1px solid #e8e4de; border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
+    .s5 .token-box h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; }
+    .s5 .token-box p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+    .s5 .scope-item { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e8e4de; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; }
+    .s5 .scope-provider { width: 70px; font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; flex-shrink: 0; }
+    .s5 .scope-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .s5 .scope-pill { padding: 3px 10px; border-radius: 6px; font-size: 11px; font-family: 'Courier New', monospace; background: #f5f2ed; color: var(--text-secondary); border: 1px solid #e0dcd6; }
+
+    /* Slide 6: PKCE & Pitfalls */
+    .s6 .paper { padding: 70px 90px; }
+    .s6 .eyebrow { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 20px; }
+    .s6 h1 { font-family: 'Bodoni Moda', serif; font-size: 60px; font-weight: 700; line-height: 1; color: var(--text-primary); margin-bottom: 28px; }
+    .s6 .pkce-box { background: #fff; border: 1px solid #e8e4de; border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; }
+    .s6 .pkce-box h2 { font-family: 'Bodoni Moda', serif; font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .s6 .pkce-box p { font-size: 15px; color: var(--text-secondary); line-height: 1.55; }
+    .s6 .pkce-steps { display: flex; gap: 14px; margin-bottom: 24px; }
+    .s6 .pkce-step { flex: 1; background: #faf8f4; border: 1px solid #e8e4de; border-radius: 10px; padding: 18px; text-align: center; }
+    .s6 .pkce-step .step-badge { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .s6 .pkce-step h3 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .s6 .pkce-step code { font-family: 'Courier New', monospace; font-size: 10px; color: var(--accent); }
+    .s6 .pitfalls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .s6 .pitfall { background: #fff5f5; border: 1px solid #f0d4d4; border-radius: 10px; padding: 18px; }
+    .s6 .pitfall h4 { font-size: 13px; font-weight: 700; color: #9b2226; margin-bottom: 6px; }
+    .s6 .pitfall p { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+    .s6 .pitfall .fix { margin-top: 8px; font-size: 11px; font-weight: 600; color: #2d6a4f; }
+  </style>
+</head>
+<body>
+<div class="deck-viewport">
+  <div class="deck-stage" id="deckStage">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide s1 active" id="slide-1">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1 active">Intro</div>
+          <div class="tab tab-2">Problem</div>
+          <div class="tab tab-3">Roles</div>
+          <div class="tab tab-4">Flow</div>
+          <div class="tab tab-5">Tokens</div>
+          <div class="tab tab-6">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">Technical Series · 5 Lessons</div>
+          <h1>OAuth 2.0</h1>
+          <p class="subtitle">Delegated Authorization from First Principles</p>
+          <p class="tagline">"How to let an app act on your behalf — without handing over your password."</p>
+          <div class="tab-row">
+            <span class="tag" style="border-color: var(--tab-1); color: #2a4a3e;">AuthN ≠ AuthZ</span>
+            <span class="tag" style="border-color: var(--tab-2); color: #3a2a5a;">4 Roles</span>
+            <span class="tag" style="border-color: var(--tab-3); color: #4a2a3a;">Auth Code + PKCE</span>
+            <span class="tag" style="border-color: var(--tab-4); color: #2a3a4a;">JWTs & Scopes</span>
+            <span class="tag" style="border-color: var(--tab-5); color: #4a4a2a;">OAuth 2.1</span>
+          </div>
+          <div class="divider"></div>
+          <p class="meta">with MCP as the running example · RFC 6749, 7636, 9700, 9728</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: The Problem -->
+    <div class="slide s2" id="slide-2">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1">Intro</div>
+          <div class="tab tab-2 active">Problem</div>
+          <div class="tab tab-3">Roles</div>
+          <div class="tab tab-4">Flow</div>
+          <div class="tab tab-5">Tokens</div>
+          <div class="tab tab-6">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">Why OAuth Exists</div>
+          <h1>The Core Problem</h1>
+          <div class="scenario-box">
+            <div class="icon">📅</div>
+            <p>You click <strong>"Sign in with Google"</strong> on a todo app. The todo app needs to read your calendar. But you don't want to give the todo app your Google password — that would let it do <em>anything</em> with your account, <em>forever</em>.</p>
+          </div>
+          <div class="two-col">
+            <div class="wrong-box">
+              <h3>❌ Password sharing</h3>
+              <p>The app gets your password. It can change it, delete the account, do everything you can. Permanent, irrevocable access.</p>
+            </div>
+            <div class="right-box">
+              <h3>✓ OAuth delegation</h3>
+              <p>A limited, revocable permission slip: "read calendar for 1 hour, nothing else." Token-based — no password ever shared.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Four Roles -->
+    <div class="slide s3" id="slide-3">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1">Intro</div>
+          <div class="tab tab-2">Problem</div>
+          <div class="tab tab-3 active">Roles</div>
+          <div class="tab tab-4">Flow</div>
+          <div class="tab tab-5">Tokens</div>
+          <div class="tab tab-6">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">RFC 6749</div>
+          <h1>The Four Roles</h1>
+          <div class="roles-grid">
+            <div class="role-card">
+              <div class="role-num">Role 1</div>
+              <div class="role-title">Resource Owner</div>
+              <div class="role-desc">The user — the only party who can grant access. Owns the data behind the resource server.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-num">Role 2</div>
+              <div class="role-title">Client</div>
+              <div class="role-desc">The third-party app requesting permission. Confidential = keeps a secret. Public = cannot (SPA, mobile).</div>
+            </div>
+            <div class="role-card">
+              <div class="role-num">Role 3</div>
+              <div class="role-title">Authorization Server</div>
+              <div class="role-desc">Issues tokens after consent. Hosts /authorize and /token endpoints and the consent screen.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-num">Role 4</div>
+              <div class="role-title">Resource Server</div>
+              <div class="role-desc">The API holding protected data. Accepts access tokens. Often same vendor as AS — but logically separate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Auth Code Flow -->
+    <div class="slide s4" id="slide-4">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1">Intro</div>
+          <div class="tab tab-2">Problem</div>
+          <div class="tab tab-3">Roles</div>
+          <div class="tab tab-4 active">Flow</div>
+          <div class="tab tab-5">Tokens</div>
+          <div class="tab tab-6">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">Authorization Code Flow</div>
+          <h1>The Happy Path — 6 Steps</h1>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h3>User clicks "Connect Google Calendar"</h3>
+                <p>Client generates random state value (CSRF protection) and stores it in the session.</p>
+              </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="flow-step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h3>Browser redirects to AS /authorize</h3>
+                <p>response_type=code, client_id, scope, state, PKCE challenge.</p>
+                <code>?response_type=code&code_challenge=SHA256(verifier)&state=xyz123</code>
+              </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="flow-step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h3>User authenticates + consents</h3>
+                <p>Enters password at Google's UI. Sees exact scopes. Clicks Allow.</p>
+              </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="flow-step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h3>Browser receives short-lived CODE</h3>
+                <p>~30s expiry. Single-use. Opaque — no information inside.</p>
+                <code>GET /callback?code=4/0AVMBsJ…&state=xyz123</code>
+              </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="flow-step">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <h3>Backend exchanges code → token (server-to-server)</h3>
+                <p>Client secret and code_verifier never touch the browser.</p>
+                <code>POST /token { code_verifier: "dBjftJeZ…" }</code>
+              </div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="flow-step">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <h3>Access + Refresh tokens returned</h3>
+                <p>Access token ~1h. Refresh token days–months. Token never crossed the browser.</p>
+                <code>{ access_token, expires_in, refresh_token, scope }</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Tokens & Scopes -->
+    <div class="slide s5" id="slide-5">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1">Intro</div>
+          <div class="tab tab-2">Problem</div>
+          <div class="tab tab-3">Roles</div>
+          <div class="tab tab-4">Flow</div>
+          <div class="tab tab-5 active">Tokens</div>
+          <div class="tab tab-6">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">Token Types &amp; Scopes</div>
+          <h1>Access Tokens &amp; Least Privilege</h1>
+          <div class="two-col">
+            <div class="col">
+              <h2>Two shapes of access token</h2>
+              <div class="token-box">
+                <h4>Opaque</h4>
+                <p>Random string. RS must introspect with AS. Easy to revoke — just delete server-side.</p>
+              </div>
+              <div class="token-box">
+                <h4>JWT (RFC 7519)</h4>
+                <p>Self-contained: header.claims.signature. RS validates locally — no round-trip. Harder to revoke before exp.</p>
+              </div>
+              <div class="token-box">
+                <h4>Refresh Tokens</h4>
+                <p>Long-lived (days–months). Mint new access tokens silently. Treat as high-value secrets. OAuth 2.1: rotation required for public clients.</p>
+              </div>
+            </div>
+            <div class="col">
+              <h2>Scopes by provider</h2>
+              <div class="scope-item">
+                <div class="scope-provider">Google</div>
+                <div class="scope-pills"><span class="scope-pill">calendar.readonly</span><span class="scope-pill">gmail.read</span></div>
+              </div>
+              <div class="scope-item">
+                <div class="scope-provider">GitHub</div>
+                <div class="scope-pills"><span class="scope-pill">repo</span><span class="scope-pill">read:user</span><span class="scope-pill">workflow</span></div>
+              </div>
+              <div class="scope-item">
+                <div class="scope-provider">Slack</div>
+                <div class="scope-pills"><span class="scope-pill">channels:read</span><span class="scope-pill">chat:write</span></div>
+              </div>
+              <div class="scope-item">
+                <div class="scope-provider">MCP</div>
+                <div class="scope-pills"><span class="scope-pill">files:read</span><span class="scope-pill">files:write</span><span class="scope-pill">user:profile</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PKCE & Pitfalls -->
+    <div class="slide s6" id="slide-6">
+      <div class="ring-decoration">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <div class="paper">
+        <div class="tab-strip">
+          <div class="tab tab-1">Intro</div>
+          <div class="tab tab-2">Problem</div>
+          <div class="tab tab-3">Roles</div>
+          <div class="tab tab-4">Flow</div>
+          <div class="tab tab-5">Tokens</div>
+          <div class="tab tab-6 active">PKCE</div>
+        </div>
+        <div style="padding-right:80px;">
+          <div class="eyebrow">PKCE · RFC 7636</div>
+          <h1>Proof Key for Code Exchange</h1>
+          <div class="pkce-box">
+            <h2>Authorization code interception attack</h2>
+            <p>A malicious browser extension or mobile hijacker reads the code from the URL bar. Without PKCE, the attacker redeems it — the client has no secret to prove legitimacy.</p>
+          </div>
+          <div class="pkce-steps">
+            <div class="pkce-step">
+              <div class="step-badge">1</div>
+              <h3>Generate verifier</h3>
+              <code>code_verifier = BASE64URL(random(32))</code>
+            </div>
+            <div class="pkce-step">
+              <div class="step-badge">2</div>
+              <h3>Send SHA-256 challenge</h3>
+              <code>code_challenge = BASE64URL(SHA256(verifier))</code>
+            </div>
+            <div class="pkce-step">
+              <div class="step-badge">3</div>
+              <h3>Redeem with verifier</h3>
+              <code>POST /token { code_verifier: "..." }</code>
+            </div>
+          </div>
+          <div style="background:#f0faf4;border:1px solid #d4ecd8;border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+            <p style="font-size:14px;color:#2d6a4f;font-weight:600;">OAuth 2.1: PKCE required for <em>all</em> clients — public and confidential alike.</p>
+          </div>
+          <div class="pitfalls">
+            <div class="pitfall">
+              <h4>1. Open redirector</h4>
+              <p>Prefix matching on redirect_uri lets attackers exfiltrate codes. Use exact matching.</p>
+              <div class="fix">✓ RFC 9700: exact string match</div>
+            </div>
+            <div class="pitfall">
+              <h4>2. No CSRF (state)</h4>
+              <p>Login CSRF: attacker initiates flow returning to attacker's account.</p>
+              <div class="fix">✓ Always include random state</div>
+            </div>
+            <div class="pitfall">
+              <h4>3. Confused deputy</h4>
+              <p>Token used on resources user didn't consciously delegate.</p>
+              <div class="fix">✓ Narrow scopes + resource param</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /deck-stage -->
+
+  <div class="deck-controls">
+    <button onclick="prevSlide()" aria-label="Previous">←</button>
+    <span class="counter" id="slideCounter">01 / 06</span>
+    <button onclick="nextSlide()" aria-label="Next">→</button>
+  </div>
+</div><!-- /deck-viewport -->
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var current = 0;
+  var total = slides.length;
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
+    slides.forEach(function(s, i) {
+      s.classList.toggle('active', i === index);
+    });
+    current = index;
+    document.getElementById('slideCounter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  window.nextSlide = function() { showSlide(current + 1); };
+  window.prevSlide = function() { showSlide(current - 1); };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  function scaleStage() {
+    var vp = document.querySelector('.deck-viewport');
+    var stage = document.getElementById('deckStage');
+    var vw = vp.clientWidth;
+    var vh = vp.clientHeight;
+    var scaleX = vw / 1920;
+    var scaleY = vh / 1080;
+    var scale = Math.min(scaleX, scaleY);
+    var ox = (vw - 1920 * scale) / 2;
+    var oy = (vh - 1080 * scale) / 2;
+    stage.style.transform = 'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
+  }
+
+  window.addEventListener('resize', scaleStage);
+  scaleStage();
+  showSlide(0);
+})();
+</script>
+</body>
+</html>
