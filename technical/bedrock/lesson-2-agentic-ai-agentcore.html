@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2 — Agentic AI: AgentCore, Action Groups & MCP · AWS Bedrock</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .concept.mcp { border-left: 4px solid var(--green); background: var(--green-light); }
+    .concept.mcp .label { color: var(--green); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.4rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 2 of 6 · AWS Bedrock</p>
+  <p class="breadcrumb"><a href="index.html">← AWS Bedrock</a></p>
+  <h1>Agentic AI — AgentCore, Action Groups &amp; MCP</h1>
+
+  <div class="scenario">
+    <p><strong>Scenario:</strong> Your hotel-booking chatbot needs to query room availability, update a reservation, and send a confirmation email — in a single conversation turn. A single model call can't do all three. You need an agent that can plan, use tools, and chain results together. AgentCore is how you build this on AWS.</p>
+  </div>
+
+  <h2>AgentClassic deprecation → AgentCore</h2>
+  <div class="concept warning">
+    <div class="label">⚠ DEPRECATION</div>
+    <h3>AgentClassic deprecated July 2026</h3>
+    <p>All new agentic workloads must use <strong>Bedrock AgentCore</strong>. AgentClassic enters maintenance mode and receives no new features.<sup>[R3]</sup></p>
+  </div>
+  <div class="concept note">
+    <div class="label">ARCHITECTURE</div>
+    <h3>AgentCore — four sub-components<sup>[R4]</sup></h3>
+    <p><strong>Harness</strong> — orchestration layer, defines agent configuration, prompt, and tools. <strong>Runtime</strong> — executes the agent loop (think → act → observe → think again). <strong>Gateway</strong> — API entry point, handles auth and rate limiting. <strong>Memory</strong> — session state, conversation history, and context management across turns.</p>
+  </div>
+
+  <h2>Agent orchestration loop</h2>
+  <div class="concept note">
+    <div class="label">LOOP</div>
+    <h3>Think → Act → Observe (ReAct pattern)</h3>
+    <p>The agent receives a user goal. It thinks ("what tool do I need?"), acts (calls a tool), observes the result, then decides next step. Loop continues until the goal is met or a stop condition fires.<sup>[R4]</sup></p>
+  </div>
+  <pre><code>1. User goal → agent
+2. Agent thinks: which tool applies?
+3. Agent calls: action group function (Lambda / HTTP)
+4. Tool returns: raw result
+5. Agent observes: does result satisfy the goal?
+6. Yes → respond to user. No → loop to step 2.</code></code></pre>
+
+  <h2>Action groups</h2>
+  <div class="concept note">
+    <div class="label">CORE COMPONENT</div>
+    <h3>action_group — the tool definition<sup>[R3]</sup></h3>
+    <p>An action group declares a function (name, description, parameters) that the agent can call. Under the hood, action groups are backed by <strong>Lambda</strong> (simple, stateless) or <strong>Amazon ECS</strong> (complex, long-running). The agent decides when to call an action group based on its description.</p>
+  </div>
+  <div class="concept">
+    <div class="label">LAMBDA BACKEND</div>
+    <h3>Lambda as action group executor</h3>
+    <p>Define the function schema in the agent. Lambda receives <code>agent-interaction</code> events with the tool name and parameters. Return a JSON result. Fast cold starts for simple tools.<sup>[R4]</sup></p>
+  </div>
+  <div class="concept mcp">
+    <div class="label">MCP</div>
+    <h3>MCP tools — Model Context Protocol<sup>[R3]</sup></h3>
+    <p>MCP servers expose tools via a standardized interface. AgentCore can consume MCP tools directly — no per-tool Lambda required. Lambda becomes the MCP server for lightweight tools. ECS hosts MCP servers for complex, stateful ones.</p>
+  </div>
+
+  <h2>Session management</h2>
+  <div class="concept">
+    <div class="label">STATE</div>
+    <h3>Persistent session context</h3>
+    <p>Each conversation turn carries prior context. Memory stores session state (not Lambda state — Lambda is stateless). Configure TTL and max tokens per session to prevent context overflow.<sup>[R4]</sup></p>
+  </div>
+
+  <h2>Multi-agent patterns</h2>
+  <div class="concept">
+    <div class="label">D2 SKILL 2.1.1 / 2.1.4</div>
+    <h3>Agent Squad — multiple agents, specialized roles</h3>
+    <p>AWS Agent Squad orchestrates multiple agents. Each agent is specialized: one handles booking, one handles cancellation, one handles refunds. A supervisor agent routes to the right sub-agent. <strong>TSTALIASID</strong> marks agents in testing mode (no real side effects).<sup>[R3]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">PATTERN</div>
+    <h3>Step Functions + ReAct</h3>
+    <p>For complex multi-step workflows with human-in-the-loop approval, Step Functions drives the ReAct loop. Lambda enforces stopping conditions, circuit breakers, and timeout. IAM policies set resource boundaries per step.<sup>[R3]</sup></p>
+  </div>
+
+  <hr>
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 1</h2>
+    <p><strong>Converse API</strong> — unified messages interface across models. Write once, swap the model ID.<sup>[R2]</sup></p>
+    <p><strong>Model cascading</strong> — route to cheapest capable model (e.g. Haiku for simple, Opus for complex).<sup>[R1]</sup></p>
+    <p><strong>Provisioned Throughput</strong> — guaranteed model capacity. Separate from cross-region inference.<sup>[R15]</sup></p>
+  </div>
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [R1], [R2], [R3], [R4], [R15].</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> A developer is building a new agentic workflow on Bedrock in July 2026. Which agent framework must they use?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ AgentClassic is deprecated as of July 2026. No new agentic workloads should use it.">AgentClassic</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. AgentClassic is deprecated. AgentCore (Harness/Runtime/Gateway/Memory) is the only current framework for new workloads.<sup>[R3]</sup>">AgentCore</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Agent Squad is a multi-agent orchestration pattern built on top of AgentCore — not a standalone framework replacement.">Agent Squad only</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> What is the role of the AgentCore Runtime sub-component?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Gateway handles auth/rate-limiting, not execution.">API authentication and rate limiting</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Runtime executes the think→act→observe loop. Harness defines the agent config. Memory handles session state.<sup>[R4]</sup>">Executes the agent orchestration loop (think → act → observe)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Memory manages conversation history and context — not execution.">Stores session state across conversation turns</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> An agent needs to query a legacy REST API to check hotel availability. What action group backing is most appropriate?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ ECS is for complex, stateful, long-running tools — overkill for a simple HTTP call.">Amazon ECS MCP server</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. A Lambda function makes the HTTP call, returns JSON. Stateless, fast cold start, simple to maintain. ECS is for more complex tools.<sup>[R4]</sup>">Lambda function (action group executor)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Direct InvokeModel calls don't give the agent tool-calling capabilities — that's what action groups provide.">Direct InvokeModel calls</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> An AI company uses a specialized model for code generation and a different one for summarization. Which D2 pattern does this represent?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Agent orchestration coordinates multiple agents — this is about model selection per task type.">Multi-agent coordination (Agent Squad)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Model cascading tiers by query complexity within the same task type.">Model cascading (Haiku → Opus)</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Using specialized FMs for different capabilities, then aggregating results, is the model coordination pattern. Distinct from cascading (same task, tiered cost) or orchestration (same task, multiple agents).<sup>[R3]</sup>">Model coordination / specialized model routing</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank: In AgentCore, the __________ declares the function name, description, and parameters that an agent can call during orchestration.</p>
+      <p style="margin-top:.5rem;">In AgentCore, the <input class="fillin" type="text" data-answer="action_group" data-feedback-ok="✓ Right. action_group is the core tool-definition unit in AgentCore — it declares the function schema the agent uses to plan tool calls.<sup>[R3]</sup>" data-feedback-bad="✗ Expected: action_group. This is the tool-definition unit in AgentCore.<sup>[R3]</sup>" data-feedback-ref="<sup>[R3]</sup>">____________</code> declares the function name, description, and parameters.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html">[R3] Bedrock Agents</a> — action groups, orchestration loop, AgentClassic deprecation timeline</li>
+      <li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html">[R4] Bedrock AgentCore Developer Guide</a> — Harness, Runtime, Gateway, Memory</li>
+      <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01-domain2.html">AWS Exam Guide D2</a> — Task 2.1: Agentic AI Solutions and Tool Integrations</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← AWS Bedrock</a> · <a href="lesson-3-guardrails-defense-in-depth.html">Next: Guardrails &amp; Defense-in-Depth →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) { revealBtn.addEventListener('click', function(){ document.querySelectorAll('.quiz-question').forEach(function(q){ q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); }); var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]'); if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; } }); }); }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question'); var fb = q ? q.querySelector('.fillin-feedback') : null;
+      function check() { var ans = (input.value||'').trim().toLowerCase().replace(/[_\-\s]/g,''); var expected = (input.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,''); if (!expected) return; if (ans === expected) { input.classList.remove('wrong'); input.classList.add('correct'); if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; } } else { input.classList.remove('correct'); input.classList.add('wrong'); if (fb) { fb.textContent = (input.dataset.feedbackBad||('✗ Expected: '+input.dataset.answer))+(input.dataset.feedbackRef?' '+input.dataset.feedbackRef:''); fb.className = 'fillin-feedback wrong-fb'; } } }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+</body>
+</html>

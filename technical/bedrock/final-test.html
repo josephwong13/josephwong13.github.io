@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Test · AWS Bedrock</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .score-box { background: var(--accent-light); border: 2px solid var(--accent); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1.5rem 0; text-align: center; }
+    .score-box .score-num { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .score-box .score-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+    .score-box.passing { background: var(--green-light); border-color: var(--green); }
+    .score-box.passing .score-num { color: var(--green); }
+    .reset-btn { display: inline-block; margin-top: 0.8rem; padding: 0.5rem 1rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 6px; font-size: 0.82rem; cursor: pointer; font-family: var(--sans); color: var(--accent); }
+    .reset-btn:hover { background: #e8d0d0; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Final Test · AWS Bedrock</p>
+  <p class="breadcrumb"><a href="index.html">← AWS Bedrock</a></p>
+  <h1>Final Test — 12 Questions</h1>
+
+  <div class="quiz">
+    <h2>📝 Cumulative Assessment</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Questions drawn from all 6 lessons. 9 MCQ + 3 fill-in-blank. Skewed toward D3 (AI Safety, 20%) and D5 (Testing, 11%) — the highest exam weightings beyond D1+D2.</p>
+
+    <!-- Q1 — L1: Converse API -->
+    <div class="quiz-question">
+      <p><strong>1.</strong> A team wants to switch between Claude, Llama, and Nova without changing their API call structure. Which API provides the unified interface needed?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ InvokeModel requires per-model body schemas. Code must change when switching models.">InvokeModel</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Converse API provides a consistent messages interface across all supporting models. Only the model ID changes at invocation.<sup>[R2]</sup>">Converse API</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Responses API is for agentic, tool-aware workflows — not a general multi-model abstraction.">Responses API</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q2 — L2: AgentClassic deprecation -->
+    <div class="quiz-question">
+      <p><strong>2.</strong> An enterprise is building a new Bedrock agent in July 2026. Which framework must they use for new workloads?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ AgentClassic entered maintenance mode in July 2026 — deprecated, no new features.">AgentClassic</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. AgentCore (Harness/Runtime/Gateway/Memory) replaced AgentClassic in July 2026. All new agentic workloads use AgentCore.<sup>[R3]</sup>">AgentCore</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Agent Squad is a multi-agent orchestration pattern on top of AgentCore — not a standalone replacement.">Agent Squad</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q3 — L3: Guardrails IAM enforcement -->
+    <div class="quiz-question">
+      <p><strong>3.</strong> A security team requires that no developer can call InvokeModel without a specific guardrail being applied — even through direct API calls. Which mechanism enforces this at the infrastructure layer?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Guardrails alone can be bypassed — IAM is the non-bypassable enforcement layer.">Bedrock Guardrails content filter</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. IAM condition <code>bedrock:GuardrailIdentifier</code> on <code>bedrock:InvokeModel</code> makes the guardrail a prerequisite. No IAM bypass = no model call.<sup>[R5]</sup>">IAM policy with bedrock:GuardrailIdentifier condition</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ VPC endpoints provide network isolation — they don't enforce content policy.">VPC endpoint with security groups</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q4 — L4: hybrid search + reranker -->
+    <div class="quiz-question">
+      <p><strong>4.</strong> A RAG pipeline retrieves chunks with high vector similarity but the answers are wrong — the chunks discuss the wrong hotel service. What two components fix this?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Chunking strategy affects within-chunk coherence, not topical mismatch between query and retrieved content.">Adjust chunking strategy</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. High vector similarity ≠ correct answer domain. Hybrid search adds BM25 keyword scoring. Bedrock reranker uses a cross-encoder to re-score for answer presence, not topical similarity alone.<sup>[R6]</sup>">Hybrid search + Bedrock reranker</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Larger chunks increase dilution — making the wrong-topical-match problem worse.">Increase chunk size</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q5 — L5: semantic caching -->
+    <div class="quiz-question">
+      <p><strong>5.</strong> An FAQ chatbot handles 10,000 queries/day, 75% of which are semantic variations of 20 core questions. Which caching pattern captures these variations?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Deterministic caching requires exact request match — paraphrase variations miss the cache.">Deterministic request hashing</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Semantic caching stores query embeddings; returns cached responses for semantically similar queries (cosine similarity threshold). Handles paraphrases of the same question.<sup>[R1]</sup>">Semantic caching (embedding similarity)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Incremental KB sync keeps documents fresh — it doesn't reduce per-query compute cost.">Incremental KB sync</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q6 — L6: golden dataset -->
+    <div class="quiz-question">
+      <p><strong>6.</strong> After a prompt update, automated evaluations pass but CSAT drops. What testing layer catches the gap between 'factually correct' and 'customer-satisfying'?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Automated evaluations are the layer already passing — they measure factual correctness, not satisfaction.">Automated evaluation against golden answers</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Automated evals test against reference answers. Human preference evaluation or A/B testing against business metrics (CSAT, conversion) catches tone, brand voice, and nuance gaps.<sup>[R16]</sup>">Human preference evaluation or A/B testing against business metrics</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LLM-as-Judge with the right rubric could catch this, but human preference is more reliable for subjective quality.">LLM-as-Judge evaluation</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q7 — L2: action group -->
+    <div class="quiz-question">
+      <p><strong>7.</strong> An AgentCore agent needs to call a REST API to fetch real-time exchange rates. What is the correct action group backing for a stateless, simple HTTP call?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ ECS MCP servers are for complex, stateful, long-running tools — overkill for a simple exchange rate API call.">Amazon ECS MCP server</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Lambda is the standard executor for stateless, simple tool calls. Fast cold start, easy to maintain, pays-per-invocation. ECS is for complex tools with significant startup overhead.<sup>[R4]</sup>">Lambda function (action group executor)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Direct InvokeModel calls don't provide tool-calling capability — that's what action groups are for.">Direct InvokeModel calls</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q8 — L3: defense-in-depth layer -->
+    <div class="quiz-question">
+      <p><strong>8.</strong> A hotel chatbot returns a guest's passport number in its response. Which defense-in-depth layer should have caught this at the output stage?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Layer 1 checks user input, not model output.">Amazon Comprehend pre-filter</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Layer 4 (Guardrails output filter with PII masking) detects and redacts passport numbers, credit cards, and other PII in model responses. Comprehend + Guardrails together = complete input/output coverage.<sup>[R5]</sup>">Bedrock Guardrails output filter with PII masking</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ The FM layer doesn't self-filter — that's Guardrails' post-inference responsibility.">FM inference layer</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q9 — L5: Provisioned Throughput mutual exclusivity -->
+    <div class="quiz-question">
+      <p><strong>9.</strong> An application needs guaranteed throughput and you configure an inference profile to route across two regions. You also purchase Provisioned Throughput. Why won't this work as expected?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Cross-region inference profiles are designed for high-throughput routing, not for Provisioned Throughput compatibility.">Inference profiles are only for single-region deployments</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Inference profiles and Provisioned Throughput are mutually exclusive in Bedrock. An inference profile cannot use Provisioned Throughput — they are separate capacity tools. Choose one.<sup>[R12]</sup>">Inference profiles do not support Provisioned Throughput — they are mutually exclusive</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ The two services are separate — no configuration mistake on the user's part.">You need to enable a cross-account configuration flag</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q10 — L1: FIB maxTokens -->
+    <div class="quiz-question">
+      <p><strong>10.</strong> Fill in the blank: To set a hard cap on how many tokens a Bedrock model can generate in a single response, set the __________ inference parameter.</p>
+      <p style="margin-top:.5rem;">To set a hard cap on output token count, set the <input class="fillin" type="text" data-answer="maxtokens" data-feedback-ok="✓ Right. maxTokens is the hard cap on completion token count. Set conservatively for the task to prevent runaway responses and control output token cost.<sup>[R14]</sup>" data-feedback-bad="✗ Expected: maxTokens. Controls output length ceiling per invocation.<sup>[R14]</sup>" data-feedback-ref="<sup>[R14]</sup>">____________</code> inference parameter.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <!-- Q11 — L3: FIB semantic drift -->
+    <div class="quiz-question">
+      <p><strong>11.</strong> Fill in the blank: When a model's output distribution begins to deviate from a known-good baseline across semantic dimensions, this is called __________ drift.</p>
+      <p style="margin-top:.5rem;">Deviation from a known-good baseline across semantic dimensions = <input class="fillin" type="text" data-answer="semantic_drift" data-feedback-ok="✓ Right. Semantic drift measures embedding-similarity loss vs golden output distribution. Distinct from bias drift (demographic distribution shift). Detected via CloudWatch Anomaly Detection on token embeddings.<sup>[R5]</sup>" data-feedback-bad="✗ Expected: semantic drift. Detected via embedding similarity loss vs golden baseline.<sup>[R5]</sup>" data-feedback-ref="<sup>[R5]</sup>">____________</code> drift.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <!-- Q12 — L6: FIB X-Ray observability -->
+    <div class="quiz-question">
+      <p><strong>12.</strong> Fill in the blank: Tracing subsegments through the Lambda → Bedrock → Lambda prompt pipeline using AWS __________ identifies which stage introduced latency or data corruption.</p>
+      <p style="margin-top:.5rem;">Tracing Lambda → Bedrock → Lambda with AWS <input class="fillin" type="text" data-answer="xray" data-feedback-ok="✓ Right. X-Ray subsegments annotate each stage (pre-processing Lambda, Bedrock invocation, post-processing Lambda) for forensic diagnosis. CloudWatch Logs handles prompt confusion diagnosis at the Lambda layer.<sup>[R16]</sup>" data-feedback-bad="✗ Expected: X-Ray. Traces prompt pipeline stages for latency/correlation analysis.<sup>[R16]</sup>" data-feedback-ref="<sup>[R16]</sup>">____________</code> identifies which stage introduced latency.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="score-box" id="scoreBox">
+      <div class="score-num" id="scoreNum">0/12</div>
+      <div class="score-label">correct · auto-graded</div>
+      <button class="reset-btn" id="resetBtn">Reset &amp; re-answer</button>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← Back to AWS Bedrock</a>
+  </div>
+
+  <script>
+    function updateScore() {
+      var total = document.querySelectorAll('.quiz-option[data-correct="true"]').length;
+      var correct = 0;
+      document.querySelectorAll('.quiz-question').forEach(function(q) {
+        var checked = q.querySelector('.quiz-option.correct:not([data-correct="false"])');
+        if (checked && checked.dataset.correct === 'true') correct++;
+      });
+      document.querySelectorAll('.fillin').forEach(function(inp) {
+        var ans = (inp.value||'').trim().toLowerCase().replace(/[_\-\s]/g,'');
+        var exp = (inp.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,'');
+        if (ans === exp) correct++;
+      });
+      var pct = Math.round((correct / 12) * 100);
+      var scoreNum = document.getElementById('scoreNum');
+      var scoreBox = document.getElementById('scoreBox');
+      if (scoreNum) scoreNum.textContent = correct + '/12';
+      if (scoreBox) {
+        if (pct >= 75) scoreBox.classList.add('passing');
+        else scoreBox.classList.remove('passing');
+      }
+    }
+
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+        updateScore();
+      });
+    });
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question'); var fb = q ? q.querySelector('.fillin-feedback') : null;
+      function check() {
+        var ans = (input.value||'').trim().toLowerCase().replace(/[_\-\s]/g,'');
+        var expected = (input.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,'');
+        if (!expected) return;
+        if (ans === expected) { input.classList.remove('wrong'); input.classList.add('correct'); if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; } }
+        else { input.classList.remove('correct'); input.classList.add('wrong'); if (fb) { fb.textContent = (input.dataset.feedbackBad||('✗ Expected: '+input.dataset.answer))+(input.dataset.feedbackRef?' '+input.dataset.feedbackRef:''); fb.className = 'fillin-feedback wrong-fb'; } }
+        updateScore();
+      }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+        updateScore();
+      });
+    }
+    var resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        document.querySelectorAll('.quiz-feedback').forEach(function(fb){ fb.textContent = ''; fb.className = 'quiz-feedback'; });
+        document.querySelectorAll('.fillin').forEach(function(inp){ inp.value = ''; inp.classList.remove('correct','wrong'); });
+        document.querySelectorAll('.fillin-feedback').forEach(function(fb){ fb.textContent = ''; fb.className = 'fillin-feedback'; });
+        var scoreBox = document.getElementById('scoreBox');
+        if (scoreBox) { scoreBox.classList.remove('passing'); }
+        var scoreNum = document.getElementById('scoreNum');
+        if (scoreNum) scoreNum.textContent = '0/12';
+      });
+    }
+  </script>
+</body>
+</html>

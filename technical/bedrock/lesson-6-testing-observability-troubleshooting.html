@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 6 — Testing, Observability & Troubleshooting · AWS Bedrock</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.4rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 6 of 6 · AWS Bedrock</p>
+  <p class="breadcrumb"><a href="index.html">← AWS Bedrock</a></p>
+  <h1>Testing, Observability &amp; Troubleshooting</h1>
+
+  <div class="scenario">
+    <p><strong>Scenario:</strong> After deploying a new Claude 3.5 Sonnet prompt, customer satisfaction scores drop. The old model seemed fine in testing. A rollback is triggered. Now you need to understand why — and build a testing pipeline that catches this before production. This lesson is about the GenAI-specific testing and observability stack that traditional software engineering doesn't have.</p>
+  </div>
+
+  <h2>Bedrock Model Evaluations</h2>
+  <div class="concept note">
+    <div class="label">D5 SKILL 5.1.2</div>
+    <h3>Automated, LLM-as-Judge, and human preference evaluations</h3>
+    <p><strong>Automated evaluations</strong> — compare model outputs against a reference answer using a scoring rubric (relevance, factual accuracy, coherence). Fast, reproducible.<br>
+    <strong>LLM-as-Judge</strong> — a high-capability model (Opus) evaluates a lower-capability model's outputs against a prompt. Most cost-effective for subjective quality. Run nightly against a golden dataset.<br>
+    <strong>Human preference</strong> — A/B evaluation by human evaluators. Slowest but most accurate for tone, nuance, and domain-specific quality. Required for final pre-launch sign-off.<sup>[R16]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">A/B + CANARY</div>
+    <h3>A/B testing and canary deployments of FM prompts</h3>
+    <p><strong>A/B test:</strong> route 50% of traffic to prompt variant A, 50% to variant B. Measure business metrics (CSAT, conversion). Minimum 3–5 days for statistical significance given FM variance.<br>
+    <strong>Canary:</strong> deploy new model/prompt to 5% of traffic, monitor for 24h, auto-rollback if error rate exceeds threshold. Use CloudWatch Anomaly Detection on token-count and latency metrics.<sup>[R16]</sup></p>
+  </div>
+
+  <h2>Regression testing for FM outputs</h2>
+  <div class="concept note">
+    <div class="label">D5 SKILL 5.1.4</div>
+    <h3>Continuous evaluation pipelines</h3>
+    <p>Store a <strong>golden dataset</strong> — a curated set of query/expected-response pairs. Run against every model/prompt change. Metrics: % of outputs within acceptable similarity threshold to golden answer (e.g. embedding cosine similarity > 0.85). If drop > 5%, block deployment.<sup>[R16]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">D4 SKILL 4.3.6</div>
+    <h3>Output diffing — response consistency</h3>
+    <p>Run the same query 3–5 times. Compare outputs for: consistency of factual claims, tone stability, structural adherence (JSON schema). High variance across runs on identical input = unstable model configuration. Tune temperature or switch models.</p>
+  </div>
+
+  <h2>CloudWatch for Bedrock</h2>
+  <div class="concept note">
+    <div class="label">OBSERVABILITY</div>
+    <h3>Bedrock-specific CloudWatch metrics</h3>
+    <p><strong>InvocationLatency</strong> — end-to-end model invocation time (ms). Spike = model throttling or queue depth.<br>
+    <strong>InputTokenCount / OutputTokenCount</strong> — per-invocation token volumes. Aggregate for cost attribution by IAM principal or API key.<br>
+    <strong>InvocationErrors</strong> — 400/429/500 errors. 429 = throttling; consider Provisioned Throughput.<br>
+    <strong>ModelInvocationLogs</strong> — per-request logs with input/output (enable selectively for PII/compliance).<sup>[R1]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">ANOMALY DETECTION</div>
+    <h3>CloudWatch Anomaly Detection on Bedrock metrics</h3>
+    <p>Train a baseline on 7 days of normal traffic. Anomaly Detection alerts when: token burst patterns appear (potential prompt injection), response latency drifts, output token count drops unexpectedly (model truncating responses), or error rate spikes. Set alert on <code>bedrock:InvocationError</code> and <code>bedrock:InvocationLatency</code>.</p>
+  </div>
+
+  <h2>X-Ray for prompt observability pipelines</h2>
+  <div class="concept note">
+    <div class="label">D5 SKILL 5.2.5</div>
+    <h3>X-Ray trace propagation through prompt pipelines</h3>
+    <p>When a prompt flows through: API GW → Lambda (pre-processing) → Bedrock → Lambda (post-processing) → client, X-Ray traces the full chain. Use subsegments to annotate each stage's input/output. Identifies which stage introduced latency or corruption. CloudWatch Logs for prompt confusion diagnosis at the Lambda pre-processing stage.</p>
+  </div>
+
+  <h2>Retrieval quality testing</h2>
+  <div class="concept note">
+    <div class="label">D5 SKILL 5.1.6</div>
+    <h3>Retrieval metrics — relevance, context matching, latency</h3>
+    <p><strong>Relevance scoring</strong> — for each query, human-annotate or LLM-judge rate retrieved chunks as: fully relevant / partially relevant / irrelevant. Target > 80% fully relevant.<br>
+    <strong>Context matching verification</strong> — confirm retrieved chunks contain the answer to the query (not just high embedding similarity). High similarity ≠ correct answer.<br>
+    <strong>Retrieval latency</strong> — vector search latency should be < 50ms p99. If higher, check index size, embedding model, or vector DB instance type.</p>
+  </div>
+
+  <h2>GenAI-specific troubleshooting patterns</h2>
+  <div class="concept warning">
+    <div class="label">D5 TASK 5.2</div>
+    <h3>Common failure modes and fixes</h3>
+    <p><strong>Context window overflow</strong> — diagnose with token estimation before calling. Fix: context pruning, reduce chunk count, use a model with larger context.<br>
+    <strong>Hallucinations</strong> — diagnose: low retrieval relevance + no grounding in context. Fix: improve KB chunk quality, add guardrails + KB configuration.<br>
+    <strong>Semantic drift</strong> — diagnose: embedding similarity between current outputs and golden dataset drops over time. Fix: retune model or update prompt.<br>
+    <strong>Prompt injection</strong> — diagnose: anomalous token burst in input (injected prompt). Fix: input sanitization Lambda + Guardrails.<br>
+    <strong>Vectorization issues</strong> — diagnose: retrieved chunks are semantically wrong despite correct documents. Fix: re-embed with different chunking strategy or embedding model.</p>
+  </div>
+
+  <hr>
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 5</h2>
+    <p><strong>Prompt caching</strong> — caches repeated context at a reduced fee vs full token pricing. Semantic caching extends this to paraphrase variations.<sup>[R17]</sup></p>
+    <p><strong>Provisioned Throughput</strong> — by-Model-Units commits hourly capacity; by-Tokens pay-per-use. Breakeven ~40% utilization.<sup>[R15]</sup></p>
+    <p><strong>Tiered model routing</strong> — cascade from Haiku to Opus based on complexity; reduces cost 60–80%.<sup>[R1]</sup></p>
+  </div>
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [R1], [R15], [R16], [R17].</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> A prompt update passes automated evaluations but customer CSAT drops in production. Why did automated evaluation miss this?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Golden datasets can include a wide variety of queries — variety isn't the gap.">Golden dataset too narrow</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Automated evaluations test against reference answers — they measure factual correctness and coherence, not tone, brand voice, or customer satisfaction. The gap between 'factually correct' and 'customer-satisfying' requires human preference evaluation or A/B testing against business metrics.<sup>[R16]</sup>">Automated evals measure factual accuracy and coherence — they don't measure tone, brand voice, or customer satisfaction</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LLM-as-judge would catch this if run with the right rubric — not the reason for the gap.">LLM-as-Judge evaluations are unreliable for this task type</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> A Bedrock invocation returns a 429 ThrottlingException. Which CloudWatch metric confirms this and which capacity option should be evaluated?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. 429 = throttling. InvocationErrors CloudWatch metric confirms it. If steady-state traffic is high (>40% utilization), Provisioned Throughput eliminates throttling. If traffic is bursty, request a service quota increase.<sup>[R15]</sup>">bedrock:InvocationErrors = 429; Provisioned Throughput (by Model Units) if sustained high traffic, quota increase if bursty</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ InputTokenCount doesn't cause 429 — it's about token volume, not request rate.">InputTokenCount spike; reduce chunk count in KB</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ InvocationLatency spikes are a symptom of throttling, not the cause.">InvocationLatency spike; enable cross-region inference</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> An agent's retrieved chunks have high embedding similarity to the query but don't contain the answer. What is this failure mode called and what fixes it?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. High vector similarity ≠ correct answer. Chunks can be topically similar but not contain the specific answer (e.g. query about 'refund policy' retrieves chunks about 'cancellation policy' — both hotel policies, but wrong). Fix: hybrid search (BM25 keyword match) + Bedrock reranker to cross-encoder score for answer presence, not just topical similarity.<sup>[R6]</sup>">Semantic mismatch (high vector similarity but wrong answer domain); fix with hybrid search + Bedrock reranker</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Hallucination is when the model generates wrong facts — here the model is retrieving the wrong document. Different fix.">Hallucination; fix with guardrails and grounding in KB context</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Chunking strategy affects within-chunk coherence — not whether the retrieved chunk answers the specific query.">Chunking strategy too coarse; reduce chunk size</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Fill in the blank: A curated set of query/expected-response pairs used to detect hallucinations and quality regressions after model or prompt changes is called a __________ dataset.</p>
+      <p style="margin-top:.5rem;">A curated set of query/expected-response pairs used to detect hallucinations and regressions is called a <input class="fillin" type="text" data-answer="golden_dataset" data-feedback-ok="✓ Right. A golden dataset is the baseline for continuous evaluation. Run against every model/prompt change; block deployment if quality drops > 5% vs baseline.<sup>[R16]</sup>" data-feedback-bad="✗ Expected: golden dataset. Used in continuous evaluation pipelines to detect quality regressions before deployment.<sup>[R16]</sup>" data-feedback-ref="<sup>[R16]</sup>">____________</code> dataset.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank: X-Ray trace segments through the Lambda → Bedrock → Lambda pipeline identify which stage introduced latency or data corruption in a prompt __________ pipeline.</p>
+      <p style="margin-top:.5rem;">X-Ray traces through the Lambda → Bedrock → Lambda pipeline identify which stage introduced latency in a prompt <input class="fillin" type="text" data-answer="observability" data-feedback-ok="✓ Right. Prompt observability pipelines use X-Ray to trace each stage (pre-processing Lambda, Bedrock invocation, post-processing Lambda). Subsegments annotate input/output per stage for forensic diagnosis.<sup>[R16]</sup>" data-feedback-bad="✗ Expected: observability. X-Ray on a prompt observability pipeline traces pre-processing → Bedrock → post-processing for forensic latency analysis.<sup>[R16]</sup>" data-feedback-ref="<sup>[R16]</sup>">____________</code> pipeline.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-eval.html">[R16] Bedrock Model Evaluations</a> — automated, LLM-as-Judge, human preference; A/B and canary testing</li>
+      <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01-domain5.html">AWS Exam Guide D5</a> — Task 5.1 Evaluation Systems, Task 5.2 Troubleshooting</li>
+      <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01-domain4.html">AWS Exam Guide D4</a> — Task 4.3 Monitoring; golden datasets, semantic drift, CW Anomaly Detection</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← AWS Bedrock</a> · <a href="final-test.html">Final Test →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) { revealBtn.addEventListener('click', function(){ document.querySelectorAll('.quiz-question').forEach(function(q){ q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); }); var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]'); if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; } }); }); }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question'); var fb = q ? q.querySelector('.fillin-feedback') : null;
+      function check() { var ans = (input.value||'').trim().toLowerCase().replace(/[_\-\s]/g,''); var expected = (input.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,''); if (!expected) return; if (ans === expected) { input.classList.remove('wrong'); input.classList.add('correct'); if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; } } else { input.classList.remove('correct'); input.classList.add('wrong'); if (fb) { fb.textContent = (input.dataset.feedbackBad||('✗ Expected: '+input.dataset.answer))+(input.dataset.feedbackRef?' '+input.dataset.feedbackRef:''); fb.className = 'fillin-feedback wrong-fb'; } } }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+</body>
+</html>

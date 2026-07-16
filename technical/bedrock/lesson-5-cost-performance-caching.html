@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5 — Cost, Performance & Caching · AWS Bedrock</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.4rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 5 of 6 · AWS Bedrock</p>
+  <p class="breadcrumb"><a href="index.html">← AWS Bedrock</a></p>
+  <h1>Cost, Performance &amp; Caching</h1>
+
+  <div class="scenario">
+    <p><strong>Scenario:</strong> The hotel chatbot goes viral on social media. Traffic spikes 10x. Your CFO wants to cut the Bedrock bill in half without degrading response quality. You need a systematic cost optimization framework — not guesswork. Token efficiency, caching, tiered routing, and throughput configuration are the levers.</p>
+  </div>
+
+  <h2>Token efficiency</h2>
+  <div class="concept note">
+    <div class="label">D4 SKILL 4.1.1</div>
+    <h3>Token estimation, compression, and pruning</h3>
+    <p><strong>Token estimation</strong> — predict token count before calling the model (avoid 400 errors from context overflow). Tools: Titan Embeddings tokenizer, Bedrock SDK estimate.<br>
+    <strong>Prompt compression</strong> — remove redundant context. Use a compression FM or rules-based truncation of repeated examples in few-shot prompts.<br>
+    <strong>Context pruning</strong> — aggressively trim old conversation turns when approaching context window limit. Keep recent turns, drop older ones with lower relevance scores.<br>
+    <strong>Response limiting</strong> — <code>maxTokens</code> caps the cost ceiling. Set conservatively for the task.<sup>[R1]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">PRICING</div>
+    <h3>Input vs output token pricing</h3>
+    <p>Bedrock pricing is per-token, input and output priced separately. Output tokens cost more for frontier models (Claude Opus, GPT-5). Minimizing output token waste (verbose system prompts, irrelevant examples) has outsized ROI on output-token-priced models.</p>
+  </div>
+
+  <h2>Prompt caching (2026 feature)</h2>
+  <div class="concept note">
+    <div class="label">NEW 2026</div>
+    <h3>Prompt caching — repeated context at near-zero cost</h3>
+    <p>Bedrock caches the system prompt and few-shot examples after the first call. Subsequent calls with identical context reuse the cache — billed as a small cache hit fee vs full input token pricing. Most effective for: long system prompts, repeated instruction templates, RAG context chunks that appear across many queries.<sup>[R17]</sup></p>
+  </div>
+  <div class="concept warning">
+    <div class="label">CACHE HIT STRATEGY</div>
+    <h3>Semantic caching — similarity-based reuse</h3>
+    <p>Unlike deterministic caching (exact request match), semantic caching stores the embedding of a query and returns a cached response when the new query's embedding is within a similarity threshold (e.g. cosine similarity > 0.95). Catches paraphrased versions of the same question. Particularly effective for FAQ-style interactions.<sup>[R1]</sup></p>
+  </div>
+
+  <h2>Tiered model routing</h2>
+  <div class="concept note">
+    <div class="label">D4 SKILL 4.1.2</div>
+    <h3>Cost-capability tradeoff framework</h3>
+    <p>Route each query to the cheapest model that can handle it reliably:<br>
+    <strong>Haiku / Nova Micro</strong> — factual recall, classification, simple extraction. Cost: ~$0.25/M tokens.<br>
+    <strong>Sonnet / Nova Lite</strong> — moderate reasoning, summarization, translation. Cost: ~$3/M tokens.<br>
+    <strong>Opus / GPT-5</strong> — complex multi-step reasoning, long documents, creative tasks. Cost: ~$15/M tokens.<br>
+    A rules engine or lightweight classifier determines which tier. Can reduce cost 60–80% vs always calling the largest model.</p>
+  </div>
+  <div class="concept">
+    <div class="label">ROUTING PATTERN</div>
+    <h3>Model cascading vs simple tiering</h3>
+    <p><strong>Simple tiering:</strong> fixed routing rule per query type (classification → Haiku, reasoning → Opus).<br>
+    <strong>Cascading:</strong> start cheap, escalate to larger model if confidence is low or task fails. Requires a judge model or confidence threshold. More cost-efficient but adds latency on escalated queries.</p>
+  </div>
+
+  <h2>Provisioned Throughput and cross-region</h2>
+  <div class="concept note">
+    <div class="label">CAPACITY</div>
+    <h3>Provisioned Throughput — by Tokens vs by Model Units<sup>[R15]</sup></h3>
+    <p><strong>By Tokens:</strong> pay per token processed. Good for variable, unpredictable workloads. No idle cost.<br>
+    <strong>By Model Units:</strong> pay per hour regardless of utilization. Good for steady, predictable, high-volume traffic. Cheaper at scale (> ~40% utilization threshold).<br>
+    <strong>Note:</strong> inference profiles and Provisioned Throughput are mutually exclusive — an inference profile cannot use Provisioned Throughput.</p>
+  </div>
+  <div class="concept">
+    <div class="label">D4 SKILL 4.2.3</div>
+    <h3>Batch inference — offline processing</h3>
+    <p>For non-real-time workloads (report generation, bulk document processing), batch inference runs at lower cost. Submit a batch job, receive results asynchronously. Appropriate when latency tolerance is hours, not seconds. Use with SageMaker for custom models.</p>
+  </div>
+
+  <h2>Auto-scaling for GenAI traffic</h2>
+  <div class="concept">
+    <div class="label">SCALING</div>
+    <h3>GenAI-aware auto-scaling</h3>
+    <p>Token burst patterns — not traditional CPU/memory — drive GenAI capacity. Scale on: <code>BedrockInvocationDuration</code> CloudWatch metric, custom token-throughput ALB target groups, or Bedrock's native throughput metrics. Standard ASG based on EC2 metrics misses the real bottleneck.</p>
+  </div>
+
+  <hr>
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 4</h2>
+    <p><strong>Chunking</strong> — splitting docs into segments for embedding. Fixed-size, recursive, semantic, or dynamic strategies.<sup>[R6]</sup></p>
+    <p><strong>Reranker</strong> — cross-encoder post-retrieval that re-orders chunks by relevance to the query.<sup>[R6]</sup></p>
+    <p><strong>Bedrock Flows</strong> — visual node graph for multi-step orchestration. Prompt Management — versioned prompts with runtime variables.<sup>[R10]</sup></p>
+  </div>
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [R1], [R6], [R10], [R12], [R15], [R17].</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> A customer-support FAQ gets 80% repeated question patterns. Each query uses a 2000-token system prompt. Which caching approach gives the best cost reduction?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Deterministic caching only works on exact request match — FAQ variations (different phrasings) would miss the cache.">Deterministic request hashing (exact match)</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Semantic caching stores query embeddings and returns cached responses for semantically similar queries (e.g. 'refund policy' ≈ 'can I get my money back'). Handles paraphrases. Best for FAQ-style repeated patterns.<sup>[R1]</sup>">Semantic caching (embedding similarity threshold)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Incremental KB sync is about document freshness — it doesn't reduce per-query cost.">Incremental KB sync on document update</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> You have a steady, predictable 10M token/day workload. At what utilization does by-Model-Units Provisioned Throughput become cheaper than by-Tokens?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ 10% utilization is below the breakeven point — you'd be paying for unused capacity.">10% utilization</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ 25% utilization is below the ~40% breakeven threshold for most models.">25% utilization</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. The ~40% utilization threshold is the approximate breakeven where by-Model-Units becomes cheaper than by-Tokens for steady high-volume workloads. Below that, by-Tokens avoids idle cost.<sup>[R15]</sup>">~40% utilization or higher</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> An operations team wants to scale Bedrock capacity based on EC2 CPU utilization. Why is this the wrong metric?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. GenAI capacity is bounded by token throughput and model invocation latency — not CPU. CPU could be near-zero while Bedrock invocations queue. Scale on BedrockInvocationDuration, token burst metrics, or custom ALB target groups instead.<sup>[R1]</sup>">CPU doesn't reflect token throughput — GenAI capacity is bounded by model invocation latency, not host CPU</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Memory could be a bottleneck for larger models but is not the primary GenAI scaling metric.">Memory is the primary constraint for FM inference</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ EC2-based scaling misses the Bedrock API layer entirely — invocations queue at the Bedrock service level before reaching EC2.">EC2 CPU is already the standard GenAI scaling metric</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Fill in the blank: Prompt __________ caches the system prompt and few-shot examples after the first call, billing subsequent identical-context calls at a reduced cache-hit fee.</p>
+      <p style="margin-top:.5rem;">Prompt <input class="fillin" type="text" data-answer="caching" data-feedback-ok="✓ Right. Prompt caching (2026 feature) stores repeated context (system prompt, examples) at the Bedrock layer. Cache hit = small fee vs full token pricing. Best for long system prompts and repeated templates.<sup>[R17]</sup>" data-feedback-bad="✗ Expected: caching. Prompt caching is the 2026 feature that reduces cost on repeated context.<sup>[R17]</sup>" data-feedback-ref="<sup>[R17]</sup>">____________</code> caches the system prompt and few-shot examples after the first call.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank: A model invocation with a guaranteed, committed throughput commitment regardless of actual utilization is called __________ Throughput.</p>
+      <p style="margin-top:.5rem;">A model invocation with guaranteed, committed throughput regardless of utilization is called <input class="fillin" type="text" data-answer="provisioned_throughput" data-feedback-ok="✓ Right. Provisioned Throughput (by Model Units) commits to a hourly capacity reservation. You pay per hour whether you use it or not — but get guaranteed latency at scale. Distinct from on-demand (by-token) pricing.<sup>[R15]</sup>" data-feedback-bad="✗ Expected: Provisioned Throughput. Commits model units for guaranteed capacity; by-Model-Units pricing applies regardless of utilization.<sup>[R15]</sup>" data-feedback-ref="<sup>[R15]</sup>">____________</code> Throughput.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html">[R17] Prompt Caching</a> — cache hit patterns, supported models, pricing</li>
+      <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">[R15] Provisioned Throughput</a> — by Tokens vs by Model Units, breakeven analysis</li>
+      <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01-domain4.html">AWS Exam Guide D4</a> — Task 4.1 Cost Optimization, Task 4.2 Performance, Task 4.3 Monitoring</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← AWS Bedrock</a> · <a href="lesson-6-testing-observability-troubleshooting.html">Next: Testing, Observability &amp; Troubleshooting →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) { revealBtn.addEventListener('click', function(){ document.querySelectorAll('.quiz-question').forEach(function(q){ q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); }); var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]'); if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; } }); }); }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question'); var fb = q ? q.querySelector('.fillin-feedback') : null;
+      function check() { var ans = (input.value||'').trim().toLowerCase().replace(/[_\-\s]/g,''); var expected = (input.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,''); if (!expected) return; if (ans === expected) { input.classList.remove('wrong'); input.classList.add('correct'); if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; } } else { input.classList.remove('correct'); input.classList.add('wrong'); if (fb) { fb.textContent = (input.dataset.feedbackBad||('✗ Expected: '+input.dataset.answer))+(input.dataset.feedbackRef?' '+input.dataset.feedbackRef:''); fb.className = 'fillin-feedback wrong-fb'; } } }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+</body>
+</html>

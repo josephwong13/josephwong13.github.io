@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Bedrock — GenAI Professional Exam Prep</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --measure: 42rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 0.8rem 0 0.4rem; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .breadcrumb span { color: var(--accent); }
+    .intro { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1.2rem 0; font-size: 0.9rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .intro p { margin-bottom: 0.6rem; }
+    .intro p:last-child { margin-bottom: 0; }
+    .exam-badge { display: inline-block; background: var(--accent-light); color: var(--accent); border: 1px solid #c9a0a0; border-radius: 4px; padding: 0.15em 0.5em; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-right: 0.4em; }
+    .section-list { list-style: none; margin: 1rem 0; }
+    .section-item { margin: 0.6rem 0; }
+    .section-item a { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.1rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--text); transition: all 0.12s; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .section-item a:hover { border-color: var(--accent); background: var(--accent-light); text-decoration: none; }
+    .section-item a:hover .arrow { color: var(--accent); }
+    .section-item .lesson-num { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 0.15rem; }
+    .section-item .lesson-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .section-item .lesson-theme { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .section-item .domain { display: inline-block; font-size: 0.62rem; background: #f0eeed; color: var(--muted); border-radius: 3px; padding: 0.1em 0.4em; margin-top: 0.2rem; }
+    .section-item .arrow { color: var(--muted); font-size: 1.1rem; margin-left: 0.6rem; flex-shrink: 0; }
+    .final-link { margin-top: 1.5rem; }
+    .final-link a { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem; background: var(--accent-light); border: 2px solid var(--accent); border-radius: 8px; text-decoration: none; color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+    .final-link a:hover { background: #e8d0d0; }
+    .final-link .arrow { font-size: 1.2rem; }
+    .domains { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.2rem 0; font-size: 0.82rem; }
+    .domains h2 { font-size: 0.85rem; color: var(--accent); margin: 0 0 0.6rem; font-weight: 600; }
+    .domains ul { list-style: none; }
+    .domains li { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid #f0f0ee; }
+    .domains li:last-child { border-bottom: none; }
+    .domains .weight { color: var(--muted); font-weight: 500; }
+    .domains .weight.high { color: var(--accent); font-weight: 700; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } }
+  </style>
+</head>
+<body>
+  <p class="back-link"><a href="../index.html">← Technical Lessons</a></p>
+  <p class="breadcrumb">🗂️ Hub / Technical / <span>AWS Bedrock</span></p>
+  <h1>AWS Bedrock — GenAI Professional Exam Prep</h1>
+  <div class="intro">
+    <p><span class="exam-badge">AIP-C01</span> <strong>AWS Certified Generative AI Developer – Professional</strong></p>
+    <p>6-lesson deep-dive covering all 5 exam domains. Built from official AWS documentation (2026). Each lesson ends with a 5-question quiz. A cumulative final test closes the series.</p>
+    <p>Exam assumes 1 year hands-on GenAI experience. Lessons do not stop at beginner level.</p>
+  </div>
+  <div class="domains">
+    <h2>Exam domains</h2>
+    <ul>
+      <li><span>D1: FM Integration, Data Management &amp; Compliance</span> <span class="weight high">31%</span></li>
+      <li><span>D2: Implementation &amp; Integration</span> <span class="weight high">26%</span></li>
+      <li><span>D3: AI Safety, Security &amp; Governance</span> <span class="weight">20%</span></li>
+      <li><span>D4: Operational Efficiency &amp; Optimization</span> <span class="weight">12%</span></li>
+      <li><span>D5: Testing, Validation &amp; Troubleshooting</span> <span class="weight">11%</span></li>
+    </ul>
+  </div>
+  <ul class="section-list">
+    <li class="section-item">
+      <a href="lesson-1-apis-fm-selection.html">
+        <div>
+          <div class="lesson-num">Lesson 1 of 6 · D1 (31%)</div>
+          <div class="lesson-title">Bedrock APIs &amp; Foundation Model Selection</div>
+          <div class="lesson-theme">Converse vs Invoke vs Messages · Marketplace · inference profiles · model selection framework · streaming</div>
+          <div><span class="domain">D1</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="section-item">
+      <a href="lesson-2-agentic-ai-agentcore.html">
+        <div>
+          <div class="lesson-num">Lesson 2 of 6 · D2 (26%)</div>
+          <div class="lesson-title">Agentic AI — AgentCore, Action Groups &amp; MCP</div>
+          <div class="lesson-theme">AgentCore (Harness/Runtime/Gateway/Memory) · action groups · MCP tools · session management · ReAct · multi-agent coordination · CI/CD</div>
+          <div><span class="domain">D2</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="section-item">
+      <a href="lesson-3-guardrails-defense-in-depth.html">
+        <div>
+          <div class="lesson-num">Lesson 3 of 6 · D3 (20%)</div>
+          <div class="lesson-title">Guardrails &amp; Defense-in-Depth</div>
+          <div class="lesson-theme">Guardrail policy components · input/response eval pipeline · Comprehend/Macie · VPC endpoints · IAM enforcement · model cards · drift detection · LLM-as-a-Judge</div>
+          <div><span class="domain">D3</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="section-item">
+      <a href="lesson-4-knowledge-bases-rag.html">
+        <div>
+          <div class="lesson-num">Lesson 4 of 6 · D1+D2</div>
+          <div class="lesson-title">Knowledge Bases &amp; RAG</div>
+          <div class="lesson-theme">chunking strategies · Titan Embeddings · OpenSearch/pgvector/Milvus · hybrid search · Bedrock reranker · Knowledge Base sync · Bedrock Flows · Prompt Management</div>
+          <div><span class="domain">D1 D2</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="section-item">
+      <a href="lesson-5-cost-performance-caching.html">
+        <div>
+          <div class="lesson-num">Lesson 5 of 6 · D4 (12%)</div>
+          <div class="lesson-title">Cost, Performance &amp; Caching</div>
+          <div class="lesson-theme">token efficiency · prompt caching · semantic caching · tiered model routing · Provisioned Throughput · cross-region inference · auto-scaling</div>
+          <div><span class="domain">D4</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+    <li class="section-item">
+      <a href="lesson-6-testing-observability-troubleshooting.html">
+        <div>
+          <div class="lesson-num">Lesson 6 of 6 · D5+D4</div>
+          <div class="lesson-title">Testing, Observability &amp; Troubleshooting</div>
+          <div class="lesson-theme">Bedrock Model Evaluations · A/B + canary testing · golden datasets · CloudWatch metrics · X-Ray · semantic drift · output diffing · regression testing</div>
+          <div><span class="domain">D5 D4</span></div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+  </ul>
+  <div class="final-link">
+    <a href="final-test.html">
+      <span>📝 Final Test — 12 cumulative questions</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</body>
+</html>

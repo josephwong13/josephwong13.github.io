@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3 — Guardrails & Defense-in-Depth · AWS Bedrock</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.4rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .fillin { display: inline-block; min-width: 110px; padding: 0.1em 0.4em; margin: 0 0.15em; border: none; border-bottom: 2px solid var(--accent); background: transparent; font-family: var(--mono); font-size: 0.9em; color: var(--text); text-align: center; }
+    .fillin:focus { outline: none; background: var(--accent-light); }
+    .fillin.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .fillin.wrong { border-color: #9b2226; background: #fde8e8; color: #9b2226; }
+    .fillin-feedback { display: block; margin: 0.5rem 0 0; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; }
+    .fillin-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .fillin-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 3 of 6 · AWS Bedrock</p>
+  <p class="breadcrumb"><a href="index.html">← AWS Bedrock</a></p>
+  <h1>Guardrails &amp; Defense-in-Depth</h1>
+
+  <div class="scenario">
+    <p><strong>Scenario:</strong> The hotel-booking agent from Lesson 2 starts returning guest phone numbers and email addresses in its responses. Legal has flagged this as a GDPR violation. You need to add guardrails to the agent — not just a single filter, but a layered safety system that handles input, model inference, and output in sequence.</p>
+  </div>
+
+  <h2>Guardrail policy components</h2>
+  <div class="concept note">
+    <div class="label">POLICY LAYER</div>
+    <h3>Content filters — input and output</h3>
+    <p>Bedrock Guardrails evaluates content before FM inference (input filter) and after (output filter). Filters check for: hate speech, violence, sexual content, and harassment. Each filter has a threshold (NONE, LOW, MEDIUM, HIGH). If threshold is exceeded, the request is blocked or the response is redacted.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">POLICY LAYER</div>
+    <h3>Denied topics</h3>
+    <p>Define topics the FM is not allowed to discuss. Guardrails intercepts at the policy layer — not at the model level — so the FM cannot be prompted around the restriction.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">POLICY LAYER</div>
+    <h3>PII masking</h3>
+    <p>Guardrails can detect and mask PII in outputs. Combined with Amazon Comprehend for pre-detection, this is the primary GDPR/HIPAA compliance tool for Bedrock.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">POLICY LAYER</div>
+    <h3>Word filters — custom term blocking</h3>
+    <p>Block specific words or phrases: competitor names, proprietary terms, internal project codenames. Simpler than denied topics — pattern match rather than semantic classification.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept warning">
+    <div class="label">⚠ IAM ENFORCEMENT</div>
+    <h3>bedrock:GuardrailIdentifier — mandatory guardrails via IAM</h3>
+    <p>For org-level enforcement, attach an IAM policy requiring all <code>bedrock:InvokeModel</code> calls to pass through a specific guardrail. This makes guardrails non-bypassable — even API calls that skip agent code hit the constraint.<sup>[R5]</sup></p>
+  </div>
+
+  <h2>Defense-in-depth pipeline</h2>
+  <div class="concept note">
+    <div class="label">LAYERED ARCHITECTURE — D3 SKILL 3.1.4</div>
+    <h3>Pre-processing → FM → Post-processing</h3>
+    <p>No single layer is sufficient. The exam expects you to draw this pipeline:<br>
+    <strong>Layer 1:</strong> Amazon Comprehend — pre-detect PII in the user input.<br>
+    <strong>Layer 2:</strong> Bedrock Guardrails — policy-level input evaluation (denied topics, word filters).<br>
+    <strong>Layer 3:</strong> FM inference — model generates response.<br>
+    <strong>Layer 4:</strong> Guardrails output eval — PII masking, content filtering of response.<br>
+    <strong>Layer 5:</strong> Lambda — custom validation (JSON schema enforcement, response length sanity check).<br>
+    <strong>Layer 6:</strong> API Gateway — final response filtering before returning to client.<sup>[R5]</sup></p>
+  </div>
+
+  <h2>PII detection and masking</h2>
+  <div class="concept">
+    <div class="label">D3 SKILL 3.2.2</div>
+    <h3>Comprehend + Macie for PII detection</h3>
+    <p><strong>Amazon Comprehend</strong> — real-time PII detection in user input. <strong>Amazon Macie</strong> — discovery and classification of PII in S3 data stores. Use Macie to audit what data your Knowledge Base documents contain before enabling retrieval.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">MASKING PATTERN</div>
+    <h3>Guardrails PII redaction</h3>
+    <p>Guardrails can replace detected PII with a placeholder (<code>[EMAIL]</code>, <code>[PHONE]</code>). Configure which PII entity types to mask. Applies to outputs; combine with Comprehend pre-filter for complete coverage.<sup>[R5]</sup></p>
+  </div>
+
+  <h2>Governance and model cards</h2>
+  <div class="concept note">
+    <div class="label">D3 SKILL 3.3.1</div>
+    <h3>Model cards — documented FM limitations</h3>
+    <p>SageMaker model cards record a model's intended use cases, training data summary, performance metrics, and known limitations. Required evidence for compliance frameworks (SOC 2, GDPR). Bedrock's managed models have AWS-published model cards; custom models require your own.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">LINEAGE</div>
+    <h3>AWS Glue — data lineage tracking</h3>
+    <p>Glue Data Catalog registers data sources used in RAG pipelines. CloudTrail audits every <code>InvokeModel</code> call with the principal, timestamp, and input parameters. Together they provide the audit trail required for D3 governance.<sup>[R5]</sup></p>
+  </div>
+
+  <h2>Drift detection and monitoring</h2>
+  <div class="concept warning">
+    <div class="label">D3 SKILL 3.3.4</div>
+    <h3>Semantic drift and bias drift</h3>
+    <p><strong>Semantic drift:</strong> model begins returning responses that deviate semantically from expected baseline — measured by embedding similarity between current and golden-output distributions. <strong>Bias drift:</strong> model's output distribution shifts across demographic groups over time. CloudWatch Anomaly Detection on token embeddings triggers alerts.<sup>[R5]</sup></p>
+  </div>
+  <div class="concept">
+    <div class="label">LLM-AS-JUDGE</div>
+    <h3>Automated evaluation with a judge FM</h3>
+    <p>Use a high-capability FM (Opus) to evaluate outputs from a lower-capability FM (Haiku) against a rubric. Score: relevance, factual accuracy, tone. Run nightly on a golden dataset. Detects quality regressions before they reach production.<sup>[R5]</sup></p>
+  </div>
+
+  <hr>
+  <div class="review">
+    <h2 style="margin-top:0;">🔄 Review from Lesson 2</h2>
+    <p><strong>AgentCore</strong> — four sub-components: Harness (config), Runtime (loop execution), Gateway (API entry), Memory (session state).<sup>[R4]</sup></p>
+    <p><strong>action_group</strong> — the tool-definition unit in AgentCore; backed by Lambda (simple) or ECS (complex).<sup>[R3]</sup></p>
+    <p><strong>Converse API</strong> — unified multi-model interface; used by AgentCore under the hood.<sup>[R2]</sup></p>
+  </div>
+  <hr>
+
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [R1], [R3], [R4], [R5].</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> An enterprise wants to ensure no Bedrock model invocation can bypass its content policy, even if developers call the API directly. Which AWS mechanism enforces this?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Guardrails alone can be bypassed by direct API calls — it only filters if applied. IAM is the non-bypassable layer.">Bedrock Guardrails content filter</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. An IAM policy with condition <code>bedrock:GuardrailIdentifier</code> makes guardrail enforcement a prerequisite for <code>bedrock:InvokeModel</code> — no way to bypass it without modifying the IAM policy.<sup>[R5]</sup>">IAM policy requiring bedrock:GuardrailIdentifier on all InvokeModel calls</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ VPC endpoints provide network isolation but don't enforce content policy at the API layer.">VPC endpoint with security groups</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> A hotel booking agent returns a guest's credit card number in its response. Which defense-in-depth layer should have caught this?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Layer 1 (Comprehend) checks the user input, not the model output. The card number was in the response.">Amazon Comprehend pre-filter on user input</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Layer 4 (Guardrails output eval) with PII masking detects and redacts credit card numbers in the FM response. Comprehend + Guardrails together provide complete input/output PII coverage.<sup>[R5]</sup>">Bedrock Guardrails output filter with PII masking</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ The FM layer itself is not designed to filter its own outputs — that's Guardrails' job post-inference.">FM inference layer (the model itself)</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> Which AWS service combination provides the audit trail required for GDPR compliance in a Bedrock RAG pipeline?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ CloudWatch alone logs API calls but doesn't track data source attribution or lineage.">CloudWatch Logs only</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Comprehend detects PII but doesn't provide data lineage or audit logging for compliance.">Amazon Comprehend PII detection only</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Right. Glue Data Catalog registers data sources (lineage). CloudTrail audits every InvokeModel call with principal, timestamp, and input parameters. Together: data attribution + API audit trail = D3 governance evidence.<sup>[R5]</sup>">AWS Glue Data Catalog + CloudTrail</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> Fill in the blank: Guardrails can detect and redact PII entity types (email, phone, credit card) in model outputs using __________.</p>
+      <p style="margin-top:.5rem;">Guardrails can detect and redact PII entity types (email, phone, credit card) in model outputs using <input class="fillin" type="text" data-answer="pii_masking" data-feedback-ok="✓ Right. PII masking replaces detected entities with labeled placeholders like [EMAIL], [PHONE]. Applies at the output-filter layer post-inference.<sup>[R5]</sup>" data-feedback-bad="✗ Expected: PII masking. This is the Guardrails component that replaces detected PII with placeholders.<sup>[R5]</sup>" data-feedback-ref="<sup>[R5]</sup>">____________</code>.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> Fill in the blank: When a model's output distribution begins to deviate semantically from a known-good baseline, this is called __________ drift.</p>
+      <p style="margin-top:.5rem;">When a model's output distribution begins to deviate semantically from a known-good baseline, this is called <input class="fillin" type="text" data-answer="semantic_drift" data-feedback-ok="✓ Right. Semantic drift measures embedding-similarity loss against a golden-output baseline. Distinct from bias drift (demographic distribution shift). Detected via CloudWatch Anomaly Detection on token embeddings.<sup>[R5]</sup>" data-feedback-bad="✗ Expected: semantic drift. This measures how far the model's outputs have drifted from the expected baseline.<sup>[R5]</sup>" data-feedback-ref="<sup>[R5]</sup>">____________</code> drift.</p>
+      <div class="fillin-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Further reading</h2>
+    <ol>
+      <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html">[R5] Bedrock Guardrails</a> — policy components, IAM enforcement, PII masking, denied topics</li>
+      <li><a href="https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01-domain3.html">AWS Exam Guide D3</a> — Task 3.1 Input/Output Safety, Task 3.2 Data Security, Task 3.3 Governance, Task 3.4 Responsible AI</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← AWS Bedrock</a> · <a href="lesson-4-knowledge-bases-rag.html">Next: Knowledge Bases &amp; RAG →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) { revealBtn.addEventListener('click', function(){ document.querySelectorAll('.quiz-question').forEach(function(q){ q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); }); var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]'); if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; } }); }); }
+    document.querySelectorAll('.fillin').forEach(function(input){
+      var q = input.closest('.quiz-question'); var fb = q ? q.querySelector('.fillin-feedback') : null;
+      function check() { var ans = (input.value||'').trim().toLowerCase().replace(/[_\-\s]/g,''); var expected = (input.dataset.answer||'').toLowerCase().replace(/[_\-\s]/g,''); if (!expected) return; if (ans === expected) { input.classList.remove('wrong'); input.classList.add('correct'); if (fb) { fb.textContent = input.dataset.feedbackOk || '✓ Correct.'; fb.className = 'fillin-feedback correct-fb'; } } else { input.classList.remove('correct'); input.classList.add('wrong'); if (fb) { fb.textContent = (input.dataset.feedbackBad||('✗ Expected: '+input.dataset.answer))+(input.dataset.feedbackRef?' '+input.dataset.feedbackRef:''); fb.className = 'fillin-feedback wrong-fb'; } } }
+      input.addEventListener('blur', check);
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    });
+  </script>
+</body>
+</html>
