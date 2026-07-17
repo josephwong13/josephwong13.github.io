@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ark Nova — Beginner's Winning Strategy</title>
+
+  <style>
+    /* ===========================================
+       CSS CUSTOM PROPERTIES — DARK BOTANICAL
+       =========================================== */
+    :root {
+      --bg-primary: #0f0f0f;
+      --text-primary: #e8e4df;
+      --text-secondary: #9a9590;
+      --accent-warm: #d4a574;
+      --accent-pink: #e8b4b8;
+      --accent-gold: #c9b896;
+      --accent-sage: #7a9a7a;
+      --card-bg: rgba(30, 28, 24, 0.85);
+
+      --font-display: 'Cormorant', serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration: 0.7s;
+    }
+
+    /* ===========================================
+       BASE STYLES
+       =========================================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* --- PASTE viewport-base.css CONTENTS HERE --- */
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--bg-primary); }
+    .deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--bg-primary); }
+    .deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--bg-primary); }
+    .slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--bg-primary); }
+    .slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+    img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+    .deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+    @media print { html, body { width: 1920px; height: auto; overflow: visible; background: #fff; } .deck-viewport { position: static; overflow: visible; background: #fff; } .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; } .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; } .slide:last-child { break-after: auto; page-break-after: auto; } .deck-controls { display: none !important; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+    /* ===========================================
+       ANIMATIONS
+       =========================================== */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity var(--duration) var(--ease-out-expo), transform var(--duration) var(--ease-out-expo); }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    .reveal:nth-child(1) { transition-delay: 0.05s; }
+    .reveal:nth-child(2) { transition-delay: 0.15s; }
+    .reveal:nth-child(3) { transition-delay: 0.25s; }
+    .reveal:nth-child(4) { transition-delay: 0.35s; }
+    .reveal:nth-child(5) { transition-delay: 0.45s; }
+    .reveal:nth-child(6) { transition-delay: 0.55s; }
+
+    /* ===========================================
+       DARK BOTANICAL SLIDE STYLES
+       =========================================== */
+
+    /* --- Abstract background shapes --- */
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .bg-shape-1 { width: 600px; height: 600px; background: var(--accent-warm); top: -150px; right: -100px; }
+    .bg-shape-2 { width: 400px; height: 400px; background: var(--accent-pink); bottom: -80px; left: 10%; }
+    .bg-shape-3 { width: 300px; height: 300px; background: var(--accent-gold); top: 40%; right: 30%; }
+
+    /* --- Typography --- */
+    h1 { font-family: var(--font-display); font-size: 96px; font-weight: 600; color: var(--text-primary); line-height: 1.05; letter-spacing: -0.02em; }
+    h2 { font-family: var(--font-display); font-size: 68px; font-weight: 600; color: var(--text-primary); line-height: 1.1; }
+    h3 { font-family: var(--font-display); font-size: 44px; font-weight: 400; color: var(--accent-warm); line-height: 1.2; }
+    p, li { font-family: var(--font-body); font-size: 26px; font-weight: 300; color: var(--text-secondary); line-height: 1.65; }
+    .label { font-family: var(--font-body); font-size: 14px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-gold); }
+
+    /* --- Accent line --- */
+    .accent-line { width: 64px; height: 3px; background: var(--accent-warm); border: none; margin: 28px 0; }
+
+    /* --- Cards --- */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 165, 116, 0.15);
+      border-radius: 16px;
+      padding: 32px 36px;
+      backdrop-filter: blur(12px);
+    }
+    .card h3 { font-size: 36px; margin-bottom: 12px; }
+    .card p, .card li { font-size: 22px; }
+
+    /* --- Slide layouts --- */
+    .slide-inner { position: relative; width: 100%; height: 100%; padding: 80px 100px; display: flex; flex-direction: column; z-index: 1; }
+
+    /* Title slide */
+    .title-slide { display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 100px; }
+    .title-slide h1 { font-size: 120px; max-width: 900px; }
+    .title-slide .subtitle { font-family: var(--font-body); font-size: 28px; font-weight: 300; color: var(--accent-gold); margin-top: 24px; letter-spacing: 0.05em; }
+
+    /* Two column */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .col-header { font-family: var(--font-body); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 20px; }
+
+    /* List styles */
+    ul { list-style: none; }
+    ul li { position: relative; padding-left: 28px; margin-bottom: 14px; }
+    ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent-warm); font-family: var(--font-display); }
+
+    /* Number blocks */
+    .num { font-family: var(--font-display); font-size: 80px; font-weight: 700; color: var(--accent-warm); opacity: 0.5; line-height: 1; }
+    .num-block { display: flex; align-items: flex-start; gap: 28px; margin-bottom: 28px; }
+    .num-block .num { min-width: 100px; text-align: right; }
+    .num-block .content h3 { font-size: 32px; margin-bottom: 8px; }
+    .num-block .content p { font-size: 22px; }
+
+    /* Map tier table */
+    .tier-row { display: flex; align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .tier-badge { font-family: var(--font-body); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; min-width: 80px; text-align: center; }
+    .tier-badge.tier-1 { background: rgba(122, 154, 122, 0.25); color: var(--accent-sage); }
+    .tier-badge.tier-2 { background: rgba(212, 165, 116, 0.2); color: var(--accent-warm); }
+    .tier-badge.tier-3 { background: rgba(155, 100, 60, 0.2); color: #b07840; }
+    .tier-badge.tier-4 { background: rgba(150, 60, 60, 0.2); color: #c06060; }
+    .tier-name { font-family: var(--font-display); font-size: 30px; color: var(--text-primary); min-width: 280px; }
+    .tier-desc { font-family: var(--font-body); font-size: 20px; color: var(--text-secondary); }
+
+    /* Priority arrow list */
+    .priority-list { display: flex; flex-direction: column; gap: 16px; }
+    .priority-item { display: flex; align-items: center; gap: 20px; padding: 20px 24px; border-radius: 12px; background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent-warm); }
+    .priority-item .num { font-size: 48px; opacity: 0.6; min-width: 60px; }
+    .priority-item h4 { font-family: var(--font-display); font-size: 30px; color: var(--text-primary); font-weight: 600; }
+    .priority-item p { font-size: 20px; margin-top: 4px; }
+
+    /* Callout box */
+    .callout { border-left: 5px solid var(--accent-pink); background: rgba(232, 180, 184, 0.07); padding: 24px 28px; border-radius: 0 12px 12px 0; margin-top: 24px; }
+    .callout p { color: var(--accent-pink); font-size: 24px; font-style: italic; }
+
+    /* Slide number */
+    .slide-num { position: absolute; bottom: 48px; right: 80px; font-family: var(--font-body); font-size: 14px; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; }
+
+    /* Closing slide */
+    .closing-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .closing-slide h2 { font-size: 88px; color: var(--accent-warm); }
+
+    /* Controls */
+    .controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 1000; }
+    .ctrl-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: var(--text-secondary); font-size: 13px; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: var(--font-body); transition: all 0.2s; }
+    .ctrl-btn:hover { background: rgba(255,255,255,0.14); color: var(--text-primary); }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="deck-viewport">
+    <main class="deck-stage" id="deckStage">
+
+      <!-- SLIDE 1: Title -->
+      <section class="slide active">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="slide-inner title-slide">
+          <p class="label reveal">Board Game Strategy · Beginner to Winning</p>
+          <h1 class="reveal">Ark Nova</h1>
+          <p class="subtitle reveal">How to Win — Without Relying on Lucky Card Draws</p>
+          <div class="accent-line reveal"></div>
+          <p class="reveal" style="font-size:20px; color:var(--text-secondary);">Action efficiency · Synergy chains · Map knowledge</p>
+        </div>
+        <div class="slide-num">01</div>
+      </section>
+
+      <!-- SLIDE 2: Core Philosophy -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="slide-inner">
+          <p class="label reveal">The Game in One Frame</p>
+          <h2 class="reveal">Ark Nova is an<br><em style="color:var(--accent-warm)">Action Efficiency</em> Game</h2>
+          <div class="accent-line reveal"></div>
+          <div class="two-col" style="margin-top:32px;">
+            <div class="reveal">
+              <p class="col-header">What You Control</p>
+              <ul>
+                <li>How many actions per turn you spend</li>
+                <li>Which cards you keep or sell</li>
+                <li>When you break (pass first)</li>
+                <li>Map position & enclosure layout</li>
+              </ul>
+            </div>
+            <div class="reveal">
+              <p class="col-header">What You Don't</p>
+              <ul>
+                <li>The shuffle of the card deck</li>
+                <li>Your opponent's card draws</li>
+                <li>Conservation project placement slots</li>
+                <li>Break timing surprises</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout reveal">
+            <p>"90% of the game revolves around: money, cards, workers, and upgrades." — Orski</p>
+          </div>
+        </div>
+        <div class="slide-num">02</div>
+      </section>
+
+      <!-- SLIDE 3: Key Value System -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Scoring Fundamentals</p>
+          <h2 class="reveal">The Value Hierarchy</h2>
+          <div class="accent-line reveal"></div>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:32px; margin-top:36px;">
+            <div class="card reveal">
+              <h3 style="font-size:64px; color:var(--accent-warm);">1 CP</h3>
+              <p class="label" style="margin-top:12px;">Conservation Point</p>
+              <p style="margin-top:16px; font-size:22px;">= 3 Appeal for final scoring.<br>Your primary win driver.</p>
+            </div>
+            <div class="card reveal">
+              <h3 style="font-size:64px; color:var(--accent-sage);">X-Tokens</h3>
+              <p class="label" style="margin-top:12px;">Extra Actions</p>
+              <p style="margin-top:16px; font-size:22px;">Most valuable resource.<br>Always spend them fully<br>before a break.</p>
+            </div>
+            <div class="card reveal">
+              <h3 style="font-size:64px; color:var(--accent-gold);">15 Rep</h3>
+              <p class="label" style="margin-top:12px;">Favourite Zoo Card</p>
+              <p style="margin-top:16px; font-size:22px;">Worth pursuing if you're<br>already on the reputation<br>track anyway.</p>
+            </div>
+          </div>
+          <div class="callout reveal" style="margin-top:28px;">
+            <p>Don't chase the card tier list. Synergy beats individual card power every time.</p>
+          </div>
+        </div>
+        <div class="slide-num">03</div>
+      </section>
+
+      <!-- SLIDE 4: Map Tier List -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Map Selection</p>
+          <h2 class="reveal">Which Map to Fight For</h2>
+          <div class="accent-line reveal"></div>
+
+          <div style="margin-top:24px;">
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-1">Tier 1</span>
+              <span class="tier-name">Silver Lake ⭐</span>
+              <span class="tier-desc">Best map — no special ability means no setup. Open layout, easy money, extra action on bonus. Snowballs hard.</span>
+            </div>
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-1">Tier 1</span>
+              <span class="tier-name">Outdoor Areas</span>
+              <span class="tier-desc">Broken ability: +2 capacity per adjacent building. Build a size-5 enclosure in ONE move. Free partnership zoo.</span>
+            </div>
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-2">Tier 2</span>
+              <span class="tier-name">Research Institute</span>
+              <span class="tier-desc">Ignore one condition per animal. Free university bonus. Round-1 card upgrade possible with two universities.</span>
+            </div>
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-2">Tier 2</span>
+              <span class="tier-name">Hollywood Hills</span>
+              <span class="tier-desc">Easy to cover 2 H's early. Great sponsorship synergies. Free partnership zoo.</span>
+            </div>
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-3">Tier 3</span>
+              <span class="tier-name">Ice Cream Parlor / Commercial Harbor</span>
+              <span class="tier-desc">Playable but require specific setups. Commercial Harbor is the only map with a 2X spot.</span>
+            </div>
+            <div class="tier-row reveal">
+              <span class="tier-badge tier-4">Tier 4</span>
+              <span class="tier-name">Observation Tower / Park Restaurant</span>
+              <span class="tier-desc">Avoid. Awkward building positions, restricted zones, weak bonuses. You'll fight the map.</span>
+            </div>
+          </div>
+        </div>
+        <div class="slide-num">04</div>
+      </section>
+
+      <!-- SLIDE 5: The 5 Actions -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Your Only Weapons</p>
+          <h2 class="reveal">The 5 Actions — Ranked</h2>
+          <div class="accent-line reveal"></div>
+          <div class="priority-list" style="margin-top:28px;">
+
+            <div class="priority-item reveal">
+              <div class="num">01</div>
+              <div>
+                <h4>Association</h4>
+                <p>Rush universities or partnership zoos. Getting your second of either = first card upgrade = first player advantage.</p>
+              </div>
+            </div>
+
+            <div class="priority-item reveal">
+              <div class="num">02</div>
+              <div>
+                <h4>Cards</h4>
+                <p>Upgrade early. More cards = more options = more synergy opportunities. Draw open, not blind.</p>
+              </div>
+            </div>
+
+            <div class="priority-item reveal">
+              <div class="num">03</div>
+              <div>
+                <h4>Build</h4>
+                <p>Upgrade early. Level 5 Build lets you create 4 enclosures at once. Essential for map bonus reach.</p>
+              </div>
+            </div>
+
+            <div class="priority-item reveal">
+              <div class="num">04</div>
+              <div>
+                <h4>Animals</h4>
+                <p>Upgrade for late-game power plays: multiple small animals at once, or very large animals (elephants, eagles).</p>
+              </div>
+            </div>
+
+            <div class="priority-item reveal">
+              <div class="num">05</div>
+              <div>
+                <h4>Sponsors</h4>
+                <p>Only upgrade if you have a specific synergy target. You can win without playing any sponsors.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="slide-num">05</div>
+      </section>
+
+      <!-- SLIDE 6: Association Deep Dive -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="slide-inner">
+          <p class="label reveal">The Best Action in the Game</p>
+          <h2 class="reveal">Association Tactics</h2>
+          <div class="accent-line reveal"></div>
+          <div class="two-col" style="margin-top:28px;">
+
+            <div class="reveal">
+              <p class="col-header">Partnership Zoos — Ranked</p>
+              <ul>
+                <li><strong style="color:var(--accent-warm)">Asia</strong> — Best overall. Reduces animal costs, enables breeding.</li>
+                <li><strong style="color:var(--accent-warm)">Americas</strong> — Strong continent tag supply.</li>
+                <li><strong style="color:var(--text-secondary)">Africa</strong> — Good but less flexible.</li>
+                <li><strong style="color:var(--text-secondary)">Europe</strong> — Requires continent icon + partnership.</li>
+                <li><strong style="color:var(--text-secondary)">Australia</strong> — Weakest. Late-game only.</li>
+              </ul>
+            </div>
+
+            <div class="reveal">
+              <p class="col-header">Universities — Ranked</p>
+              <ul>
+                <li><strong style="color:var(--accent-warm)">2 Reputation</strong> — Best. Push toward upgrade tier.</li>
+                <li><strong style="color:var(--accent-warm)">Hand Size +1</strong> — Good for card-starved hands.</li>
+                <li><strong style="color:var(--text-secondary)">2 Research Icons</strong> — Unlocks Science Museum, Medical Breakthrough sponsors.</li>
+              </ul>
+              <div class="callout" style="margin-top:20px;">
+                <p>Typical early sequence:<br>Zoo → Conservation Project → Zoo</p>
+              </div>
+            </div>
+
+          </div>
+          <p class="reveal" style="margin-top:24px; font-size:20px; color:var(--text-secondary);">Conservation Projects: Species Diversity (5 continents) & Animal Diversity (5 categories) are easiest to complete. Always check if your opponent benefits more before playing research.</p>
+        </div>
+        <div class="slide-num">06</div>
+      </section>
+
+      <!-- SLIDE 7: Conservation Project Placement -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Placement Matters More Than the Project</p>
+          <h2 class="reveal">Conservation Project Bonuses</h2>
+          <div class="accent-line reveal"></div>
+          <p class="reveal" style="margin-top:20px; font-size:24px;">Play one by Round 2 for the 2 CP + upgrade. Placement slot value:</p>
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; margin-top:32px;">
+
+            <div class="card reveal" style="border-top: 4px solid var(--accent-sage);">
+              <h3 style="font-size:28px; color:var(--accent-sage);">🏆 Snap / Build Income</h3>
+              <p style="margin-top:12px; font-size:21px;">Most powerful. Saves an action every round. Prioritize these slots.</p>
+            </div>
+
+            <div class="card reveal" style="border-top: 4px solid var(--accent-warm);">
+              <h3 style="font-size:28px; color:var(--accent-warm);">+1 Worker</h3>
+              <p style="margin-top:12px; font-size:21px;">Take the first slot from your first project. Huge tempo boost.</p>
+            </div>
+
+            <div class="card reveal" style="border-top: 4px solid var(--accent-gold);">
+              <h3 style="font-size:28px; color:var(--accent-gold);">+5 Money</h3>
+              <p style="margin-top:12px; font-size:21px;">Only valuable if you're spending it immediately that round.</p>
+            </div>
+
+            <div class="card reveal" style="border-top: 4px solid var(--accent-pink);">
+              <h3 style="font-size:28px; color:var(--accent-pink);">+12 Money</h3>
+              <p style="margin-top:12px; font-size:21px;">Only worth taking if you have a large immediate purchase planned.</p>
+            </div>
+
+          </div>
+          <div class="callout reveal" style="margin-top:24px;">
+            <p>+3 X-tokens — best late-game when you have the resources to spend them. Not worth rushing early.</p>
+          </div>
+        </div>
+        <div class="slide-num">07</div>
+      </section>
+
+      <!-- SLIDE 8: Animal Selection -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="slide-inner">
+          <p class="label reveal">The Cards on the Table</p>
+          <h2 class="reveal">Animal Selection Priority</h2>
+          <div class="accent-line reveal"></div>
+
+          <div style="display:flex; gap:32px; margin-top:28px; align-items:flex-start;">
+            <div style="flex:1;">
+              <div class="num-block reveal">
+                <div class="num">1</div>
+                <div class="content">
+                  <h3>Can you play it?</h3>
+                  <p>An animal you can't play before the endgame is a dead card.优先.</p>
+                </div>
+              </div>
+              <div class="num-block reveal">
+                <div class="num">2</div>
+                <div class="content">
+                  <h3>Does it advance goals?</h3>
+                  <p>Conservation projects or final scoring cards. Not just appeal.</p>
+                </div>
+              </div>
+              <div class="num-block reveal">
+                <div class="num">3</div>
+                <div class="content">
+                  <h3>Action utility?</h3>
+                  <p>Does its special action let you break the action-count equality?</p>
+                </div>
+              </div>
+              <div class="num-block reveal">
+                <div class="num">4</div>
+                <div class="content">
+                  <h3>Appeal only</h3>
+                  <p>If none of the above, play for Appeal. That's the baseline floor.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card reveal" style="flex:0 0 420px;">
+              <h3>⚠️ The Elephant Trap</h3>
+              <div class="callout" style="margin-top:16px; border-left-color: var(--accent-pink);">
+                <p style="font-size:22px;">"In many games even one elephant will be too many. Don't shape your entire early game around one big animal from your starting hand."</p>
+              </div>
+              <p style="margin-top:16px; font-size:21px;">Elephants need 7 money + a size-5 enclosure. That's a huge early investment. Meanwhile your opponent is building engines.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-num">08</div>
+      </section>
+
+      <!-- SLIDE 9: Sponsor Synergies -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="slide-inner">
+          <p class="label reveal">The Engine, Not the Fuel</p>
+          <h2 class="reveal">Sponsor Synergy Logic</h2>
+          <div class="accent-line reveal"></div>
+          <p class="reveal" style="margin-top:16px; font-size:24px;">Sponsors are about <em style="color:var(--accent-warm)">fit</em>, not power. Every sponsor asks: what does this fit with?</p>
+
+          <div class="two-col" style="margin-top:28px;">
+            <div class="reveal">
+              <p class="col-header">Sponsor Benefit Types</p>
+              <ul>
+                <li><strong>One-off tag bonuses</strong> — cash in when you play a type</li>
+                <li><strong>Ongoing bonuses</strong> — scale with your engine</li>
+                <li><strong>Extra buildings</strong> — map control + free enclosures</li>
+                <li><strong>End-game bonuses</strong> — win-more if you're already winning</li>
+              </ul>
+            </div>
+            <div class="reveal">
+              <p class="col-header">Key Question Per Card</p>
+              <ul>
+                <li>Does this fit my conservation projects?</li>
+                <li>Does it tag my continent strengths?</li>
+                <li>Does it pair with my partner zoo?</li>
+                <li>Or is it just... a nice card?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout reveal" style="margin-top:28px;">
+            <p>You can win without playing any sponsors. Don't force a sponsor into your deck if it doesn't synergize — every wasted slot is an action lost.</p>
+          </div>
+        </div>
+        <div class="slide-num">09</div>
+      </section>
+
+      <!-- SLIDE 10: Build Action -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Spatial Strategy</p>
+          <h2 class="reveal">Build — The Underrated Action</h2>
+          <div class="accent-line reveal"></div>
+
+          <div class="two-col" style="margin-top:28px;">
+            <div class="reveal">
+              <p class="col-header">Why Upgrade Build Early</p>
+              <ul>
+                <li>Level 5 Build = 4 enclosures per action</li>
+                <li>Reach map bonus thresholds faster</li>
+                <li>Fill early kiosks for income</li>
+                <li>Fill isolated map spaces before opponent</li>
+                <li>Create enclosure chains for large animals</li>
+              </ul>
+            </div>
+            <div class="reveal">
+              <p class="col-header">Watch Out</p>
+              <ul>
+                <li>Size-2 enclosure income can block large animal placement — plan layout</li>
+                <li>Don't over-build enclosures you won't use</li>
+                <li>Map bonuses reward adjacent buildings — think in clusters, not lines</li>
+                <li>Late-game: running out of build slots = running out of game</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout reveal" style="margin-top:28px;">
+            <p>If you're not careful late-game it is easy to really limit your opportunities to play large animals. Build the space first.</p>
+          </div>
+        </div>
+        <div class="slide-num">10</div>
+      </section>
+
+      <!-- SLIDE 11: X-Action -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="slide-inner">
+          <p class="label reveal">More Than a Pass</p>
+          <h2 class="reveal">When to Take the<br><em style="color:var(--accent-warm)">X-Token</em></h2>
+          <div class="accent-line reveal"></div>
+
+          <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:40px; margin-top:36px;">
+            <div class="card reveal">
+              <h3>Action Stuck at Slot 5</h3>
+              <p style="margin-top:12px;">Sponsors is at 5 and you have no sponsor cards to play. X-token is better than wasting slot 5 on a bad action.</p>
+            </div>
+            <div class="card reveal">
+              <h3>Moving Down Increases Value</h3>
+              <p style="margin-top:12px;">Moving a valuable action down gets your best action sooner in the next round. Banking X-tokens helps achieve goals before break.</p>
+            </div>
+            <div class="card reveal">
+              <h3>Banking for a Break</h3>
+              <p style="margin-top:12px;">Save X-tokens to execute a big combo after your opponent passes. One well-timed X-token turn can flip the game.</p>
+            </div>
+            <div class="card reveal">
+              <h3>Deny the Opponent</h3>
+              <p style="margin-top:12px;">Sometimes the best X-token is to deny a strong opponent a slot they need. Watch their board — know what they're building toward.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-num">11</div>
+      </section>
+
+      <!-- SLIDE 12: Winning Checklist -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="slide-inner">
+          <p class="label reveal">Before You Pass — Check These</p>
+          <h2 class="reveal">The Winning Checklist</h2>
+          <div class="accent-line reveal"></div>
+
+          <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:28px; margin-top:28px;">
+            <div class="card reveal">
+              <h3>💰 Money</h3>
+              <p style="margin-top:8px; font-size:21px;">Can I build at least one enclosure or play an animal this turn? If not — you passed too early.</p>
+            </div>
+            <div class="card reveal">
+              <h3>🃏 Cards</h3>
+              <p style="margin-top:8px; font-size:21px;">Do I have 3 useful cards in hand? If hand is all dead weight — Cards action before passing.</p>
+            </div>
+            <div class="card reveal">
+              <h3>👷 Workers</h3>
+              <p style="margin-top:8px; font-size:21px;">Have I exhausted Association benefits this round? Partner zoos and universities compound — use them.</p>
+            </div>
+            <div class="card reveal">
+              <h3>⬆️ Upgrades</h3>
+              <p style="margin-top:8px; font-size:21px;">Is an upgrade within reach? First to upgrade Cards or Build often wins the tempo war.</p>
+            </div>
+            <div class="card reveal">
+              <h3>🎯 Goals</h3>
+              <p style="margin-top:8px; font-size:21px;">Am I working on too many simultaneous goals? Limit to 2 active goals. Spread effort = win nothing.</p>
+            </div>
+            <div class="card reveal">
+              <h3>🔒 Deny</h3>
+              <p style="margin-top:8px; font-size:21px;">What card is my opponent fishing for? Drawing cards can deny them a game-winning combo piece.</p>
+            </div>
+          </div>
+
+          <div class="callout reveal" style="margin-top:28px; border-left-color: var(--accent-sage);">
+            <p style="color:var(--accent-sage);">"The best Ark Nova players know when to break these rules." — experience is knowing when the checklist doesn't apply.</p>
+          </div>
+        </div>
+        <div class="slide-num">12</div>
+      </section>
+
+      <!-- SLIDE 13: Closing -->
+      <section class="slide">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="slide-inner closing-slide">
+          <p class="label reveal">Go Win</p>
+          <h2 class="reveal" style="margin-top:20px;">Ark Nova</h2>
+          <div class="accent-line reveal" style="margin:28px auto;"></div>
+          <p class="reveal" style="font-size:26px; max-width:700px; text-align:center; color:var(--text-secondary);">It's an action efficiency game with synergies.<br>Not a card collection game.<br>Not a big animal race.</p>
+          <p class="reveal" style="margin-top:32px; font-size:20px; color:var(--accent-gold); letter-spacing:0.08em;">Silver Lake · Association First · Spend X-Tokens · Deny Cards</p>
+        </div>
+        <div class="slide-num">13</div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="ctrl-btn" id="prevBtn">← Prev</button>
+    <button class="ctrl-btn" id="nextBtn">Next →</button>
+    <span class="ctrl-btn" id="counter" style="cursor:default; min-width:60px; text-align:center;">1 / 13</span>
+  </div>
+
+  <script>
+    /* ===========================================
+       SLIDE PRESENTATION CONTROLLER
+       =========================================== */
+    class SlidePresentation {
+      constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.currentSlide = 0;
+        this.totalSlides = this.slides.length;
+        this.stage = document.getElementById('deckStage');
+        this.counter = document.getElementById('counter');
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupButtonNav();
+        this.showSlide(0);
+      }
+
+      setupStageScale() {
+        const scale = () => {
+          const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+          const x = (window.innerWidth - 1920 * factor) / 2;
+          const y = (window.innerHeight - 1080 * factor) / 2;
+          this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+      }
+
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            this.next();
+          } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            this.prev();
+          }
+        });
+      }
+
+      setupTouchNav() {
+        let startX = 0;
+        document.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+          const dx = startX - e.changedTouches[0].clientX;
+          if (Math.abs(dx) > 50) { dx > 0 ? this.next() : this.prev(); }
+        }, { passive: true });
+      }
+
+      setupButtonNav() {
+        document.getElementById('prevBtn').addEventListener('click', () => this.prev());
+        document.getElementById('nextBtn').addEventListener('click', () => this.next());
+      }
+
+      showSlide(index) {
+        this.currentSlide = Math.max(0, Math.min(index, this.totalSlides - 1));
+        this.slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === this.currentSlide);
+          slide.classList.toggle('visible', i === this.currentSlide);
+        });
+        this.counter.textContent = `${this.currentSlide + 1} / ${this.totalSlides}`;
+      }
+
+      next() { this.showSlide(this.currentSlide + 1); }
+      prev() { this.showSlide(this.currentSlide - 1); }
+    }
+
+    new SlidePresentation();
+  </script>
+</body>
+</html>
