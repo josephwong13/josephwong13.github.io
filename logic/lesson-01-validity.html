@@ -94,8 +94,8 @@
   <div class="concept">
     <div class="label">EXAMPLE</div>
     <h3>Socrates is mortal. Plato is mortal. Therefore, all philosophers are mortal.</h3>
-    <p>Both premises are true. The conclusion is also true. Yet the inference is <em>invalid</em> — two instances of a property do not logically entail universal quantification. A counterexample: Descartes was a philosopher and was not mortal (wait — no, he was). Think: Wittgenstein was a philosopher who was mortal. Hmm. Try: some philosopher might be immortal in principle.</p>
-    <p>The point: you cannot infer "all Fs are G" from "some Fs are G". Form matters.</p>
+    <p>Both premises are true. The conclusion is also true. Yet the inference is <em>invalid</em> — two instances of a property do not logically entail universal quantification.</p>
+    <p>A counterexample: <em>Descartes is mortal.</em> is true, <em>Spinoza is mortal.</em> is true, but <em>All philosophers are mortal</em> is false — imagine a philosopher who is immortal. The form fails: you cannot infer "all Fs are G" from "some Fs are G".</p>
   </div>
 
   <h2>Validity is about form</h2>
@@ -105,17 +105,6 @@
     <div class="label">KEY INSIGHT [IFL2 Ch2]</div>
     <h3>The invalidity proof technique</h3>
     <p>To show an argument is <em>invalid</em>, produce a <strong>counterexample</strong>: a possible situation where all premises are true and the conclusion is false. The counterexample must preserve the argument's logical form while flipping the truth values appropriately.</p>
-  </div>
-
-  <h2>Related notions</h2>
-  <div class="concept">
-    <div class="label">VOCABULARY</div>
-    <h3>Consistency</h3>
-    <p>A set of propositions is <strong>jointly consistent</strong> iff there exists a possible situation where all are true together.</p>
-    <h3>Equivalence</h3>
-    <p>Two propositions are <strong>equivalent</strong> iff they are true in exactly the same possible situations.</p>
-    <h3>Validity as inconsistency</h3>
-    <p>An inference <em>P₁…Pₙ ∴ C</em> is valid iff the set {P₁…Pₙ, ¬C} is <strong>jointly inconsistent</strong> — no possible situation makes them all true.</p>
   </div>
 
   <hr>
@@ -148,18 +137,18 @@
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q4.</strong> Which counterexample successfully shows this argument invalid?<br><em>Some Fs are Gs. Therefore, all Fs are Gs.</em></p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Here, some Fs are Gs is TRUE (some cats are mammals), and all Fs are Gs is also TRUE (all cats are mammals). No counterexample — the argument form holds in this instance.">Some cats are mammals. Therefore, all cats are mammals.</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Some philosophers are French is TRUE (Sartre), and all philosophers are French is FALSE (Aristotle, Confucius, Wittgenstein were not French). This preserves the form 'Some Fs are Gs / ∴ All Fs are Gs' with F=philosopher, G=French — producing a genuine counterexample. [IFL2 Ch5]">Some philosophers are French. Therefore, all philosophers are French.</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ This reverses the argument's form. The argument goes from some to all; this counterexample uses no → all. It's the wrong form to test.">No philosophers are French. Therefore, all philosophers are French.</label>
+      <p><strong>Q4.</strong> Consider the argument form: <em>All A are B. All B are C. Therefore, All A are C.</em> Is this valid?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. This is the canonical syllogism ( Barbara ). No possible situation exists where both premises are true and the conclusion false — the chain of inclusion always transfers from A to C. [IFL2 Ch2]">Valid — the inclusion chain transfers across</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ This is a well-known valid form. Try to construct a counterexample: for both 'All A are B' and 'All B are C' to be true while 'All A are C' is false, an A would have to not be a C despite being a B — but if all B are C, and all A are B, then all A must be C.">Invalid — a counterexample exists</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity does not require the premises to be actually true — it requires that no possible situation makes them true and the conclusion false. The actual truth of the premises is irrelevant to validity.">Valid only when premises happen to be true</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q5.</strong> The argument "If P then Q. P. Therefore Q" is valid. What is its name?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Modus ponens (Latin: 'the way that affirms') is one of the most fundamental valid inference forms. It appears in every logic textbook for good reason: it is the canonical example of truth-functional, premise-to-conclusion inference.">Modus ponens</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Modus tollens is 'If P then Q. Not Q. Therefore not P.' — valid, but a different form.">Modus tollens</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Affirming the consequent (If P then Q. Q. Therefore P) is a classic invalid form — often confused with modus ponens. The direction matters: you can only affirm the antecedent, not the consequent.">Affirming the consequent</label>
+      <p><strong>Q5.</strong> A valid argument has true premises. What can you conclude about the conclusion?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. This follows directly from the definition: no possible situation exists where the premises are true and the conclusion false. Since the premises are true in the actual world (a possible situation), the conclusion must also be true — in every possible world, including the actual one.">The conclusion must be true</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ This confuses validity with soundness. A valid argument with false premises can have a false conclusion. But with true premises, validity guarantees a true conclusion.">The conclusion could be false</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity + true premises is a guarantee, not an indeterminacy. If the argument is valid and the premises are true, the conclusion cannot be false — that would contradict the definition of validity.">Nothing — validity says nothing about conclusions</label>
       <div class="quiz-feedback"></div>
     </div>
 
