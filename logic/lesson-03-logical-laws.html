@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 01 — Validity · Formal Logic</title>
+  <title>Lesson 03 — Logical Laws · Formal Logic</title>
   <style>
     :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -61,94 +61,90 @@
   </style>
 </head>
 <body>
-  <p class="lesson-meta">Lesson 01 of 18 · Formal Logic</p>
+  <p class="lesson-meta">Lesson 03 of 18 · Formal Logic</p>
   <p class="breadcrumb"><a href="index.html">← Formal Logic</a></p>
-  <h1>Validity</h1>
+  <h1>Logical Laws</h1>
 
   <div class="scenario">
-    <p><strong>Scenario:</strong> A detective presents two arguments. Argument A: "The butler was at the scene. Therefore, the butler was present." This merely restates the premise — no genuine inference. Argument B: "If the butler was at the scene, he heard the gunshot. The butler was at the scene. Therefore, he heard the gunshot." Here the conclusion goes beyond the premises. Only one is <em>valid</em>. Which one — and why?</p>
+    <p><strong>Scenario:</strong> A philosopher asserts: "It cannot both be raining and not raining at the same time and place." Another replies: "That's just one of your arbitrary rules — I believe both can be true." Why is this second reply incoherent — and what logical law makes it so?</p>
   </div>
 
-  <h2>The definition</h2>
+  <h2>The Law of Non-Contradiction</h2>
   <div class="concept note">
-    <div class="label">DEFINITION [IFL2 Ch2]</div>
-    <h3>Deductive validity</h3>
-    <p>An inference is <strong>deductively valid</strong> iff <em>no possible situation exists</em> in which all the premises are true and the conclusion is false.</p>
-    <p>Equivalently: it is <em>impossible</em> for the premises to be true and the conclusion false simultaneously.</p>
+    <div class="label">LAW [IFL2 Ch4]</div>
+    <h3>Law of Non-Contradiction (LNC)</h3>
+    <p>For any proposition P: <strong>it is impossible for both P and ¬P to be true simultaneously.</strong></p>
+    <p>Symbolically: <strong>¬(P ∧ ¬P)</strong></p>
+    <p>LNC is not a deduction from further premises — it is a <em>foundational constraint</em> on coherent thought. Any system that rejects LNC collapses into trivialism: everything is true and false simultaneously.</p>
   </div>
 
   <div class="concept warning">
-    <div class="label">⚠ CRITICAL DISTINCTION</div>
-    <h3>Validity ≠ truth of premises</h3>
-    <p>Validity says nothing about whether the premises are actually true. A valid argument can have entirely false premises — and even a false conclusion — and still be valid. Validity is about the <em>inference relationship</em>, not premise truth.</p>
+    <div class="label">⚠ LNC IS NOT ABOUT TRUTH VALUES</div>
+    <h3>LNC vs "a proposition can't be both true and false"</h3>
+    <p>LNC governs <em>contradictory propositions within the same system of thought</em> — not the meta-level fact that a proposition can be true at one time and false at another (that is a different, valid situation). "It is raining" at t₁ and "it is not raining" at t₂ are not contradictory — they concern different times.</p>
   </div>
 
-  <h2>Valid with false premises</h2>
-  <div class="concept">
-    <div class="label">EXAMPLE</div>
-    <h3>All birds can fly. Penguins are birds. Therefore, penguins can fly.</h3>
-    <p>The form is: All B are F. P is B. Therefore P is F.</p>
-    <p>This is <em>valid</em> — the form guarantees the conclusion if the premises are true. It is <em>unsound</em> because premise 1 is false. Validity is preserved; only soundness fails (next lesson).</p>
-  </div>
-
-  <h2>Invalid with true premises</h2>
-  <div class="concept">
-    <div class="label">EXAMPLE</div>
-    <h3>Socrates is mortal. Plato is mortal. Therefore, all philosophers are mortal.</h3>
-    <p>Both premises are true. The conclusion is also true. Yet the inference is <em>invalid</em>.</p>
-    <p>Counterexample: Imagine a philosopher who is immortal. "Descartes is mortal" (true), "Spinoza is mortal" (true) — but "All philosophers are mortal" (false). The form fails: two instances do not establish a universal claim.</p>
-  </div>
-
-  <h2>The counterexample method</h2>
+  <h2>The Law of Excluded Middle</h2>
   <div class="concept note">
-    <div class="label">KEY TECHNIQUE [IFL2 Ch2]</div>
-    <h3>Proving invalidity</h3>
-    <p>To show an argument is <em>invalid</em>, produce a <strong>counterexample</strong>: a possible situation where all premises are true and the conclusion false — while preserving the argument's logical form.</p>
-    <p>Success = finding any substitution instance that makes premises true and conclusion false simultaneously.</p>
+    <div class="label">LAW [IFL2 Ch4]</div>
+    <h3>Law of Excluded Middle (LEM)</h3>
+    <p>For any proposition P: <strong>either P is true, or ¬P is true — there is no third option.</strong></p>
+    <p>Symbolically: <strong>P ∨ ¬P</strong></p>
+    <p>LEM does not say we always know which — it says there is no indeterminate middle truth value between truth and falsity. LEM is rejected by intuitionist logics, which hold that proving P and proving ¬P require different kinds of evidence.</p>
+  </div>
+
+  <h2>LNC and LEM together</h2>
+  <p>LNC and LEM are <em>independent</em> laws — rejecting one does not force you to reject the other. However, classical logic accepts both, and they jointly imply that every proposition is either true or false (but not both, not neither).</p>
+
+  <div class="concept">
+    <div class="label">WORKED EXAMPLE</div>
+    <h3>Applying LNC</h3>
+    <p>Claim: "Descartes is mortal and Descartes is not mortal are both true."</p>
+    <p>Analysis: This violates LNC. The conjunction P ∧ ¬P is a contradiction — no possible situation makes both conjuncts true. Any argument premising this claim is formally inconsistent.</p>
   </div>
 
   <hr>
   <div class="quiz">
     <h2>📝 Check your understanding</h2>
-    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [IFL2 Ch2].</p>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [IFL2 Ch4].</p>
 
     <div class="quiz-question">
-      <p><strong>Q1.</strong> An argument has all true premises and a true conclusion. Is it valid?</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ True premises + true conclusion are necessary but not sufficient. The inference form must guarantee truth-preservation.">Yes — true premises + true conclusion always means valid</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Validity requires that no possible situation makes premises true and conclusion false. The actual truth values of an argument do not reveal whether the form is truth-preserving.">Not necessarily — validity concerns form, not actual truth values</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ This confuses soundness with validity. Validity makes no reference to premise truth.">No — all premises must be false for it to be valid</label>
+      <p><strong>Q1.</strong> Which law states that no proposition can be both true and false simultaneously?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. LNC: ¬(P ∧ ¬P). It is impossible for both a proposition and its negation to be true together.">Law of Non-Contradiction (LNC)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LEM concerns the existence of a third option between truth and falsity — not the impossibility of joint truth.">Law of Excluded Middle (LEM)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Double Negation is a separate law: ¬¬P ≡ P.">Double Negation</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q2.</strong> An argument is valid and has all true premises. What must be true of the conclusion?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. If no possible situation makes premises true and conclusion false, and the premises are true in the actual world, then the conclusion must be true in every possible world — including the actual one.">The conclusion must be true</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ A valid argument with true premises cannot have a false conclusion — that would contradict the definition.">The conclusion may be false</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity + true premises is a guarantee, not an indeterminacy.">Nothing is determined</label>
+      <p><strong>Q2.</strong> Which law states that for any P, either P is true or ¬P is true — no third option?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LNC rules out joint truth and falsity simultaneously, not the third option.">Law of Non-Contradiction (LNC)</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. LEM: P ∨ ¬P. Every proposition is either true or false. Intuitionist logics reject this, holding that some propositions may be neither provably true nor provably false.">Law of Excluded Middle (LEM)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Modus Ponens concerns conditional elimination, not the truth-value of propositions.">Modus Ponens</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q3.</strong> To prove an argument is invalid, what must you produce?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. A counterexample is a possible situation (interpretation) where all premises are true and the conclusion false — proving the form is not truth-preserving.">A counterexample: possible situation with true premises and false conclusion</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ More true instances don't prove validity — a single invalid form can have infinitely many true instances.">More true instances of the argument</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Showing the conclusion is false doesn't prove the argument is invalid — a valid argument can have a false conclusion if its premises are false.">A false conclusion</label>
+      <p><strong>Q3.</strong> Someone claims: "It is raining — and it is not raining — and both are true." Which law does this violate?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. The claim is P ∧ ¬P. LNC says this conjunction is always false — no possible situation makes both a proposition and its negation true simultaneously.">LNC — it asserts P ∧ ¬P</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LEM says P ∨ ¬P — it doesn't directly forbid P ∧ ¬P. LNC is the direct violation here.">LEM — it asserts both P and ¬P</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ This is not a case of excluded middle — it asserts both sides of the disjunction simultaneously.">Neither — it is a valid third option</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q4.</strong> Consider: All A are B. All B are C. Therefore, All A are C. Is this valid?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. This is the canonical syllogism (Barbara). No possible situation exists where both premises are true and the conclusion false — the chain of inclusion always transfers from A to C. [IFL2 Ch2]">Valid — the inclusion chain always transfers</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ This is a well-known valid form. Try: let A = Greeks, B = mortals, C = feathered things. All Greeks are mortals (T). All mortals are feathered things (F). No counterexample exists that makes both premises true and conclusion false.">Invalid — a counterexample exists</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity is about form, not about whether premises happen to be true.">Valid only when the premises are actually true</label>
+      <p><strong>Q4.</strong> A philosopher rejects LEM but accepts LNC. What does this mean in practice?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Rejecting LEM means some propositions may be neither true nor false — an intuitionist position. Accepting LNC still means no proposition can be both true and false at the same time. These positions are compatible.">They believe some propositions may be neither true nor false</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ If LNC were rejected, every proposition would be both true and false simultaneously — making LEM rejection the least of the problems.">They believe all propositions are both true and false</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LNC and LEM are independent — accepting LNC does not force acceptance of LEM, and vice versa.">They must also reject LNC</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q5.</strong> A valid argument has true premises. A different valid argument has false premises. What distinguishes these two arguments?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Both are valid — validity only concerns the inference form. The first argument is sound (valid + true premises); the second is merely valid, not sound. Soundness adds premise truth to validity.">The first is sound; the second is merely valid</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity does not require true premises. A valid argument can have any combination of true/false premises.">The second is invalid</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity is binary — an argument is either valid or invalid. A third category does not exist.">There is no meaningful distinction</label>
+      <p><strong>Q5.</strong> LNC and LEM together imply that every proposition is:</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. LNC rules out both true and false simultaneously (P ∧ ¬P). LEM rules out neither true nor false (neither P nor ¬P). Together: every proposition is either true or false, but not both, not neither — the classical bivalent logic picture.">Either true or false, but not both and not neither</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LNC specifically rules out being both true and false at the same time.">Both true and false simultaneously</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ LEM rules out the possibility of being neither true nor false.">Neither true nor false</label>
       <div class="quiz-feedback"></div>
     </div>
 
@@ -158,13 +154,13 @@
   <div class="reading">
     <h2>📚 Sources &amp; further reading</h2>
     <ol>
-      <li><a href="https://logicmatters.net/ifl/">[IFL2 Ch2] Peter Smith, <em>An Introduction to Formal Logic</em> (2nd ed.)</a> — Validity defined. Freely available PDF from Logic Matters.</li>
-      <li><a href="https://forallx.openlogicproject.org/forallxyyc.pdf">forall x: Calgary, Ch1–2</a> — complementary exercises on validity and counterexamples. Free, open-source.</li>
+      <li><a href="https://logicmatters.net/ifl/">[IFL2 Ch4] Peter Smith, <em>An Introduction to Formal Logic</em> (2nd ed.)</a> — LNC and LEM as foundational logical laws. Freely available PDF from Logic Matters.</li>
+      <li><a href="https://logicmatters.net/ifl/logical-snippets.html">Logical Snippets</a> — Q&amp;A on LNC, LEM, and related paradoxes.</li>
     </ol>
   </div>
 
   <div class="footer">
-    <a href="index.html">← Back to Formal Logic</a> · <a href="lesson-00-course-overview.html">← Lesson 00</a> · <a href="lesson-02-soundness.html">Next: Soundness →</a>
+    <a href="index.html">← Back to Formal Logic</a> · <a href="lesson-02-soundness.html">← Lesson 02</a> · <a href="lesson-04-logical-form.html">Next: Logical Form →</a>
   </div>
 
   <script>

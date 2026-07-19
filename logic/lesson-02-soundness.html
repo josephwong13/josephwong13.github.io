@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 01 — Validity · Formal Logic</title>
+  <title>Lesson 02 — Soundness · Formal Logic</title>
   <style>
     :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -61,94 +61,89 @@
   </style>
 </head>
 <body>
-  <p class="lesson-meta">Lesson 01 of 18 · Formal Logic</p>
+  <p class="lesson-meta">Lesson 02 of 18 · Formal Logic</p>
   <p class="breadcrumb"><a href="index.html">← Formal Logic</a></p>
-  <h1>Validity</h1>
+  <h1>Soundness</h1>
 
   <div class="scenario">
-    <p><strong>Scenario:</strong> A detective presents two arguments. Argument A: "The butler was at the scene. Therefore, the butler was present." This merely restates the premise — no genuine inference. Argument B: "If the butler was at the scene, he heard the gunshot. The butler was at the scene. Therefore, he heard the gunshot." Here the conclusion goes beyond the premises. Only one is <em>valid</em>. Which one — and why?</p>
+    <p><strong>Scenario:</strong> Two mathematicians each present valid proofs. Mathematician A's premises are empirically verified facts. Mathematician B's premises are unproven conjectures. Both proofs are structurally flawless. Only one gives you <em>reason to believe the conclusion</em>. What does B's proof lack?</p>
   </div>
 
-  <h2>The definition</h2>
+  <h2>Soundness defined</h2>
   <div class="concept note">
-    <div class="label">DEFINITION [IFL2 Ch2]</div>
-    <h3>Deductive validity</h3>
-    <p>An inference is <strong>deductively valid</strong> iff <em>no possible situation exists</em> in which all the premises are true and the conclusion is false.</p>
-    <p>Equivalently: it is <em>impossible</em> for the premises to be true and the conclusion false simultaneously.</p>
+    <div class="label">DEFINITION [IFL2 Ch3]</div>
+    <h3>Soundness</h3>
+    <p>An argument is <strong>sound</strong> iff it is both:</p>
+    <p>1. <em>Valid</em> — the form guarantees truth-preservation.<br>
+    2. <em>All premises are actually true.</em></p>
+    <p>If either condition fails, the argument is unsound.</p>
   </div>
 
   <div class="concept warning">
-    <div class="label">⚠ CRITICAL DISTINCTION</div>
-    <h3>Validity ≠ truth of premises</h3>
-    <p>Validity says nothing about whether the premises are actually true. A valid argument can have entirely false premises — and even a false conclusion — and still be valid. Validity is about the <em>inference relationship</em>, not premise truth.</p>
+    <div class="label">⚠ WHY SOUNDNESS MATTERS</div>
+    <h3>Valid ≠ Credible</h3>
+    <p>A valid argument with false premises gives you no reason to believe its conclusion. The conclusion might be true — but the argument hasn't <em>established</em> it. Soundness is what turns logical validity into genuine epistemic warrant.</p>
   </div>
 
-  <h2>Valid with false premises</h2>
+  <h2>Valid vs sound — four combinations</h2>
   <div class="concept">
-    <div class="label">EXAMPLE</div>
-    <h3>All birds can fly. Penguins are birds. Therefore, penguins can fly.</h3>
-    <p>The form is: All B are F. P is B. Therefore P is F.</p>
-    <p>This is <em>valid</em> — the form guarantees the conclusion if the premises are true. It is <em>unsound</em> because premise 1 is false. Validity is preserved; only soundness fails (next lesson).</p>
-  </div>
-
-  <h2>Invalid with true premises</h2>
-  <div class="concept">
-    <div class="label">EXAMPLE</div>
-    <h3>Socrates is mortal. Plato is mortal. Therefore, all philosophers are mortal.</h3>
-    <p>Both premises are true. The conclusion is also true. Yet the inference is <em>invalid</em>.</p>
-    <p>Counterexample: Imagine a philosopher who is immortal. "Descartes is mortal" (true), "Spinoza is mortal" (true) — but "All philosophers are mortal" (false). The form fails: two instances do not establish a universal claim.</p>
-  </div>
-
-  <h2>The counterexample method</h2>
-  <div class="concept note">
-    <div class="label">KEY TECHNIQUE [IFL2 Ch2]</div>
-    <h3>Proving invalidity</h3>
-    <p>To show an argument is <em>invalid</em>, produce a <strong>counterexample</strong>: a possible situation where all premises are true and the conclusion false — while preserving the argument's logical form.</p>
-    <p>Success = finding any substitution instance that makes premises true and conclusion false simultaneously.</p>
+    <div class="label">WORKED EXAMPLE</div>
+    <p><strong>Case 1 — Valid + true premises + true conclusion:</strong></p>
+    <p>All humans are mortal. Socrates is human. Therefore, Socrates is mortal.<br>
+    Both premises true. Form valid. → Sound argument.</p>
+    <p><strong>Case 2 — Valid + false premises:</strong></p>
+    <p>All birds can fly. Penguins are birds. Therefore, penguins can fly.<br>
+    Premise 1 false. Form valid. Conclusion false. → Valid but unsound.</p>
+    <p><strong>Case 3 — Invalid + true premises + true conclusion:</strong></p>
+    <p>Socrates is mortal. Plato is mortal. Therefore, all philosophers are mortal.<br>
+    Premises and conclusion all true. Form invalid. → Unsound (for invalidity).</p>
+    <p><strong>Case 4 — Invalid + false premises:</strong></p>
+    <p>All fish are mammals. Whales are fish. Therefore, whales are mammals.<br>
+    Premise 1 false. Premise 2 false. Conclusion true. Form invalid. → Unsound on both counts.</p>
   </div>
 
   <hr>
   <div class="quiz">
     <h2>📝 Check your understanding</h2>
-    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [IFL2 Ch2].</p>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [IFL2 Ch2–3].</p>
 
     <div class="quiz-question">
-      <p><strong>Q1.</strong> An argument has all true premises and a true conclusion. Is it valid?</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ True premises + true conclusion are necessary but not sufficient. The inference form must guarantee truth-preservation.">Yes — true premises + true conclusion always means valid</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Validity requires that no possible situation makes premises true and conclusion false. The actual truth values of an argument do not reveal whether the form is truth-preserving.">Not necessarily — validity concerns form, not actual truth values</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ This confuses soundness with validity. Validity makes no reference to premise truth.">No — all premises must be false for it to be valid</label>
+      <p><strong>Q1.</strong> What two conditions must an argument satisfy to be sound?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Soundness = validity + true premises. Both are required. A valid argument with even one false premise is unsound.">Valid form and all true premises</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ True premises alone don't guarantee soundness — the form must also be valid.">All true premises</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity alone doesn't guarantee soundness — false premises break soundness even if the form is valid.">Valid form only</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q2.</strong> An argument is valid and has all true premises. What must be true of the conclusion?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. If no possible situation makes premises true and conclusion false, and the premises are true in the actual world, then the conclusion must be true in every possible world — including the actual one.">The conclusion must be true</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ A valid argument with true premises cannot have a false conclusion — that would contradict the definition.">The conclusion may be false</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity + true premises is a guarantee, not an indeterminacy.">Nothing is determined</label>
+      <p><strong>Q2.</strong> A valid argument has a false conclusion. What must be true about the premises?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Validity guarantees: if premises are all true, conclusion must be true. If the conclusion is false, at least one premise must be false (or the argument is invalid).">At least one premise is false</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ If all premises were true and the conclusion false, the argument would be invalid — contradicting the premise that it is valid.">All premises must be true</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ A valid argument cannot have all true premises and a false conclusion — this violates the definition of validity.">The premises can be either true or false</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q3.</strong> To prove an argument is invalid, what must you produce?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. A counterexample is a possible situation (interpretation) where all premises are true and the conclusion false — proving the form is not truth-preserving.">A counterexample: possible situation with true premises and false conclusion</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ More true instances don't prove validity — a single invalid form can have infinitely many true instances.">More true instances of the argument</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Showing the conclusion is false doesn't prove the argument is invalid — a valid argument can have a false conclusion if its premises are false.">A false conclusion</label>
+      <p><strong>Q3.</strong> Can a valid argument have a false conclusion?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Yes — if one or more premises are false. Example: 'All birds can fly. Penguins are birds. Therefore penguins can fly.' Valid form, false premise, false conclusion. Validity concerns form, not truth.">Yes — if premises are false</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ This would only be true if validity guaranteed premise truth — it doesn't. Validity is about the inference form, not premise truth.">No — a valid argument always has a true conclusion</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity does not depend on conclusion truth — it guarantees that IF premises are true, THEN conclusion is true. A false conclusion is possible when premises are false.">Only if the argument is also unsound</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q4.</strong> Consider: All A are B. All B are C. Therefore, All A are C. Is this valid?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. This is the canonical syllogism (Barbara). No possible situation exists where both premises are true and the conclusion false — the chain of inclusion always transfers from A to C. [IFL2 Ch2]">Valid — the inclusion chain always transfers</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ This is a well-known valid form. Try: let A = Greeks, B = mortals, C = feathered things. All Greeks are mortals (T). All mortals are feathered things (F). No counterexample exists that makes both premises true and conclusion false.">Invalid — a counterexample exists</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity is about form, not about whether premises happen to be true.">Valid only when the premises are actually true</label>
+      <p><strong>Q4.</strong> You encounter an unsound argument. Which of the following could be the cause?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Either one false premise (with valid form) or invalid form (with any premise truth combination) breaks soundness. Both are possible causes.">Invalid form OR at least one false premise</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ False premises alone (with valid form) still produce an unsound argument.">Only false premises with valid form</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Invalid form alone (with all true premises and true conclusion) still produces an unsound argument.">Only invalid form with true premises</label>
       <div class="quiz-feedback"></div>
     </div>
 
     <div class="quiz-question">
-      <p><strong>Q5.</strong> A valid argument has true premises. A different valid argument has false premises. What distinguishes these two arguments?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Both are valid — validity only concerns the inference form. The first argument is sound (valid + true premises); the second is merely valid, not sound. Soundness adds premise truth to validity.">The first is sound; the second is merely valid</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity does not require true premises. A valid argument can have any combination of true/false premises.">The second is invalid</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Validity is binary — an argument is either valid or invalid. A third category does not exist.">There is no meaningful distinction</label>
+      <p><strong>Q5.</strong> Why do philosophers care about soundness, not just validity?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Validity only tells you the form is good. Soundness tells you the argument actually establishes its conclusion — valid + true premises = genuine epistemic warrant. Without soundness, a valid argument is merely a structurally correct way to arrive at a false conclusion.">Validity guarantees form; soundness guarantees the argument actually proves something true</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Philosophers care about both — but soundness is the stronger condition because it adds premise truth to validity.">Philosophers only care about validity</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Soundness is always preferable to mere validity when assessing an argument's epistemic value.">Soundness matters less than validity</label>
       <div class="quiz-feedback"></div>
     </div>
 
@@ -158,13 +153,13 @@
   <div class="reading">
     <h2>📚 Sources &amp; further reading</h2>
     <ol>
-      <li><a href="https://logicmatters.net/ifl/">[IFL2 Ch2] Peter Smith, <em>An Introduction to Formal Logic</em> (2nd ed.)</a> — Validity defined. Freely available PDF from Logic Matters.</li>
-      <li><a href="https://forallx.openlogicproject.org/forallxyyc.pdf">forall x: Calgary, Ch1–2</a> — complementary exercises on validity and counterexamples. Free, open-source.</li>
+      <li><a href="https://logicmatters.net/ifl/">[IFL2 Ch3] Peter Smith, <em>An Introduction to Formal Logic</em> (2nd ed.)</a> — Soundness and the valid/sound matrix. Freely available PDF from Logic Matters.</li>
+      <li><a href="https://forallx.openlogicproject.org/forallxyyc.pdf">forall x: Calgary, Ch2</a> — Validity and soundness worked examples.</li>
     </ol>
   </div>
 
   <div class="footer">
-    <a href="index.html">← Back to Formal Logic</a> · <a href="lesson-00-course-overview.html">← Lesson 00</a> · <a href="lesson-02-soundness.html">Next: Soundness →</a>
+    <a href="index.html">← Back to Formal Logic</a> · <a href="lesson-01-validity.html">← Lesson 01</a> · <a href="lesson-03-logical-laws.html">Next: Logical Laws →</a>
   </div>
 
   <script>
