@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 00 — Course Overview · Formal Logic</title>
+  <style>
+    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
+    p { margin: 0 0 0.8rem; }
+    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 0.9rem 1.1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; margin: 0.8rem 0; }
+    pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .back-link { margin-bottom: 0.5rem; }
+    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .back-link a:hover { text-decoration: underline; }
+    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .concept h3 { margin: 0.2rem 0 0.5rem; }
+    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
+    .concept.note .label { color: var(--blue); }
+    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
+    .concept.warning .label { color: var(--orange); }
+    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
+    .review p { margin-bottom: 0.4rem; }
+    .review p:last-child { margin-bottom: 0; }
+    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
+    .quiz h2 { margin-top: 0; }
+    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
+    .quiz-question:last-of-type { border-bottom: none; }
+    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
+    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
+    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
+    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
+    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
+    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
+    .quiz-reveal:hover { background: #e8d0d0; }
+    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
+    .reading h2 { margin-top: 0; font-size: 1rem; }
+    .reading ol { margin: 0.6rem 0 0 1.3rem; }
+    .reading li { margin: 0.3rem 0; }
+    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
+    .reading a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } pre { font-size: 0.78rem; } }
+  </style>
+</head>
+<body>
+  <p class="lesson-meta">Lesson 00 of 15 · Formal Logic</p>
+  <p class="breadcrumb"><a href="index.html">← Formal Logic</a></p>
+  <h1>Course Overview</h1>
+
+  <div class="scenario">
+    <p><strong>Scenario:</strong> You're reading a political debate. One speaker argues: "If the policy reduces emissions, it is good. The policy reduces emissions. Therefore, it is good." It sounds persuasive — but is it <em>logically</em> watertight, or is something subtly amiss? Formal logic gives you the toolkit to answer precisely, not impressionistically.</p>
+  </div>
+
+  <h2>What is logic?</h2>
+  <div class="concept note">
+    <div class="label">DEFINITION</div>
+    <h3>Logic</h3>
+    <p>The study of what makes arguments <strong>valid</strong> or <strong>invalid</strong> — independent of subject matter, emotional resonance, or rhetorical polish.<sup>[IFL2 Ch1]</sup></p>
+  </div>
+  <p>Logic is <em>topic-neutral</em>. The same formal structure that validates or invalidates a scientific proof also governs a courtroom argument or a philosophical syllogism. This universality is what makes logic foundational — not domain-specific.</p>
+
+  <h2>Why formal logic?</h2>
+  <p>Natural language is riddled with <strong>ambiguity</strong>, <strong>vagueness</strong>, and <strong>concealed assumptions</strong>. Formal logic strips an argument down to its skeletal form — discarding rhetorical ornamentation — so we can evaluate its structural integrity with mathematical precision.</p>
+
+  <div class="concept">
+    <div class="label">KEY INSIGHT</div>
+    <h3>Form determines validity, not content</h3>
+    <p>Validity is a property of <em>form</em>, not <em>substance</em>. Two arguments with the same logical form will stand or fall together — regardless of whether they discuss physics, law, or breakfast cereal.</p>
+  </div>
+
+  <h2>The logical landscape</h2>
+  <div class="concept note">
+    <div class="label">COURSE MAP</div>
+    <h3>Three-part journey</h3>
+    <p><strong>Foundations (Module 1):</strong> Validity, soundness, logical form — the conceptual vocabulary for the whole course.<br>
+    <strong>Sentence Logic / TFL (Module 2):</strong> How connectives (<em>and</em>, <em>or</em>, <em>if</em>, <em>not</em>) create complex propositions. Truth tables. Natural deduction proof systems.<br>
+    <strong>Predicate Logic / QL (Module 3):</strong> Quantifiers (<em>all</em>, <em>some</em>), predicates, and identity — a far more expressive logical language.</p>
+  </div>
+
+  <div class="concept">
+    <div class="label">NOTATION</div>
+    <h3>TFL vs QL vs metalanguage</h3>
+    <p><strong>TFL</strong> (Truth-Functional Logic): the formal language of connectives.<br>
+    <strong>QL</strong> (Quantified Logic): the formal language of quantifiers and predicates.<br>
+    <strong>Metalanguage</strong>: English + symbols (α, β, Γ…) used to <em>talk about</em> TFL/QL expressions.</p>
+  </div>
+
+  <h2>How these lessons work</h2>
+  <div class="concept">
+    <div class="label">FORMAT</div>
+    <h3>Each lesson</h3>
+    <p>One core concept. Bullet-fragment exposition. One worked example with reasoning shown. One self-check quiz (5 questions). Estimated read time: 5 minutes.</p>
+  </div>
+  <div class="concept warning">
+    <div class="label">⚠ NOVELTY</div>
+    <h3>Symbol-heavy territory</h3>
+    <p>Formal logic introduces new notation — connectives (∧, ∨, →), quantifiers (∀, ∨), turnstiles (⊢, ⊨). These are not decoration. They are precise instruments. Slow down when you encounter a new symbol; make sure you understand what it means before proceeding.</p>
+  </div>
+
+  <hr>
+  <div class="quiz">
+    <h2>📝 Check your understanding</h2>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [IFL2 Ch1].</p>
+
+    <div class="quiz-question">
+      <p><strong>Q1.</strong> What property makes an argument valid — its content or its form?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Content — what the argument is about — is irrelevant to logical validity.">Its content</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Validity is a structural property. Two arguments with identical form are either both valid or both invalid — regardless of subject matter.">Its form</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Emotional resonance and rhetorical skill are outside logic's domain.">Its rhetorical force</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q2.</strong> TFL and QL are both formal languages. Which is more expressive — and why?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ TFL handles connectives but cannot express 'all' or 'some' relations between predicates.">TFL — it handles more connectives</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. QL adds quantifiers (∀, ∃) and predicates, enabling it to capture statements about everything or something with a property — something TFL structurally cannot do.">QL — it has quantifiers and predicates</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ They have equal expressive power; QL subsumes TFL's connectives within a richer framework.">They are equally expressive</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q3.</strong> You encounter the symbol <code>⊨</code>. Is this a symbol from TFL, QL, or the metalanguage?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ ∧, ∨, →, ¬ are the connectives of TFL. ⊨ is not among them.">TFL (Truth-Functional Logic)</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ ∀, ∃, and = are the quantifiers and identity symbol of QL. ⊨ is not in this set.">QL (Quantified Logic)</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. ⊨ is the semantic entailment symbol in the metalanguage — it means 'the premises tautologically entail the conclusion' (no valuation makes all premises true and the conclusion false).">[IFL2 Ch14]</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q4.</strong> "Logic is topic-neutral." What does this claim mean, in plain terms?</p>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. The same logical forms govern arguments in mathematics, science, philosophy, and law. Logic abstracts away subject matter entirely.">The same logical form works across all domains</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ This reverses the claim — topic-neutrality means logic does not privilege any particular subject.">Logic applies only to philosophical arguments</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Topic-neutrality is a strength, not a limitation — it means logic is universally applicable.">Logic ignores the topic of an argument, which is a flaw</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-question">
+      <p><strong>Q5.</strong> In these lessons, each lesson targets roughly how much reading/practice time?</p>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Too short — this course is designed for genuine absorption, not a skim.">1–2 minutes</label>
+      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. One concept, one worked example, one quiz. Designed for a focused 5-minute session — not a passive read-through. Engagement with the quiz is essential.">~5 minutes</label>
+      <label class="quiz-option" data-correct="false" data-feedback="✗ Each lesson isolates a single concept to keep sessions tight. 15–20 minutes would suggest the lesson scope is too broad.">15–20 minutes</label>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
+  </div>
+
+  <div class="reading">
+    <h2>📚 Sources &amp; further reading</h2>
+    <ol>
+      <li><a href="https://logicmatters.net/ifl/">[IFL2] Peter Smith, <em>An Introduction to Formal Logic</em> (2nd ed.)</a> — the primary text for this course. Freely available as PDF from Logic Matters.</li>
+      <li><a href="https://logicmatters.net/ifl/pdfs/IFL2-contents.pdf">[IFL2 ToC] Table of contents for the full book.</li>
+      <li><a href="https://forallx.openlogicproject.org/forallxyyc.pdf">forall x: Calgary</a> — free alternative text at similar level, useful supplementary exercises.</li>
+      <li><a href="https://logicmatters.net/ifl/logical-snippets.html">Logical Snippets</a> — 100+ short Q&amp;A on elementary logic questions from Math StackExchange.</li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← Back to Formal Logic</a> · <a href="lesson-01-validity.html">Next: Validity →</a>
+  </div>
+
+  <script>
+    document.querySelectorAll('.quiz-option').forEach(function(el){
+      el.addEventListener('click', function(){
+        var p = this.parentElement;
+        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
+        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
+        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
+        var fb = p.querySelector('.quiz-feedback');
+        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+      });
+    });
+    var revealBtn = document.getElementById('revealBtn');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', function(){
+        document.querySelectorAll('.quiz-question').forEach(function(q){
+          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
+          var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]');
+          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
