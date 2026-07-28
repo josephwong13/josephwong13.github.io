@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5 — Data Fetching, Streaming & Caching · Next.js</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 36px; color: #111; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .prop { color: #9cdcfe; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9em; }
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .note { background: #fffde7; border-left: 4px solid #f0d000; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .quiz-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-top: 36px; }
+    .quiz-q { font-weight: 600; margin: 16px 0 6px; }
+    .quiz-opts label { display: block; padding: 6px 10px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 4px 0; cursor: pointer; }
+    .quiz-opts label:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Lesson 5 — Data Fetching, Streaming & Caching</h1>
+  <p><span class="series-tag">L5</span> Next.js Series · Lesson 5 of 5</p>
+
+  <p>App Router inverts the traditional data-fetching model: instead of fetching in Client Components with useEffect, you fetch in Server Components with async/await — simpler code, zero client bundle cost, and built-in caching.</p>
+
+  <h2>fetch in Server Components</h2>
+
+  <pre><code><span class="keyword">export default async function</span> <span class="prop">Dashboard</span>() {
+  <span class="keyword">const</span> [user, stats] = <span class="keyword">await</span> Promise.all([
+    getUser(),
+    getStats(),
+  ])
+  <span class="keyword">return</span> &lt;DashboardUI user={user} stats={stats} /&gt;
+}</code></pre>
+
+  <h2>Fetch Memoization</h2>
+
+  <p>Identical <code>fetch</code> calls within a render pass are automatically memoized — only one network request is made even if three components call it.</p>
+
+  <pre><code><span class="comment">// Only ONE network request — Next.js deduplicates identical fetch() calls</span>
+<span class="keyword">const</span> data = <span class="keyword">await</span> fetch(<span class="string">'https://api.example.com/user'</span>, { cache: <span class="string">'no-store'</span> })</code></pre>
+
+  <h2>Sequential vs Parallel Fetching</h2>
+
+  <pre><code><span class="comment">// Sequential — second request depends on first</span>
+<span class="keyword">const</span> artist = <span class="keyword">await</span> getArtist(artistId)       <span class="comment">// blocks</span>
+<span class="keyword">return</span> &lt;PlaylistSection artistID={artist.id} /&gt;
+
+<span class="comment">// Parallel — independent requests</span>
+<span class="keyword">const</span> [user, stats, notifications] = <span class="keyword">await</span> Promise.all([
+  getUser(), getStats(), getNotifications(),
+])</code></pre>
+
+  <h2>Streaming with Suspense</h2>
+
+  <p>Fast parts render immediately. Slow parts stream in as they resolve. Users see layout + skeleton instantly instead of a blank screen.</p>
+
+  <pre><code><span class="keyword">import</span> { Suspense } <span class="keyword">from</span> <span class="string">'react'</span>
+<span class="keyword">import</span> { BlogList, BlogListSkeleton } <span class="keyword">from</span> <span class="string">'@/components'</span>
+
+<span class="keyword">export default async function</span> <span class="prop">BlogPage</span>() {
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;h1&gt;Blog&lt;/h1&gt;
+      &lt;Suspense fallback={&lt;BlogListSkeleton /&gt;}&gt;
+        &lt;BlogList /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+  <p>For entire route segments, create a <code>loading.tsx</code> sibling to <code>page.tsx</code> — Next.js wraps it in Suspense automatically:</p>
+
+  <pre><code><span class="comment">// app/blog/loading.tsx — shown while /blog loads</span>
+<span class="keyword">export default function</span> <span class="prop">Loading</span>() {
+  <span class="keyword">return</span> &lt;p&gt;Loading posts…&lt;/p&gt;
+}</code></pre>
+
+  <div class="note">
+    <strong>Pro tip:</strong> Design skeletons to match approximate dimensions of real content — prevents layout shift when data arrives.
+  </div>
+
+  <h2>Caching Directives</h2>
+
+  <table>
+    <tr><th>Directive</th><th>Effect</th></tr>
+    <tr><td><code>export const dynamic = 'force-static'</code></td><td>Cache at build time (ISR)</td></tr>
+    <tr><td><code>export const dynamic = 'force-dynamic'</code></td><td>Render at request time — no caching</td></tr>
+    <tr><td><code>export const revalidate = 3600</code></td><td>Revalidate route every 3600s</td></tr>
+    <tr><td><code>fetch(url, { cache: 'force-cache' })</code></td><td>Cache this fetch (opt-in in Next.js 15)</td></tr>
+    <tr><td><code>fetch(url, { cache: 'no-store' })</code></td><td>Never cache (default in Next.js 15)</td></tr>
+    <tr><td><code>fetch(url, { next: { tags: ['posts'] } })</code></td><td>Tag for targeted revalidation</td></tr>
+  </table>
+
+  <h2>On-Demand Revalidation</h2>
+
+  <p>Revalidate from a Server Action or Route Handler — useful for CMS webhooks:</p>
+
+  <pre><code><span class="keyword">import</span> { revalidateTag } <span class="keyword">from</span> <span class="string">'next/cache'</span>
+
+<span class="keyword">export async function</span> <span class="prop">POST</span>(req) {
+  <span class="keyword">await</span> processWebhook(<span class="keyword">await</span> req.json())
+  revalidateTag(<span class="string">'posts'</span>)
+  <span class="keyword">return</span> NextResponse.json({ revalidated: <span class="keyword">true</span> })
+}</code></pre>
+
+  <h2>Knowledge Check</h2>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q">Q1. Two Server Components on the same page both call <code>fetch('/api/user')</code>. How many HTTP requests?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> One — Next.js memoizes identical fetch calls within a render pass</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Two — each component makes its own request</label>
+    </div>
+
+    <div class="quiz-q">Q2. You want a blog listing that revalidates at most once per hour. Which pattern?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> <code>export const revalidate = 3600</code> (ISR)</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> <code>export const dynamic = 'force-dynamic'</code></label>
+    </div>
+
+    <div class="quiz-q">Q3. When should you wrap a component in <code>&lt;Suspense&gt;</code>?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> When the component fetches uncached data that may be slow — show skeleton while streaming</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Only for client-side data fetching</label>
+    </div>
+
+    <div class="quiz-q">Q4. What is the difference between <code>revalidatePath</code> and <code>revalidateTag</code>?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> revalidatePath purges a specific URL; revalidateTag purges all fetches with a given tag</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> They are identical — both purge everything</label>
+    </div>
+
+    <div class="quiz-q">Q5. A CMS webhook fires when an editor publishes a new post. What triggers the blog listing to refresh?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Server Action or Route Handler that calls revalidatePath or revalidateTag</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Next.js auto-detects database changes</label>
+    </div>
+  </div>
+
+  <script>
+    function check(el, correct) {
+      const label = el.parentElement;
+      const wrap = label.closest('.quiz-opts');
+      wrap.querySelectorAll('label').forEach(l => { l.style.background = ''; l.style.color = ''; });
+      if (correct) { label.style.background = '#e6f4ea'; label.style.color = '#188038'; }
+      else { label.style.background = '#fce8e6'; label.style.color = '#d93025'; }
+    }
+  </script>
+
+  <p style="margin-top:32px; color:#888; font-size:0.85em;">
+    ← <a href="index.html">Back to series index</a>
+  </p>
+</body>
+</html>

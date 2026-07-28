@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3 — Server Actions & Data Mutation · Next.js</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 36px; color: #111; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .prop { color: #9cdcfe; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9em; }
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .note { background: #fffde7; border-left: 4px solid #f0d000; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .quiz-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-top: 36px; }
+    .quiz-q { font-weight: 600; margin: 16px 0 6px; }
+    .quiz-opts label { display: block; padding: 6px 10px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 4px 0; cursor: pointer; }
+    .quiz-opts label:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Lesson 3 — Server Actions & Data Mutation</h1>
+  <p><span class="series-tag">L3</span> Next.js Series · Lesson 3 of 5</p>
+
+  <p>Server Actions let you run server-side code directly from React Components — no API routes, no fetch calls. Forms become first-class reactive citizens.</p>
+
+  <h2>What Is a Server Action?</h2>
+
+  <p>An <code>async</code> function that runs on the server. You call it from a Client Component as if it were a local function — but it has direct DB access and runs on the server.</p>
+
+  <pre><code><span class="comment">// app/actions.ts</span>
+<span class="string">'use server'</span>
+
+<span class="keyword">import</span> { db } <span class="keyword">from</span> <span class="string">'@/lib/db'</span>
+<span class="keyword">import</span> { revalidatePath } <span class="keyword">from</span> <span class="string">'next/cache'</span>
+
+<span class="keyword">export async function</span> <span class="prop">createPost</span>(formData: FormData) {
+  <span class="keyword">const</span> title = formData.get(<span class="string">'title'</span>)
+  <span class="keyword">await</span> db.insert(postsTable).values({ title })
+  revalidatePath(<span class="string">'/blog'</span>)
+}</code></pre>
+
+  <h2>Form Actions</h2>
+
+  <p>The <code>action</code> attribute on a <code>&lt;form&gt;</code> binds directly to a Server Action. Forms work without JavaScript and hydrate into full reactive experiences when JS loads.</p>
+
+  <pre><code><span class="string">'use client'</span>
+<span class="keyword">import</span> { createPost } <span class="keyword">from</span> <span class="string">'@/app/actions'</span>
+
+<span class="keyword">export default function</span> <span class="prop">NewPostForm</span>() {
+  <span class="keyword">return</span> (
+    &lt;form action={createPost}&gt;
+      &lt;input name=<span class="string">"title"</span> placeholder=<span class="string">"Post title"</span> /&gt;
+      &lt;button type=<span class="string">"submit"</span>&gt;Publish&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</code></pre>
+
+  <h2>useFormStatus</h2>
+
+  <p>Access the pending state of a form's Server Action:</p>
+
+  <pre><code><span class="keyword">import</span> { useFormStatus } <span class="keyword">from</span> <span class="string">'next/dist/client/form'</span>
+
+<span class="keyword">function</span> <span class="prop">SubmitButton</span>() {
+  <span class="keyword">const</span> { pending } = useFormStatus()
+  <span class="keyword">return</span> &lt;button disabled={pending}&gt;{pending ? <span class="string">'Saving…'</span> : <span class="string">'Submit'</span>}&lt;/button&gt;
+}</code></pre>
+
+  <h2>Revalidation</h2>
+
+  <p>After a mutation, invalidate cached pages so the next request fetches fresh data:</p>
+
+  <pre><code><span class="keyword">import</span> { revalidatePath, revalidateTag } <span class="keyword">from</span> <span class="string">'next/cache'</span>
+
+revalidatePath(<span class="string">'/blog'</span>)        <span class="comment">// purge blog listing</span>
+revalidatePath(<span class="string">'/blog/my-post'</span>)  <span class="comment">// purge specific post</span>
+revalidateTag(<span class="string">'posts'</span>)         <span class="comment">// purge all fetches tagged 'posts'</span></code></pre>
+
+  <h2>Optimistic Updates</h2>
+
+  <p>Update the UI instantly before the server confirms:</p>
+
+  <pre><code><span class="string">'use client'</span>
+<span class="keyword">import</span> { useOptimistic } <span class="keyword">from</span> <span class="string">'react'</span>
+<span class="keyword">import</span> { toggleLike } <span class="keyword">from</span> <span class="string">'@/app/actions'</span>
+
+<span class="keyword">export function</span> <span class="prop">LikeButton</span>({ initialLikes, postId }) {
+  <span class="keyword">const</span> [optimisticLikes, addOptimistic] = useOptimistic(
+    initialLikes,
+    (state, newCount) =&gt; state + newCount
+  )
+
+  <span class="keyword">async function</span> <span class="prop">handleLike</span>() {
+    addOptimistic(1)
+    <span class="keyword">await</span> toggleLike(postId)
+  }
+
+  <span class="keyword">return</span> &lt;button onClick={handleLike}&gt;♥ {optimisticLikes}&lt;/button&gt;
+}</code></pre>
+
+  <h2>Server Action Security</h2>
+
+  <ul>
+    <li><strong>Dead code elimination:</strong> Unused Server Actions are removed from the client bundle at build time</li>
+    <li><strong>Secure action IDs:</strong> Next.js generates unguessable, non-deterministic IDs</li>
+  </ul>
+
+  <pre><code><span class="comment">// Used from Client Component → kept, gets secure ID</span>
+<span class="string">'use server'</span>
+<span class="keyword">export async function</span> <span class="prop">updateUserAction</span>(formData: FormData) {}
+
+<span class="comment">// Never used → removed from bundle at build time</span>
+<span class="string">'use server'</span>
+<span class="keyword">export async function</span> <span class="prop">deleteUserAction</span>(formData: FormData) {}</code></pre>
+
+  <h2>Route Handlers vs Server Actions</h2>
+
+  <table>
+    <tr><th></th><th>Server Actions</th><th>Route Handlers</th></tr>
+    <tr><td>Trigger</td><td>React form submissions</td><td>External HTTP clients</td></tr>
+    <tr><td>Context</td><td>Inside React components</td><td>Webhooks, mobile apps, third-party calls</td></tr>
+    <tr><td>HTTP method</td><td>Called as a function</td><td><code>GET</code>, <code>POST</code>, etc.</td></tr>
+  </table>
+
+  <h2>Knowledge Check</h2>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q">Q1. Where do Server Actions execute?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, false)"> In the browser</label>
+      <label><input type="radio" name="q1" onclick="check(this, true)"> On the server — with direct DB and filesystem access</label>
+    </div>
+
+    <div class="quiz-q">Q2. After inserting a new post, what makes the blog listing page update?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> <code>revalidatePath('/blog')</code> purges the cache so the next request fetches fresh data</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> The component re-renders automatically</label>
+    </div>
+
+    <div class="quiz-q">Q3. What does <code>useFormStatus</code> provide?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Pending state while a form's Server Action is executing</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Form field validation</label>
+    </div>
+
+    <div class="quiz-q">Q4. When would you use a Route Handler instead of a Server Action?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> External clients (webhooks, mobile apps) that send HTTP requests</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Mutations triggered from React form submissions</label>
+    </div>
+
+    <div class="quiz-q">Q5. An unused Server Action function is shipped to the client bundle. What does Next.js do?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Removes it at build time via dead code elimination</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Bundles it normally</label>
+    </div>
+  </div>
+
+  <script>
+    function check(el, correct) {
+      const label = el.parentElement;
+      const wrap = label.closest('.quiz-opts');
+      wrap.querySelectorAll('label').forEach(l => { l.style.background = ''; l.style.color = ''; });
+      if (correct) { label.style.background = '#e6f4ea'; label.style.color = '#188038'; }
+      else { label.style.background = '#fce8e6'; label.style.color = '#d93025'; }
+    }
+  </script>
+
+  <p style="margin-top:32px; color:#888; font-size:0.85em;">
+    Next: <a href="lesson-4-nextjs-15-breaking-changes.html">Lesson 4 — Next.js 15 Breaking Changes →</a>
+  </p>
+</body>
+</html>

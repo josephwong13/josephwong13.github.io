@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4 — Next.js 15 Breaking Changes · Next.js</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 36px; color: #111; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .prop { color: #9cdcfe; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9em; }
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .warn { background: #fce8e6; border-left: 4px solid #d93025; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .note { background: #fffde7; border-left: 4px solid #f0d000; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .quiz-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-top: 36px; }
+    .quiz-q { font-weight: 600; margin: 16px 0 6px; }
+    .quiz-opts label { display: block; padding: 6px 10px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 4px 0; cursor: pointer; }
+    .quiz-opts label:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Lesson 4 — Next.js 15 Breaking Changes</h1>
+  <p><span class="series-tag">L4</span> Next.js Series · Lesson 4 of 5</p>
+
+  <p>Next.js 15 (October 2024) ships two major breaking changes: async request APIs and updated caching defaults. Upgrade with the codemod first.</p>
+
+  <div class="warn">
+    <strong>Upgrade:</strong> <code>npm install next@latest react@rc react-dom@rc</code> or<br>
+    <code>npx @next/codemod@canary upgrade latest</code>
+  </div>
+
+  <h2>Async Request APIs</h2>
+
+  <p>APIs that access request-specific data are now <strong>async</strong>. This is the biggest migration step.</p>
+
+  <table>
+    <tr><th>API</th><th>Next.js 14</th><th>Next.js 15</th></tr>
+    <tr><td><code>cookies()</code></td><td><code>cookies().get('x')</code></td><td><code>(await cookies()).get('x')</code></td></tr>
+    <tr><td><code>headers()</code></td><td><code>headers().get('x')</code></td><td><code>(await headers()).get('x')</code></td></tr>
+    <tr><td><code>params</code> (page/layout)</td><td><code>params.slug</code></td><td><code>(await params).slug</code></td></tr>
+    <tr><td><code>searchParams</code> (page)</td><td><code>searchParams.page</code></td><td><code>(await searchParams).page</code></td></tr>
+  </table>
+
+  <pre><code><span class="comment">// Next.js 14 — synchronous (broken in Next.js 15)</span>
+<span class="keyword">import</span> { cookies } <span class="keyword">from</span> <span class="string">'next/headers'</span>
+<span class="keyword">export default function</span> <span class="prop">AdminPanel</span>() {
+  <span class="keyword">const</span> cookieStore = cookies()       <span class="comment">// ← throws</span>
+}
+
+<span class="comment">// Next.js 15 — async (correct)</span>
+<span class="keyword">export default async function</span> <span class="prop">AdminPanel</span>() {
+  <span class="keyword">const</span> cookieStore = <span class="keyword">await</span> cookies()
+  <span class="keyword">const</span> token = cookieStore.get(<span class="string">'token'</span>)
+}</code></pre>
+
+  <p>Run the automated codemod to update everything at once:</p>
+  <pre><code>npx @next/codemod@canary next-async-request-api .</code></pre>
+
+  <h2>New Caching Defaults</h2>
+
+  <p>Three things that were cached by default are now <strong>uncached by default</strong>:</p>
+
+  <table>
+    <tr><th>What changed</th><th>Next.js 14 default</th><th>Next.js 15 default</th><th>Restore with</th></tr>
+    <tr><td><code>fetch()</code> requests</td><td>Cached (<code>force-cache</code>)</td><td>Not cached (<code>no-store</code>)</td><td><code>{ cache: 'force-cache' }</code></td></tr>
+    <tr><td>GET Route Handlers</td><td>Cached</td><td>Not cached</td><td><code>export const dynamic = 'force-static'</code></td></tr>
+    <tr><td>Client Router Cache</td><td><code>staleTime = 30s</code></td><td><code>staleTime = 0</code></td><td><code>staleTimes.dynamic</code> in next.config.ts</td></tr>
+  </table>
+
+  <pre><code><span class="comment">// next.config.ts — restore Next.js 14 client router cache behavior</span>
+<span class="keyword">import</span> type { NextConfig } <span class="keyword">from</span> <span class="string">'next'</span>
+<span class="keyword">const</span> nextConfig: NextConfig = {
+  experimental: {
+    staleTimes: { dynamic: <span class="string">30</span> },
+  },
+}
+<span class="keyword">export default</span> nextConfig</code></pre>
+
+  <div class="warn">
+    <strong>Silent breakage risk:</strong> Next.js 14 cached <code>fetch</code> by default — many apps never specified caching and worked by accident. Next.js 15 changes this. Audit <code>fetch</code> calls and add explicit <code>{ cache: 'force-cache' }</code> where data should be cached.
+  </div>
+
+  <h2>Turbopack Dev — Stable</h2>
+
+  <p><code>next dev --turbo</code> is stable in Next.js 15:</p>
+
+  <table>
+    <tr><th>Metric</th><th>Improvement</th></tr>
+    <tr><td>Local server startup</td><td>76.7% faster</td></tr>
+    <tr><td>Code updates (Fast Refresh)</td><td>96.3% faster</td></tr>
+    <tr><td>Initial route compile</td><td>45.8% faster</td></tr>
+  </table>
+
+  <pre><code>npm run dev    <span class="comment"># ← Turbopack is now the default</span>
+npm run dev -- --webpack  <span class="comment"># opt out to Webpack if needed</span></code></pre>
+
+  <div class="note">
+    <strong>Production:</strong> Next.js 15 still uses Webpack for production builds. Turbopack for production is in beta.
+  </div>
+
+  <h2>Other Notable Changes</h2>
+
+  <ul>
+    <li><strong>React 19:</strong> App Router uses React 19 RC; Pages Router stays on React 18</li>
+    <li><strong><code>instrumentation.js</code> stable:</strong> <code>onRequestError</code> hook for server lifecycle observability</li>
+    <li><strong><code>next.config.ts</code>:</strong> Full typed config support</li>
+    <li><strong>ESLint 9 support:</strong> Auto-applies <code>ESLINT_USE_FLAT_CONFIG=false</code> escape hatch</li>
+  </ul>
+
+  <h2>Knowledge Check</h2>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q">Q1. In Next.js 15, what does <code>cookies()</code> return?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, false)"> A synchronous object</label>
+      <label><input type="radio" name="q1" onclick="check(this, true)"> A Promise — must be awaited</label>
+    </div>
+
+    <div class="quiz-q">Q2. After upgrading to Next.js 15, a page that calls <code>fetch('/api/data')</code> starts making a new request on every navigation. Why?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> <code>fetch</code> is now uncached by default — add <code>{ cache: 'force-cache' }</code></label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> The API endpoint is broken</label>
+    </div>
+
+    <div class="quiz-q">Q3. What is the fastest way to migrate an existing Next.js 14 codebase to async request APIs?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> <code>npx @next/codemod@canary next-async-request-api .</code></label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Manually edit every file</label>
+    </div>
+
+    <div class="quiz-q">Q4. Turbopack (next dev --turbo) covers which scope in Next.js 15?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Development only — production still uses Webpack</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Both dev and production</label>
+    </div>
+
+    <div class="quiz-q">Q5. Can you mix App Router (React 19) and Pages Router (React 18) in the same app?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Yes — fully supported</label>
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Not recommended — App Router uses React 19, Pages Router uses React 18</label>
+    </div>
+  </div>
+
+  <script>
+    function check(el, correct) {
+      const label = el.parentElement;
+      const wrap = label.closest('.quiz-opts');
+      wrap.querySelectorAll('label').forEach(l => { l.style.background = ''; l.style.color = ''; });
+      if (correct) { label.style.background = '#e6f4ea'; label.style.color = '#188038'; }
+      else { label.style.background = '#fce8e6'; label.style.color = '#d93025'; }
+    }
+  </script>
+
+  <p style="margin-top:32px; color:#888; font-size:0.85em;">
+    Next: <a href="lesson-5-data-fetching-streaming-caching.html">Lesson 5 — Data Fetching, Streaming & Caching →</a>
+  </p>
+</body>
+</html>

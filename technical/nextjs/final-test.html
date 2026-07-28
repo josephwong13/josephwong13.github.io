@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Test — Next.js · Technical Lessons</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.05em; margin-top: 32px; background: #f0f0f0; padding: 8px 12px; border-radius: 4px; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .q-block { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 18px 20px; margin-top: 16px; }
+    .q-text { font-weight: 600; margin-bottom: 10px; }
+    .q-lesson { font-size: 0.78em; color: #888; margin-left: 6px; }
+    .opts label { display: block; padding: 7px 12px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 5px 0; cursor: pointer; }
+    .opts label:hover { background: #f5f5f5; }
+    .fill { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+    .fill input { border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 0.9em; width: 200px; }
+    .fill span { font-size: 0.9em; color: #444; }
+    .score { position: fixed; top: 16px; right: 20px; background: #1a73e8; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+    .reveal-btn { background: #1a73e8; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9em; margin-top: 24px; }
+    .reveal-btn:hover { background: #1557b0; }
+    .answers { display: none; margin-top: 24px; background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 6px; padding: 16px 20px; }
+    .answers.show { display: block; }
+    .answers h3 { margin-top: 0; font-size: 1em; color: #2e7d32; }
+    .answers p { margin: 6px 0; font-size: 0.9em; }
+    .answers .a-num { font-weight: 700; color: #1b5e20; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Final Test — Next.js App Router<span class="series-tag">Series</span></h1>
+  <p>12 cumulative questions across all 5 lessons. 9 MCQ + 3 fill-in-the-blank.</p>
+
+  <div class="score" id="scoreEl">0 / 9</div>
+
+  <h2>📝 Part A · Multiple Choice (9 questions)</h2>
+
+  <!-- Q1 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L1</span> What URL does <code>app/(marketing)/pricing/page.tsx</code> produce?</div>
+    <div class="opts">
+      <label><input type="radio" name="q1" onclick="grade('q1',false)"> /marketing/pricing</label>
+      <label><input type="radio" name="q1" onclick="grade('q1',true)"> /pricing</label>
+      <label><input type="radio" name="q1" onclick="grade('q1',false)"> /(marketing)/pricing</label>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L1 L4</span> Which pattern correctly accesses dynamic params in Next.js 15?</div>
+    <div class="opts">
+      <label><input type="radio" name="q2" onclick="grade('q2',false)"> <code>const { slug } = props.params</code></label>
+      <label><input type="radio" name="q2" onclick="grade('q2',true)"> <code>const { slug } = await params</code></label>
+      <label><input type="radio" name="q2" onclick="grade('q2',false)"> <code>useParams()</code> hook</label>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L2</span> A component needs <code>useState</code>. What must you add?</div>
+    <div class="opts">
+      <label><input type="radio" name="q3" onclick="grade('q3',false)"> <code>'use server'</code> directive</label>
+      <label><input type="radio" name="q3" onclick="grade('q3',true)"> <code>'use client'</code> directive at the top of the file</label>
+      <label><input type="radio" name="q3" onclick="grade('q3',false)"> Wrap in <code>&lt;Suspense&gt;</code></label>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L3</span> After inserting a post via a Server Action, what makes the blog listing page update?</div>
+    <div class="opts">
+      <label><input type="radio" name="q4" onclick="grade('q4',false)"> The Server Action triggers a client re-render automatically</label>
+      <label><input type="radio" name="q4" onclick="grade('q4',true)"> <code>revalidatePath('/blog')</code> purges the cache so the next request fetches fresh data</label>
+      <label><input type="radio" name="q4" onclick="grade('q4',false)"> Client-side polling via <code>useEffect</code></label>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L4</span> In Next.js 15, <code>cookies()</code> throws if called without awaiting. Correct pattern?</div>
+    <div class="opts">
+      <label><input type="radio" name="q5" onclick="grade('q5',false)"> <code>const store = cookies()</code> (synchronous)</label>
+      <label><input type="radio" name="q5" onclick="grade('q5',true)"> <code>const store = await cookies()</code> — cookies() now returns a Promise</label>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L4</span> A page that calls <code>fetch('/api/data')</code> starts making a new request on every navigation after upgrading to Next.js 15. Why?</div>
+    <div class="opts">
+      <label><input type="radio" name="q6" onclick="grade('q6',false)"> The API endpoint is broken</label>
+      <label><input type="radio" name="q6" onclick="grade('q6',true)"> <code>fetch</code> is now uncached by default — add <code>{ cache: 'force-cache' }</code> to restore caching</label>
+      <label><input type="radio" name="q6" onclick="grade('q6',false)"> The component was changed to a Client Component</label>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L5</span> You want fast page parts to render immediately while slow data fetches stream in. Which pattern?</div>
+    <div class="opts">
+      <label><input type="radio" name="q7" onclick="grade('q7',false)"> <code>getServerSideProps</code></label>
+      <label><input type="radio" name="q7" onclick="grade('q7',true)"> Wrap slow components in <code>&lt;Suspense&gt;</code> with a skeleton fallback</label>
+      <label><input type="radio" name="q7" onclick="grade('q7',false)"> Set <code>revalidate = 0</code></label>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L3</span> An unused Server Action is shipped to the client bundle. What does Next.js do?</div>
+    <div class="opts">
+      <label><input type="radio" name="q8" onclick="grade('q8',false)"> Bundles it normally</label>
+      <label><input type="radio" name="q8" onclick="grade('q8',true)"> Removes it at build time via dead code elimination</label>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L4</span> Turbopack (next dev --turbo) is stable in Next.js 15. What scope does it cover?</div>
+    <div class="opts">
+      <label><input type="radio" name="q9" onclick="grade('q9',false)"> Both development and production builds</label>
+      <label><input type="radio" name="q9" onclick="grade('q9',true)"> Development only — production builds still use Webpack in Next.js 15</label>
+    </div>
+  </div>
+
+  <h2>✍️ Part B · Fill in the Blank (3 questions)</h2>
+
+  <!-- Q10 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L2</span> In App Router, every component is a Server Component by default unless you add <code>___</code> at the top of the file.</div>
+    <div class="fill">
+      <input type="text" id="q10" placeholder="'use client'">
+      <span>→ Press Enter</span>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L5</span> You want a route to revalidate every hour. Write the export: <code>export const ___ = ___</code></div>
+    <div class="fill">
+      <input type="text" id="q11" placeholder="revalidate = 3600">
+      <span>→ Press Enter</span>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-block">
+    <div class="q-text"><span class="q-lesson">L5</span> A Server Action calls <code>revalidateTag('posts')</code>. What is this pattern called? (one or two words)</div>
+    <div class="fill">
+      <input type="text" id="q12" placeholder="cache revalidation, ISR…">
+      <span>→ Press Enter</span>
+    </div>
+  </div>
+
+  <button class="reveal-btn" onclick="document.getElementById('answers').classList.toggle('show')">Reveal all answers</button>
+
+  <div class="answers" id="answers">
+    <h3>Answer Key</h3>
+    <p><span class="a-num">Q1:</span> /pricing — route groups (parentheses) are purely organizational and do not affect the URL.</p>
+    <p><span class="a-num">Q2:</span> <code>const { slug } = await params</code> — in Next.js 15, <code>params</code> and <code>searchParams</code> are Promises.</p>
+    <p><span class="a-num">Q3:</span> <code>'use client'</code> — the directive that crosses the server/client boundary.</p>
+    <p><span class="a-num">Q4:</span> <code>revalidatePath('/blog')</code> — purges the Next.js data cache so the next render fetches fresh data.</p>
+    <p><span class="a-num">Q5:</span> <code>await cookies()</code> — <code>cookies()</code> now returns a Promise in Next.js 15.</p>
+    <p><span class="a-num">Q6:</span> <code>fetch</code> is uncached by default in Next.js 15 — add <code>{ cache: 'force-cache' }</code>.</p>
+    <p><span class="a-num">Q7:</span> <code>&lt;Suspense&gt;</code> with skeleton fallback — fast shell renders immediately, slow content streams in.</p>
+    <p><span class="a-num">Q8:</span> Dead code elimination — unused Server Actions are stripped from the client bundle at build time.</p>
+    <p><span class="a-num">Q9:</span> Development only — Turbopack for production is in beta in Next.js 15.</p>
+    <p><span class="a-num">Q10:</span> <strong>'use client'</strong></p>
+    <p><span class="a-num">Q11:</span> <strong>export const revalidate = 3600</strong></p>
+    <p><span class="a-num">Q12:</span> <strong>cache revalidation</strong> (or ISR / Incremental Static Regeneration / on-demand revalidation)</p>
+  </div>
+
+  <script>
+    let correct = 0;
+    const total = 9;
+
+    function grade(name, isCorrect) {
+      const opts = document.querySelectorAll(`input[name="${name}"]`);
+      opts.forEach(r => r.closest('label').style.cssText = 'background:#f5f5f5');
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      if (checked) {
+        checked.closest('label').style.cssText = isCorrect
+          ? 'background:#e6f4ea;color:#188038;border-color:#a5d6a7'
+          : 'background:#fce8e6;color:#d93025;border-color:#ef9a9a';
+      }
+      if (isCorrect) {
+        correct++;
+        document.getElementById('scoreEl').textContent = correct + ' / ' + total;
+      }
+    }
+
+    const fillAnswers = {
+      q10: ["'use client'", 'use client', '"use client"'],
+      q11: ['revalidate = 3600', 'revalidate=3600', 'revalidate =', 'const revalidate = 3600'],
+      q12: ['isr', 'cache revalidation', 'revalidation', 'cache invalidation', 'incremental static regeneration', 'on-demand revalidation', 'cache invalidation']
+    };
+
+    ['q10','q11','q12'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const val = this.value.trim().toLowerCase().replace(/\s+/g, ' ');
+          const ok = fillAnswers[id].some(a => a.toLowerCase() === val || val.includes(a.toLowerCase()));
+          this.style.borderColor = ok ? '#188038' : '#d93025';
+          this.style.background = ok ? '#e6f4ea' : '#fce8e6';
+          if (ok) { correct++; document.getElementById('scoreEl').textContent = correct + ' / ' + total; }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

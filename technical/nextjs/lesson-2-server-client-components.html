@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2 — Server vs Client Components · Next.js</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 36px; color: #111; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .prop { color: #9cdcfe; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9em; }
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .note { background: #fffde7; border-left: 4px solid #f0d000; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .warn { background: #fce8e6; border-left: 4px solid #d93025; padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0; }
+    .quiz-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-top: 36px; }
+    .quiz-q { font-weight: 600; margin: 16px 0 6px; }
+    .quiz-opts label { display: block; padding: 6px 10px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 4px 0; cursor: pointer; }
+    .quiz-opts label:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Lesson 2 — Server vs Client Components</h1>
+  <p><span class="series-tag">L2</span> Next.js Series · Lesson 2 of 5</p>
+
+  <p>Next.js App Router defaults to Server Components. Understanding the boundary — and when to cross it — is the single most important architectural decision in App Router applications.</p>
+
+  <h2>Server Components (Default)</h2>
+
+  <p>In App Router, <strong>every component is a Server Component by default</strong>. Server Components:</p>
+  <ul>
+    <li>Render on the server — HTML is generated and sent to the browser</li>
+    <li>Ship <strong>zero JavaScript</strong> to the client</li>
+    <li>Can use <code>async</code>/<code>await</code> directly for data fetching</li>
+    <li>Can access server-only resources (filesystem, DB, secrets)</li>
+    <li>Cannot use React hooks or browser APIs</li>
+  </ul>
+
+  <pre><code><span class="comment">// app/blog/page.tsx — Server Component (no directive = default)</span>
+<span class="keyword">import</span> { db } <span class="keyword">from</span> <span class="string">'@/lib/db'</span>
+
+<span class="keyword">export default async function</span> <span class="prop">BlogPage</span>() {
+  <span class="keyword">const</span> posts = <span class="keyword">await</span> db.query.posts.findMany()
+  <span class="keyword">return</span> (
+    &lt;ul&gt;{posts.map(post =&gt; &lt;li key={post.id}&gt;{post.title}&lt;/li&gt;)}&lt;/ul&gt;
+  )
+}</code></pre>
+
+  <h2>'use client' Directive</h2>
+
+  <p>Add <code>'use client'</code> at the top of a file to make it a Client Component. The component's entire module graph becomes part of the client bundle.</p>
+
+  <pre><code><span class="string">'use client'</span>
+<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>
+<span class="keyword">import</span> { useSearchParams } <span class="keyword">from</span> <span class="string">'next/navigation'</span>
+
+<span class="keyword">export default function</span> <span class="prop">SearchBox</span>() {
+  <span class="keyword">const</span> [query, setQuery] = useState(<span class="string">''</span>)
+  <span class="keyword">const</span> searchParams = useSearchParams()
+  <span class="keyword">return</span> &lt;input value={query} onChange={e =&gt; setQuery(e.target.value)} /&gt;
+}</code></pre>
+
+  <h2>The Boundary Rules</h2>
+
+  <table>
+    <tr><th>Capability</th><th>Server Component</th><th>Client Component</th></tr>
+    <tr><td>async/await data fetch</td><td>✓</td><td>✗ (must use effects)</td></tr>
+    <tr><td>React hooks (useState, useEffect…)</td><td>✗</td><td>✓</td></tr>
+    <tr><td>Browser APIs (window, localStorage)</td><td>✗</td><td>✓</td></tr>
+    <tr><td>Server-only resources (DB, fs)</td><td>✓</td><td>✗</td></tr>
+    <tr><td>Shipped to browser JS bundle</td><td>✗</td><td>✓</td></tr>
+    <tr><td>Interactive event handlers</td><td>✗</td><td>✓</td></tr>
+  </table>
+
+  <h2>Composing Server and Client</h2>
+
+  <p>Pass Server Component output as <code>children</code> into Client Components — without crossing the boundary the wrong way.</p>
+
+  <pre><code><span class="comment">// Client Component wrapper</span>
+<span class="string">'use client'</span>
+<span class="keyword">export function</span> <span class="prop">CardShell</span>({ children }: { children: React.ReactNode }) {
+  <span class="keyword">return</span> &lt;div className=<span class="string">"card"</span>&gt;{children}&lt;/div&gt;
+}
+
+<span class="comment">// Server Component — fetches data, passes to Client Component as children</span>
+<span class="keyword">import</span> { CardShell } <span class="keyword">from</span> <span class="string">'@/components/CardShell'</span>
+
+<span class="keyword">export default async function</span> <span class="prop">Dashboard</span>() {
+  <span class="keyword">const</span> data = <span class="keyword">await</span> fetchDashboard()
+  <span class="keyword">return</span> (
+    &lt;CardShell&gt;
+      &lt;DashboardStats data={data} /&gt;
+    &lt;/CardShell&gt;
+  )
+}</code></pre>
+
+  <div class="note">
+    <strong>Key insight:</strong> You can pass components (not just primitives) as children props. The Server Component renders first, then its HTML output is passed into the Client Component — the boundary is not crossed.
+  </div>
+
+  <h2>Context Providers</h2>
+
+  <p>React Context only works in Client Components. Wrap a Client Component provider around Server Component content:</p>
+
+  <pre><code><span class="comment">// app/providers.tsx</span>
+<span class="string">'use client'</span>
+<span class="keyword">export function</span> <span class="prop">Providers</span>({ children }: { children: React.ReactNode }) {
+  <span class="keyword">return</span> &lt;ThemeProvider&gt;{children}&lt;/ThemeProvider&gt;
+}
+
+<span class="comment">// app/layout.tsx</span>
+<span class="keyword">import</span> { Providers } <span class="keyword">from</span> <span class="string">'./providers'</span>
+<span class="keyword">export default function</span> <span class="prop">RootLayout</span>({ children }) {
+  <span class="keyword">return</span> &lt;html&gt;&lt;body&gt;&lt;Providers&gt;{children}&lt;/Providers&gt;&lt;/body&gt;&lt;/html&gt;
+}</code></pre>
+
+  <h2>Hydration</h2>
+
+  <p>Client Components are rendered twice: on the server (initial HTML), then on the client (React hydrates to attach event listeners). If the server HTML doesn't match the client render, you get a <strong>hydration mismatch</strong>.</p>
+
+  <div class="warn">
+    <strong>Rule:</strong> Keep data-fetching on the server. Only push interactivity to Client Components. This eliminates hydration bugs and reduces bundle size.
+  </div>
+
+  <h2>Knowledge Check</h2>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q">Q1. Which is the correct default in App Router?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Server Component (no directive needed)</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Client Component (must opt into server)</label>
+    </div>
+
+    <div class="quiz-q">Q2. A component needs <code>useState</code>. What must you add?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> <code>'use client'</code> directive at the top of the file</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> <code>'use server'</code> directive</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Wrap in <code>&lt;Suspense&gt;</code></label>
+    </div>
+
+    <div class="quiz-q">Q3. You want to pass a Server Component's data into a Client Component wrapper. Correct pattern?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Fetch in Server Component, pass as children prop into Client Component</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Fetch data inside the Client Component using useEffect</label>
+    </div>
+
+    <div class="quiz-q">Q4. Why should data-fetching stay in Server Components?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> No client bundle cost, direct DB access, no useEffect waterfalls</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Server Components run faster than Client Components</label>
+    </div>
+
+    <div class="quiz-q">Q5. A Server Component renders <code>new Date().toISOString()</code> and causes a hydration mismatch. Why?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, true)"> Server clock and client clock differ, producing different values</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> Server Components cannot render dates</label>
+    </div>
+  </div>
+
+  <script>
+    function check(el, correct) {
+      const label = el.parentElement;
+      const wrap = label.closest('.quiz-opts');
+      wrap.querySelectorAll('label').forEach(l => { l.style.background = ''; l.style.color = ''; });
+      if (correct) { label.style.background = '#e6f4ea'; label.style.color = '#188038'; }
+      else { label.style.background = '#fce8e6'; label.style.color = '#d93025'; }
+    }
+  </script>
+
+  <p style="margin-top:32px; color:#888; font-size:0.85em;">
+    Next: <a href="lesson-3-server-actions-mutation.html">Lesson 3 — Server Actions & Data Mutation →</a>
+  </p>
+</body>
+</html>

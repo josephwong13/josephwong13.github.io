@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next.js — Technical Lessons</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 60px auto; padding: 0 20px; line-height: 1.6; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { border-bottom: 2px solid #222; padding-bottom: 10px; }
+    h2 { margin-top: 30px; }
+    .meta { color: #666; font-size: 0.9em; margin-bottom: 30px; }
+    .lesson-list { list-style: none; padding: 0; }
+    .lesson-list li { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 14px 18px; margin-bottom: 10px; }
+    .lesson-list li:hover { border-color: #bbb; }
+    .tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 8px; vertical-align: middle; }
+    .desc { color: #555; margin: 4px 0 0; font-size: 0.9em; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .test-link { display: block; margin-top: 30px; background: #fff8e1; border: 1px solid #f0d060; border-radius: 6px; padding: 16px 18px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Next.js 15 — App Router</h1>
+  <p class="meta">A 5-lesson series · Next.js 16 (2026) · App Router focus</p>
+
+  <p>
+    Next.js is Vercel's full-stack React framework. This series covers the App Router model — file-system routing, Server/Client Components, Server Actions, Next.js 15's breaking changes (async request APIs, new caching defaults), and data-fetching patterns. Built from <a href="https://nextjs.org/docs" target="_blank">official docs (v16.2.12, 2026)</a>.
+  </p>
+
+  <h2>Lessons</h2>
+  <ul class="lesson-list">
+    <li>
+      <a href="lesson-1-app-router-fundamentals.html">Lesson 1 · App Router Fundamentals</a>
+      <span class="tag">L1</span>
+      <p class="desc">File-system routing · layouts & pages · root layout · nested routes · dynamic segments · linking & navigation</p>
+    </li>
+    <li>
+      <a href="lesson-2-server-client-components.html">Lesson 2 · Server vs Client Components</a>
+      <span class="tag">L2</span>
+      <p class="desc">Server Components (default) · 'use client' directive · boundary decisions · when to hydrate · zero-JS rendering</p>
+    </li>
+    <li>
+      <a href="lesson-3-server-actions-mutation.html">Lesson 3 · Server Actions & Data Mutation</a>
+      <span class="tag">L3</span>
+      <p class="desc">Action functions · form actions · useFormStatus · revalidation · optimistic updates · security (dead code elimination, secure IDs)</p>
+    </li>
+    <li>
+      <a href="lesson-4-nextjs-15-breaking-changes.html">Lesson 4 · Next.js 15 Breaking Changes</a>
+      <span class="tag">L4</span>
+      <p class="desc">Async request APIs (cookies, headers, params, searchParams) · new caching semantics · Turbopack dev (stable) · codemod migration</p>
+    </li>
+    <li>
+      <a href="lesson-5-data-fetching-streaming-caching.html">Lesson 5 · Data Fetching, Streaming & Caching</a>
+      <span class="tag">L5</span>
+      <p class="desc">fetch memoization · sequential vs parallel · loading.js · Suspense · cache directives · revalidation strategies</p>
+    </li>
+  </ul>
+
+  <a class="test-link" href="final-test.html">📝 Final Test — 12 cumulative questions across all 5 lessons →</a>
+</body>
+</html>

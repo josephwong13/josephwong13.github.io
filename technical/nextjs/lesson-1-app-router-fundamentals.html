@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 — App Router Fundamentals · Next.js</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.7; color: #222; background: #fafafa; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1 { font-size: 1.5em; border-bottom: 2px solid #222; padding-bottom: 8px; }
+    h2 { font-size: 1.15em; margin-top: 36px; color: #111; }
+    h3 { font-size: 1em; margin-top: 24px; color: #333; }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 0.85em; }
+    .series-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.75em; padding: 2px 8px; border-radius: 12px; margin-left: 6px; vertical-align: middle; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .keyword { color: #569cd6; }
+    .string { color: #ce9178; }
+    .comment { color: #6a9955; }
+    .prop { color: #9cdcfe; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9em; }
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .quiz-wrap { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; margin-top: 36px; }
+    .quiz-q { font-weight: 600; margin: 16px 0 6px; }
+    .quiz-opts label { display: block; padding: 6px 10px; border: 1px solid #e0e0e0; border-radius: 4px; margin: 4px 0; cursor: pointer; }
+    .quiz-opts label:hover { background: #f0f0f0; }
+    .quiz-result { margin-top: 8px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Next.js Series</a>
+  <a class="back" href="https://josephwong13.github.io/technical/">← Technical Lessons</a>
+
+  <h1>Lesson 1 — App Router Fundamentals</h1>
+  <p><span class="series-tag">L1</span> Next.js Series · Lesson 1 of 5</p>
+
+  <p>Next.js uses file-system routing — folders and files under <code>app/</code> define your routes. This lesson covers the core building blocks: pages, layouts, dynamic segments, and navigation.</p>
+
+  <h2>File-System Routing</h2>
+
+  <p>Folders map to URL segments. Files map to UI.</p>
+
+  <pre><code><span class="comment">// app/blog/page.tsx  →  /blog</span>
+<span class="keyword">export default</span> <span class="keyword">function</span> <span class="prop">Page</span>() {
+  <span class="keyword">return</span> &lt;h1&gt;Blog&lt;/h1&gt;
+}
+
+<span class="comment">// app/blog/[slug]/page.tsx  →  /blog/:slug  (dynamic)</span>
+<span class="keyword">export default</span> <span class="keyword">function</span> <span class="prop">Page</span>({ params }) {
+  <span class="keyword">return</span> &lt;h1&gt;{params.slug}&lt;/h1&gt;
+}</code></pre>
+
+  <table>
+    <tr><th>File</th><th>Route</th><th>Purpose</th></tr>
+    <tr><td><code>app/page.tsx</code></td><td>/</td><td>Home page</td></tr>
+    <tr><td><code>app/blog/page.tsx</code></td><td>/blog</td><td>Blog listing</td></tr>
+    <tr><td><code>app/blog/[slug]/page.tsx</code></td><td>/blog/:slug</td><td>Blog post</td></tr>
+    <tr><td><code>app/(auth)/login/page.tsx</code></td><td>/login</td><td>Route groups () don't affect URL</td></tr>
+  </table>
+
+  <h2>Root Layout (Required)</h2>
+
+  <p>Every App Router project must have a root <code>app/layout.tsx</code> that exports a layout containing <code>&lt;html&gt;</code> and <code>&lt;body&gt;</code>. It wraps every page in the app.</p>
+
+  <pre><code><span class="comment">// app/layout.tsx — must exist at project root</span>
+<span class="keyword">export default function</span> <span class="prop">RootLayout</span>({ children }: { children: React.ReactNode }) {
+  <span class="keyword">return</span> (
+    &lt;html lang=<span class="string">"en"</span>&gt;
+      &lt;body&gt;{children}&lt;/body&gt;
+    &lt;/html&gt;
+  )
+}</code></pre>
+
+  <h2>Nested Layouts</h2>
+
+  <p>Add <code>layout.tsx</code> inside a route folder to create nested layouts. The inner layout receives the outer layout's children via the <code>children</code> prop. Layouts persist across navigations — they do not re-render when the route changes.</p>
+
+  <pre><code><span class="comment">// app/dashboard/layout.tsx</span>
+<span class="keyword">export default function</span> <span class="prop">DashboardLayout</span>({ children }: { children: React.ReactNode }) {
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;nav&gt;Sidebar nav&lt;/nav&gt;
+      &lt;main&gt;{children}&lt;/main&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+  <h2>Dynamic Segments</h2>
+
+  <p>Square brackets capture URL segments as params.</p>
+
+  <pre><code><span class="comment">// app/blog/[slug]/page.tsx</span>
+<span class="keyword">export default async function</span> <span class="prop">BlogPost</span>({
+  params,
+}: {
+  <span class="prop">params</span>: Promise&lt;{ slug: string }&gt;   <span class="comment">// ← async in Next.js 15</span>
+}) {
+  <span class="keyword">const</span> { slug } = <span class="keyword">await</span> params
+  <span class="keyword">const</span> post = <span class="keyword">await</span> getPost(slug)
+  <span class="keyword">return</span> &lt;h1&gt;{post.title}&lt;/h1&gt;
+}</code></pre>
+
+  <p>Use <code>generateStaticParams</code> to pre-generate routes at build time:</p>
+
+  <pre><code><span class="keyword">export async function</span> <span class="prop">generateStaticParams</span>() {
+  <span class="keyword">const</span> posts = <span class="keyword">await</span> db.select().from(postsTable)
+  <span class="keyword">return</span> posts.map((post) =&gt; ({ slug: post.slug }))
+}</code></pre>
+
+  <h2>Route Groups</h2>
+
+  <p>Folders wrapped in <code>(groupName)</code> are route groups — they organize files without affecting the URL.</p>
+
+  <pre><code><span class="comment">// app/(marketing)/about/page.tsx  →  /about</span>
+<span class="comment">// app/(marketing)/pricing/page.tsx  →  /pricing</span>
+<span class="comment">// app/(app)/dashboard/page.tsx      →  /dashboard</span></code></pre>
+
+  <h2>Linking & Navigation</h2>
+
+  <p>Use <code>&lt;Link&gt;</code> for client-side navigation with automatic prefetching:</p>
+
+  <pre><code><span class="keyword">import</span> Link <span class="keyword">from</span> <span class="string">'next/link'</span>
+
+<span class="keyword">export default function</span> <span class="prop">Nav</span>() {
+  <span class="keyword">return</span> (
+    &lt;nav&gt;
+      &lt;Link href=<span class="string">"/blog"</span>&gt;Blog&lt;/Link&gt;
+    &lt;/nav&gt;
+  )
+}</code></pre>
+
+  <p>For programmatic navigation, use <code>useRouter</code> from <code>next/navigation</code> (Pages Router uses <code>next/router</code>):</p>
+
+  <pre><code><span class="string">'use client'</span>
+<span class="keyword">import</span> { useRouter } <span class="keyword">from</span> <span class="string">'next/navigation'</span>
+
+<span class="keyword">export function</span> <span class="prop">RedirectButton</span>() {
+  <span class="keyword">const</span> router = useRouter()
+  <span class="keyword">return</span> &lt;button onClick={() =&gt; router.push(<span class="string">'/dashboard'</span>)}&gt;Go&lt;/button&gt;
+}</code></pre>
+
+  <h2>searchParams Prop</h2>
+
+  <p>Access URL query parameters via the <code>searchParams</code> prop. In Next.js 15 it is async:</p>
+
+  <pre><code><span class="keyword">export default async function</span> <span class="prop">Page</span>({
+  searchParams,
+}: {
+  <span class="prop">searchParams</span>: Promise&lt;{ [key: string]: string | string[] | undefined }&gt;
+}) {
+  <span class="keyword">const</span> { page, filter } = <span class="keyword">await</span> searchParams
+}</code></pre>
+
+  <h2>Knowledge Check</h2>
+
+  <div class="quiz-wrap">
+    <div class="quiz-q">Q1. What URL does <code>app/(marketing)/pricing/page.tsx</code> produce?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q1" onclick="check(this, false)"> /marketing/pricing</label>
+      <label><input type="radio" name="q1" onclick="check(this, true)"> /pricing</label>
+      <label><input type="radio" name="q1" onclick="check(this, false)"> /(marketing)/pricing</label>
+    </div>
+
+    <div class="quiz-q">Q2. What is the correct Next.js 15 pattern for dynamic params in a Server Component page?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q2" onclick="check(this, false)"> <code>const { slug } = props.params</code></label>
+      <label><input type="radio" name="q2" onclick="check(this, true)"> <code>const { slug } = await params</code></label>
+      <label><input type="radio" name="q2" onclick="check(this, false)"> <code>useParams()</code> hook</label>
+    </div>
+
+    <div class="quiz-q">Q3. How does <code>&lt;Link&gt;</code> differ from a regular <code>&lt;a&gt;</code> tag?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q3" onclick="check(this, true)"> Link prefetches pages and does client-side navigation without a full reload</label>
+      <label><input type="radio" name="q3" onclick="check(this, false)"> Link is just a styled <code>&lt;a&gt;</code> — no functional difference</label>
+    </div>
+
+    <div class="quiz-q">Q4. What does <code>generateStaticParams</code> do?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q4" onclick="check(this, true)"> Pre-generates routes at build time for fully static pages</label>
+      <label><input type="radio" name="q4" onclick="check(this, false)"> Enables server-side rendering for a page</label>
+    </div>
+
+    <div class="quiz-q">Q5. How do you create a layout that wraps only <code>/blog/*</code> routes?</div>
+    <div class="quiz-opts">
+      <label><input type="radio" name="q5" onclick="check(this, true)"> Add <code>app/blog/layout.tsx</code></label>
+      <label><input type="radio" name="q5" onclick="check(this, false)"> Add <code>layout.tsx</code> next to <code>page.tsx</code> in root <code>app/</code></label>
+    </div>
+  </div>
+
+  <script>
+    function check(el, correct) {
+      const label = el.parentElement;
+      const wrap = label.closest('.quiz-opts');
+      wrap.querySelectorAll('label').forEach(l => { l.style.background = ''; l.style.color = ''; });
+      if (correct) { label.style.background = '#e6f4ea'; label.style.color = '#188038'; }
+      else { label.style.background = '#fce8e6'; label.style.color = '#d93025'; }
+    }
+  </script>
+
+  <p style="margin-top:32px; color:#888; font-size:0.85em;">
+    Next: <a href="lesson-2-server-client-components.html">Lesson 2 — Server vs Client Components →</a>
+  </p>
+</body>
+</html>
