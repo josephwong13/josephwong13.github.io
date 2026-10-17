@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books — Joseph's Learning Hub</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #fafaf8;
+      color: #1a1a1a;
+      line-height: 1.6;
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+    .breadcrumb { font-size: .8rem; color: #6b6b6b; margin-bottom: 1rem; }
+    .breadcrumb a { color: #8b3a3a; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+    .subtitle { color: #6b6b6b; font-size: .9rem; margin-bottom: 1.5rem; }
+    .series-desc { font-size: .88rem; color: #6b6b6b; margin-bottom: 1.5rem; }
+    .lesson-list { list-style: none; }
+    .lesson-item {
+      background: #fff;
+      border: 1px solid #d4d4d4;
+      border-radius: 8px;
+      padding: .9rem 1.1rem;
+      margin-bottom: .7rem;
+      transition: box-shadow .15s;
+    }
+    .lesson-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .lesson-item a { text-decoration: none; color: #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .lesson-num { font-size: .72rem; color: #8b3a3a; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .lesson-title { font-size: 1rem; font-weight: 600; margin: .1rem 0; }
+    .lesson-theme { font-size: .82rem; color: #6b6b6b; }
+    .arrow { color: #8b3a3a; font-size: 1.1rem; }
+    .footer { margin-top: 2.5rem; font-size: .8rem; color: #6b6b6b; text-align: center; }
+    .footer a { color: #8b3a3a; text-decoration: none; }
+    @media (max-width: 480px) { body { padding: 1rem .75rem; } }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb"><a href="../">🗂️ Hub</a> / Books</div>
+  <h1>📖 Reading Companions</h1>
+  <p class="subtitle">Chapter-by-chapter lesson series for books worth studying properly</p>
+  <p class="series-desc">
+    One lesson per chapter — the question the chapter asks, the answers it weighs, and where the argument is left open.
+    Same format as the other series: short self-contained reading with interactive quizzes.
+  </p>
+
+  <ul class="lesson-list">
+    <li class="lesson-item">
+      <a href="political-philosophy/">
+        <div>
+          <div class="lesson-num">Series · 6 Lessons + Final Test</div>
+          <div class="lesson-title">🏛️ Political Philosophy</div>
+          <div class="lesson-theme">state of nature · political obligation · who should rule · liberty · property · global justice</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="footer"><a href="../">← Back to Hub</a></div>
+</body>
+</html>
