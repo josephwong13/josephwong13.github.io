@@ -3,211 +3,494 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 01 — The State of Nature · Political Philosophy</title>
+  <title>Chapter 1 — The State of Nature · Political Philosophy</title>
+  <meta name="description" content="A beginner's introduction to the state of nature: why political philosophers imagine life without government, and what Aristotle, Hobbes, Locke and Rousseau each saw there.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    :root { --text: #1a1a1a; --muted: #6b6b6b; --accent: #8b3a3a; --accent-light: #f5e6e6; --border: #d4d4d4; --bg: #fafaf8; --card-bg: #ffffff; --green: #2d6a4f; --green-light: #e8f5e9; --blue: #2c4a8a; --blue-light: #e7ecf5; --orange: #b85c00; --orange-light: #fdf2e3; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace; --measure: 40rem; }
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--bg); padding: 1.5rem 1rem; max-width: var(--measure); margin: 0 auto; -webkit-font-smoothing: antialiased; }
-    h1 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0 0.3rem; line-height: 1.2; }
-    h2 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--accent); }
-    h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: var(--text); }
-    p { margin: 0 0 0.8rem; }
-    code { font-family: var(--mono); font-size: 0.85em; background: #f0efed; padding: 0.1em 0.35em; border-radius: 3px; }
-    .lesson-meta { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
-    .back-link { margin-bottom: 0.5rem; }
-    .back-link a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
-    .back-link a:hover { text-decoration: underline; }
-    .breadcrumb { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
-    .breadcrumb a { color: var(--accent); text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .concept { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    .concept .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
-    .concept h3 { margin: 0.2rem 0 0.5rem; }
-    .concept.note { border-left: 4px solid var(--blue); background: var(--blue-light); }
-    .concept.note .label { color: var(--blue); }
-    .concept.warning { border-left: 4px solid var(--orange); background: var(--orange-light); }
-    .concept.warning .label { color: var(--orange); }
-    .scenario { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: 0.92rem; line-height: 1.7; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    .review { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.9rem; }
-    .review p { margin-bottom: 0.4rem; }
-    .review p:last-child { margin-bottom: 0; }
-    .quiz { margin: 1.5rem 0 1.2rem; padding: 1rem 1.2rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; }
-    .quiz h2 { margin-top: 0; }
-    .quiz-question { margin: 1rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #eee; }
-    .quiz-question:last-of-type { border-bottom: none; }
-    .quiz-question p { margin-bottom: 0.4rem; font-size: 0.92rem; }
-    .quiz-option { display: flex; align-items: center; padding: 0.65rem 0.8rem; margin: 0.35rem 0; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.88rem; transition: all 0.12s; user-select: none; -webkit-tap-highlight-color: transparent; min-height: 44px; }
-    .quiz-option:hover { background: #f0f0ee; border-color: #bbb; }
-    .quiz-option.correct { background: var(--green-light); border-color: var(--green); font-weight: 600; }
-    .quiz-option.wrong { background: #fde8e8; border-color: #9b2226; }
-    .quiz-feedback { margin-top: 0.5rem; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.82rem; line-height: 1.5; display: none; }
-    .quiz-feedback.show { display: block; }
-    .quiz-feedback.correct-fb { background: var(--green-light); border-left: 3px solid var(--green); color: #1a4a2e; }
-    .quiz-feedback.wrong-fb { background: #fde8e8; border-left: 3px solid #9b2226; color: #7a1a1a; }
-    .quiz-reveal { margin: 1rem 0 0; padding: 0.7rem 1.2rem; background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.88rem; cursor: pointer; font-family: var(--sans); font-weight: 600; color: var(--accent); transition: background 0.15s; width: 100%; min-height: 44px; -webkit-tap-highlight-color: transparent; }
-    .quiz-reveal:hover { background: #e8d0d0; }
-    .reading { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; margin-top: 2rem; font-size: 0.88rem; }
-    .reading h2 { margin-top: 0; font-size: 1rem; }
-    .reading ol { margin: 0.6rem 0 0 1.3rem; }
-    .reading li { margin: 0.3rem 0; }
-    .reading a { color: var(--accent); text-decoration: none; word-break: break-word; }
-    .reading a:hover { text-decoration: underline; }
-    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-    .footer { margin-top: 2rem; font-size: 0.82rem; color: var(--muted); text-align: center; }
-    .footer a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 480px) { body { padding: 1rem 0.75rem; font-size: 16px; } h1 { font-size: 1.35rem; } .scenario, .concept, .quiz { padding: 0.8rem 1rem; } .quiz-option { min-height: 44px; } }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 520px) {
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-  <p class="lesson-meta">Lesson 01 of 6 · Political Philosophy</p>
-  <p class="breadcrumb">🗂️ <a href="../../index.html">Hub</a> / Books / Political Philosophy</p>
-  <h1>The State of Nature</h1>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <div class="scenario">
-    <p><strong>Two islands.</strong> In R. M. Ballantyne's <em>The Coral Island</em> (1858), three English boys are shipwrecked and live idyllically — they cooperate, defeat pirates, and thrive. In William Golding's <em>Lord of the Flies</em> (1954), boys land on a bountiful island and descend into tribal warfare. Same premise, opposite conclusions.</p>
-    <p>Wolff opens with these two books because they stage the question political philosophy cannot avoid: <em>what would life be like without government?</em></p>
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Chapter 1 · Wolff, 4th ed. (2023)</p>
+    <h1>The State of Nature</h1>
+    <p class="standfirst">We obey governments every day — we pay, register, comply, queue. This chapter asks the question underneath all of that: what would we lose if there were no government at all? Four philosophers gave four very different answers, and none of them agrees.</p>
+    <p class="byline">Reading time <strong>≈ 12 minutes</strong> · No prior philosophy required</p>
+  </header>
+
+  <div class="objectives">
+    <h2>By the end you'll be able to</h2>
+    <ul>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain what a “state of nature” is and why it is a <em>thought experiment</em>, not history</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>State Aristotle’s, Hobbes’s, Locke’s and Rousseau’s positions, and what each is reacting to</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Follow Hobbes’s argument from equality to war in four steps</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>See why Wolff thinks this chapter leaves the case for government <em>weaker</em>, not stronger</span></li>
+    </ul>
   </div>
 
-  <h2>Why imagine a world without the state?</h2>
-  <div class="concept note">
-    <div class="label">METHOD [Wolff Ch1]</div>
-    <h3>The state of nature is a test, not a history</h3>
-    <p>We take government for granted — police, courts, tax offices, all claiming the right to command. The state of nature strips that away and asks what, if anything, we lose.</p>
-    <p>It is a <em>thought experiment</em>: a device for isolating what the state does for us, and therefore what could justify it.</p>
-  </div>
-
-  <h2>Aristotle: the state is natural</h2>
-  <div class="concept">
-    <div class="label">POSITION 1 [Wolff Ch1]</div>
-    <h3>We are political animals by nature</h3>
-    <p>Aristotle holds the state exists <em>by nature</em> — humans are made for political life, as bees are made for hives. On this view a state of nature is not merely undesirable but impossible: we could not be human without it.</p>
-    <p>His test is stark: whoever can live outside a polis is "either a beast or a god." The burden then falls on anyone who thinks government is a human invention.</p>
-  </div>
-
-  <h2>Hobbes: the war of all against all</h2>
-  <div class="concept">
-    <div class="label">POSITION 2 [Wolff Ch1 · Hobbes, <em>Leviathan</em> XIII]</div>
-    <h3>Felicity, power, and fear</h3>
-    <p>Hobbes begins from motion: we are material bodies forever pursuing <em>felicity</em> — continual success in getting what we desire. Since power is "present means to obtain some future apparent good," each of us must accumulate power to feel secure.</p>
-    <p>Add rough equality of ability, hence equality of hope, and three causes of quarrel — <strong>competition</strong>, <strong>diffidence</strong>, <strong>glory</strong> — and peace collapses. Even the strong must strike first, because others might.</p>
-    <p>Life without a common power becomes "solitary, poor, nasty, brutish, and short."</p>
-  </div>
-
-  <h2>Locke: liberty under natural law</h2>
-  <div class="concept">
-    <div class="label">POSITION 3 [Wolff Ch1 · Locke, <em>Two Treatises</em> II]</div>
-    <h3>Peaceable — but inconvenient</h3>
-    <p>Locke's state of nature is <em>not</em> war. It is a state of liberty governed by a law of nature: no one may harm another's life, health, liberty, or possessions. Everyone holds executive power to punish transgressors.</p>
-    <p>The trouble is procedural. There is no settled, known law, no impartial judge, and no power to enforce judgement — so disputes escalate. Government is justified as the remedy for these <em>inconveniences</em>, not for total war.</p>
-  </div>
-
-  <h2>Rousseau: society as the corruption</h2>
-  <div class="concept">
-    <div class="label">POSITION 4 [Wolff Ch1 · Rousseau, <em>Discourse on Inequality</em>]</div>
-    <h3>The noble savage and <em>amour-propre</em></h3>
-    <p>Rousseau inverts the picture. Savage man has few needs and no vanity; pity and self-preservation suffice. What corrupts us is comparison — <em>amour-propre</em>, the desire to be esteemed by others, which only society creates.</p>
-    <p>So the state does not rescue us from savagery; it consummates a decline already begun. Hobbes, on this reading, described not nature but <em>us</em> — already spoiled by society.</p>
-  </div>
-
-  <h2>The anarchist challenge</h2>
-  <div class="concept warning">
-    <div class="label">⚠ WOLFF'S STING [Wolff Ch1]</div>
-    <h3>The gap is vanishingly small</h3>
-    <p>A rational anarchist need not deny that life without a state is risky. She can concede every Hobbesian point and still ask: does that justify <em>this</em> state, with its monopoly, its borders, its coercive authority?</p>
-    <p>Wolff's unsettling conclusion: once the state of nature is described carefully, the distance between rational anarchism and a defence of the state shrinks almost to nothing. What looked like a knockdown argument for government becomes a question left open.</p>
-  </div>
-
-  <div class="concept note">
-    <div class="label">READ THIS CAREFULLY</div>
-    <h3>What the device is <em>not</em></h3>
-    <p>It is not anthropology. No contractarian claims to know how humans once lived. The state of nature is a <em>normative</em> tool for testing justification — which is why empirical findings about early societies neither confirm nor refute it.</p>
-  </div>
-
-  <div class="review">
-    <p><strong>🔄 Takeaway.</strong> Four answers to one question: natural (Aristotle), unbearable (Hobbes), inconvenient (Locke), corrupting (Rousseau). Wolff's point is not that one wins, but that the winner is far less obvious than it looks — which sets up Lesson 2: what could actually justify a state?</p>
-  </div>
-
-  <hr>
-  <div class="quiz">
-    <h2>📝 Check your understanding</h2>
-    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">References: [Wolff Ch1].</p>
-
-    <div class="quiz-question">
-      <p><strong>Q1.</strong> What is the state of nature <em>for</em>, in Wolff's presentation?</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ The device makes no empirical claim about prehistory. It is not anthropology, and contractarians do not need it to be accurate history.">Reconstructing how humans actually lived before government</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. It strips away political institutions so we can see what the state contributes — and therefore what could justify it. It is a normative test, not a historical claim.">Testing what the state contributes, and so what could justify it</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Predicting the collapse of existing states is not the purpose; the device is used to evaluate justification, not to forecast events.">Predicting what happens if a government collapses</label>
-      <div class="quiz-feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>Q2.</strong> Aristotle's claim that the state exists "by nature" implies what?</p>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. If political life is natural to humans, a state of nature is not a viable human condition at all — the burden shifts to anyone treating government as an optional invention.">A state of nature is not a possible human condition</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Aristotle's view is stronger than 'usually preferable' — he holds we are political animals by nature, not merely that we tend to prefer society.">Life without a state is merely less convenient</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Aristotle is making a claim about human nature, not about which constitution is best. Those are separate questions.">Monarchy is the best constitution</label>
-      <div class="quiz-feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>Q3.</strong> Why does Hobbes think rough <em>equality</em> of ability produces war?</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Hobbes's claim is the reverse: because no one is strong enough to be safe, everyone is driven to pre-emptive accumulation.">Because the strong can dominate the weak without resistance</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Equality of ability gives equality of hope — even the weakest can threaten the strongest. That mutual threat, plus competition, diffidence and glory, makes pre-emptive striking rational.">Because equality of hope means even the weakest can threaten the strongest</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Hobbes does not claim equality produces cooperation. He argues it produces insecurity, and with it the three causes of quarrel.">Because equal persons naturally cooperate</label>
-      <div class="quiz-feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>Q4.</strong> Locke's state of nature differs from Hobbes's mainly because…</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Locke does not claim people are naturally good in the sense of never transgressing. He claims they are bound by natural law — and that enforcement is each person's own business.">Locke thinks people never actually violate natural law</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. For Locke it is a state of liberty under natural law, not war. The defect is procedural: no settled law, no impartial judge, no enforcement — inconveniences rather than chaos.">Locke sees it as liberty under natural law, defective only procedurally</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ Both are thought experiments about the absence of government. The contrast lies in the picture of that condition, not in the method.">Locke rejects the thought experiment entirely</label>
-      <div class="quiz-feedback"></div>
-    </div>
-
-    <div class="quiz-question">
-      <p><strong>Q5.</strong> Wolff says the gap between rational anarchism and the defence of the state is "vanishingly small." What does he mean?</p>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ He is not claiming anarchism is incoherent. His point is that the arguments typically used to refute anarchism do far less work than assumed.">Anarchism is an incoherent position</label>
-      <label class="quiz-option" data-correct="false" data-feedback="✗ He is not saying the state is unnecessary — only that the usual Hobbesian case underdetermines it.">The state has been shown to be unnecessary</label>
-      <label class="quiz-option" data-correct="true" data-feedback="✓ Correct. Granting the Hobbesian risks of anarchy does not by itself justify this particular state's coercive authority — so the standard argument proves less than it seems to.">Granting the risks of anarchy does not yet justify a state's coercive authority</label>
-      <div class="quiz-feedback"></div>
-    </div>
-
-    <button id="revealBtn" class="quiz-reveal">Reveal all answers</button>
-  </div>
-
-  <div class="reading">
-    <h2>📚 Sources &amp; further reading</h2>
+  <nav class="toc" aria-label="On this page">
+    <h2>On this page</h2>
     <ol>
-      <li><a href="https://www.oxfordpoliticstrove.com/abstract/10.1093/hepl/9780192847904.001.0001/hepl-9780192847904-chapter-1">[Wolff Ch1] Jonathan Wolff, <em>An Introduction to Political Philosophy</em>, 4th ed. (OUP, 2023), ch. 1</a> — author's chapter abstract: Aristotle, Hobbes, Locke, Rousseau, anarchism.</li>
-      <li><a href="https://www.gutenberg.org/ebooks/3207">[Hobbes] <em>Leviathan</em>, ch. XIII</a> — the "war of all against all" passage. Free, Project Gutenberg.</li>
-      <li><a href="https://www.gutenberg.org/ebooks/7370">[Locke] <em>Second Treatise of Government</em></a> — ch. II–V on the state of nature and property. Free, Project Gutenberg.</li>
-      <li><a href="https://www.gutenberg.org/ebooks/11136">[Rousseau] <em>A Discourse Upon the Origin of Inequality</em></a> — <em>amour-propre</em> and the corruption thesis. Free, Project Gutenberg.</li>
-      <li><a href="https://classics.mit.edu/Aristotle/politics.1.one.html">[Aristotle] <em>Politics</em>, Book I</a> — "man is by nature a political animal."</li>
+      <li><a href="#terms">Five words to fix first</a></li>
+      <li><a href="#puzzle">The puzzle: authority without a question</a></li>
+      <li><a href="#method">Why philosophers imagine away the state</a></li>
+      <li><a href="#aristotle">Aristotle — the state is natural</a></li>
+      <li><a href="#hobbes">Hobbes — the war of all against all</a></li>
+      <li><a href="#locke">Locke — liberty under law</a></li>
+      <li><a href="#rousseau">Rousseau — society is the corruption</a></li>
+      <li><a href="#anarchism">The anarchist challenge</a></li>
+      <li><a href="#synthesis">Putting the four together</a></li>
+      <li><a href="#misconceptions">Common misconceptions</a></li>
+      <li><a href="#glossary">Glossary &amp; quiz</a></li>
     </ol>
-  </div>
+  </nav>
+
+  <main id="main">
+
+    <h2 id="terms">1. Five words to fix first</h2>
+    <p class="lede">Nothing later will make sense if these slide around, so here they are up front. You don't need to memorise them — just let them settle.</p>
+
+    <div class="box def">
+      <div class="label">Definitions</div>
+      <p><span class="term">State</span> — an institution that claims a <em>monopoly on legitimate force</em> over a territory. Police, courts, tax offices, borders. Crucially, it doesn't merely <em>have</em> power; it claims the <em>right</em> to use it.</p>
+      <p><span class="term">Authority</span> — the right to command, as opposed to the power to compel. A gunman has power over you. He has no authority.</p>
+      <p><span class="term">Legitimacy</span> — whether the state's claim to authority is justified, not merely effective.</p>
+      <p><span class="term">Political obligation</span> — the duty of a citizen to obey. The question of this whole book: do we actually have one, and if so, why?</p>
+      <p><span class="term">Coercion</span> — being made to act by threat. If you don't pay tax, eventually someone takes your money by force. That is the fact political philosophy has to justify.</p>
+    </div>
+
+    <p>Hold onto the <strong>authority / power</strong> distinction. Almost every mistake in this subject comes from sliding between “the state <em>can</em> make me” and “the state <em>may</em> make me.”</p>
+
+    <h2 id="puzzle">2. The puzzle: authority without a question</h2>
+    <p>Imagine a stranger instructs you to hand over a third of your income, or he will lock you in a room. We have a word for that: robbery, or extortion. Now substitute the state, and the same transaction becomes <em>taxation</em>, and refusing it becomes <em>tax evasion</em>.</p>
+    <p>What changed? Not the coercion. What changed is that the state claims authority — and most of us accept the claim without ever asking what makes it true. We are born into a system already running, and we absorb its legitimacy the way we absorb a language.</p>
+    <div class="box key">
+      <div class="label">The question</div>
+      <p>Political philosophy begins by refusing to take that for granted: <em>what, if anything, justifies one institution holding a monopoly on force over everyone inside a border?</em></p>
+    </div>
+    <p>The state of nature is the tool philosophers invented to answer that question honestly. Strip the state away and ask what remains.</p>
+
+    <h2 id="method">3. Why philosophers imagine away the state</h2>
+    <p>This is the part beginners most often get wrong, so it's worth being blunt: <strong>the state of nature is not a claim about the past.</strong> Nobody thinks there was a morning when humans woke up without government and signed a contract.</p>
+    <p>Think of how an engineer tests a bridge. She doesn't need to know how the bridge was built; she asks what happens if you remove a support. If the bridge stands, the support was decorative. If it collapses, the support was doing work — and now you know <em>what</em> work.</p>
+    <div class="box def">
+      <div class="label">The device</div>
+      <p>The state of nature removes one support — political institutions — and asks what collapses. Whatever collapses is what the state is <em>for</em>. Whatever survives didn't need justifying.</p>
+    </div>
+    <p>This is why the four thinkers below disagree so violently while using the same tool: they disagree about what would collapse. For Hobbes, everything. For Rousseau, only something we'd be better off without.</p>
+
+    <h2 id="aristotle">4. Aristotle — the state is natural</h2>
+    <div class="thinker">
+      <p class="who">384–322 BC · Athens · <em>Politics</em>, Book I</p>
+      <h3 style="margin-top:.2rem">We are political animals</h3>
+    </div>
+    <p>Aristotle's answer is to refuse the experiment. You cannot remove the support, he thinks, because the building <em>is</em> the support. Humans are by nature political animals — creatures built for life in a <em>polis</em>, a city-state.</p>
+    <p>His argument is a comparison with other animals:</p>
+    <div class="arg">
+      <div class="label">Aristotle's argument</div>
+      <ol>
+        <li>Every creature has a characteristic function, and its good consists in performing it well.</li>
+        <li>Humans alone possess speech (<em>logos</em>), which lets us communicate not just pain and pleasure but <em>justice</em> and <em>injustice</em> — right and wrong.</li>
+        <li>Therefore the human function is to live a shared life organised around those judgements.</li>
+        <li>A <em>polis</em> is exactly that organised shared life.</li>
+      </ol>
+      <p class="concl"><b>Conclusion:</b> the polis exists “by nature,” and a human outside one is incomplete — “either a beast or a god.”</p>
+    </div>
+    <div class="box ctx">
+      <div class="label">Context you need</div>
+      <p>Aristotle isn't defending any government you'd recognise. He's writing about the Greek city-state — small enough to gather in one place — and he explicitly argues some people are “natural slaves.” The view is also hierarchical and exclusionary in ways he took for granted and we shouldn't. Read him as the strongest version of a position, not as a policy proposal.</p>
+    </div>
+    <p><strong>Why it still matters:</strong> if Aristotle is right, the state of nature is not a risky place but an impossible one — and the burden falls entirely on anyone who thinks government is a human invention. Hobbes and Locke both accept that burden.</p>
+
+    <h2 id="hobbes">5. Hobbes — the war of all against all</h2>
+    <div class="thinker">
+      <p class="who">1588–1679 · England · <em>Leviathan</em>, ch. XIII (1651)</p>
+      <h3 style="margin-top:.2rem">Peace is a technology</h3>
+    </div>
+    <p>Hobbes wrote during the English Civil War — a king beheaded, a country at war with itself, neighbours denouncing neighbours. <em>Leviathan</em> is a book written by someone watching what happens when authority collapses. That experience is the emotional engine of the argument.</p>
+    <p>His picture of human beings is deliberately unflattering, and deliberately mechanical: we are bodies in motion, forever pursuing what he calls <span class="term">felicity</span> — the continual success in getting what we want.</p>
+
+    <h3>The argument, step by step</h3>
+    <div class="arg">
+      <div class="label">Hobbes's argument</div>
+      <ol>
+        <li><b>Power is instrumental.</b> “The power of a man… is his present means to obtain some future apparent good.” To be secure in getting what we want, we need power.</li>
+        <li><b>We are roughly equal.</b> Not in strength — in <em>ability to threaten</em>. The weakest can kill the strongest in his sleep, or with allies. Hobbes: “from equality of ability ariseth equality of hope in the attaining of our ends.”</li>
+        <li><b>Resources are finite.</b> Two people wanting the same thing become enemies, and each rationally seeks to pre-empt the other. This is <em>competition</em>.</li>
+        <li><b>Uncertainty is intolerable.</b> Even if no one attacks, not knowing whether they will is itself a threat. So we strike first to secure ourselves — <em>diffidence</em>. Add <em>glory</em>, the pleasure of being seen to win, and violence becomes self-sustaining.</li>
+      </ol>
+      <p class="concl"><b>Conclusion:</b> without a common power to overawe them all, life is “solitary, poor, nasty, brutish, and short.”</p>
+    </div>
+
+    <div class="box warn">
+      <div class="label">The common misreading</div>
+      <p>Hobbes is <em>not</em> saying humans are evil. His claim is structural: even decent, cautious, reasonable people generate war, because the <em>situation</em> rewards pre-emption. He is describing a trap, not a character flaw.</p>
+    </div>
+
+    <p>Notice what the argument buys him. If this is right, any state — even a bad one — is better than none, because the alternative is worse than tyranny. That is a very strong conclusion, and much of the rest of the book is an argument about whether he's entitled to it.</p>
+
+    <h2 id="locke">6. Locke — liberty under law</h2>
+    <div class="thinker">
+      <p class="who">1632–1704 · England · <em>Two Treatises of Government</em> (1689)</p>
+      <h3 style="margin-top:.2rem">The same experiment, a different result</h3>
+    </div>
+    <p>Locke runs the identical thought experiment and gets the opposite picture. His state of nature is <strong>not</strong> war. It is “a state of perfect freedom” — but freedom within a boundary, because a <em>law of nature</em> binds everyone: no one may harm another's “life, health, liberty, or possessions.”</p>
+    <p>These are the natural rights. And because the law of nature is real, everyone holds what Locke calls the <em>executive power</em> of that law: you may punish someone who violates it. Justice exists before any government does.</p>
+    <div class="box def">
+      <div class="label">So what goes wrong?</div>
+      <p>Not human nature — <em>procedure</em>. Locke lists three “inconveniences”: there is no settled, known law; no impartial judge; and no power to enforce the judgement once made. So each person becomes judge in their own case, and disputes escalate.</p>
+    </div>
+    <p>Government, on this account, is a <em>remedy for a technical defect</em>. We don't hand over our rights; we appoint an arbiter. That is why Locke can be quoted on both sides of modern arguments — by liberals limiting government, and by revolutionaries justifying its overthrow when it betrays its trust.</p>
+
+    <h2 id="rousseau">7. Rousseau — society is the corruption</h2>
+    <div class="thinker">
+      <p class="who">1712–1778 · Geneva · <em>Discourse on Inequality</em> (1755)</p>
+      <h3 style="margin-top:.2rem">The experiment turned inside out</h3>
+    </div>
+    <p>Rousseau accepts the method and inverts the conclusion. Compare a wild animal with a house pet, he suggests — and then ask which is happier. Savage humans, on his account, have few needs and the means to meet them; they feel <em>pity</em> for suffering and a modest desire for self-preservation. Crucially, they do not compare themselves to others.</p>
+    <div class="box def">
+      <div class="label">Two words worth learning</div>
+      <p><span class="term">Amour de soi</span> — healthy self-love, the desire to preserve oneself. Presocial, harmless.</p>
+      <p><span class="term">Amour-propre</span> — vanity: the desire to be <em>esteemed</em>, to rank above others. This one only exists in society, and it is the engine of inequality, envy and domination.</p>
+    </div>
+    <p>So the state doesn't rescue us from savagery. It is the final stage of a fall that began when people started living together and asking who was better. Rousseau even allows a “nascent society” — the first villages — as the happiest and most stable moment in human history, precisely because it came before comparison hardened into hierarchy.</p>
+    <div class="box warn">
+      <div class="label">The common misreading</div>
+      <p>Rousseau is not saying “go back to the forest.” You can't, and he knows it. The <em>Discourse</em> is a diagnosis of what modern society does to us, not a travel plan. His remedy, in <em>The Social Contract</em>, is political: rebuild the state on a legitimate basis.</p>
+    </div>
+
+    <h2 id="anarchism">8. The anarchist challenge</h2>
+    <p>Beginners often assume anarchism means chaos — no rules, everyone fending for themselves. That is a straw man. Philosophical anarchism is a claim about <em>justification</em>: the state's authority is illegitimate, and we can imagine orderly cooperation without it.</p>
+    <p>Now the crucial move. A rational anarchist need not deny a single Hobbesian risk. She can grant that life without a state is dangerous, that cooperation is hard, that violence is real — and still ask:</p>
+    <div class="box key">
+      <div class="label">The residual question</div>
+      <p>Does the danger of anarchy justify <em>this</em> state — with these borders, this monopoly, this particular distribution of power over me — or only justify <em>some</em> coordinating institution? The Hobbesian argument may prove less than it appears to.</p>
+    </div>
+    <p>Wolff's verdict on the chapter, and the sentence to remember, is that once the state of nature is described carefully, the gap between rational anarchism and a defence of the state turns out to be <strong>vanishingly small</strong>. The chapter that looked like a proof of government ends as an open question.</p>
+
+    <h2 id="synthesis">9. Putting the four together</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Four answers to one question</caption>
+        <thead>
+          <tr><th scope="col">Thinker</th><th scope="col">State of nature is…</th><th scope="col">State is justified because…</th><th scope="col">What it implies</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Aristotle</th><td>Impossible — we're political by nature</td><td>It completes human nature</td><td>No justification needed; the burden is on sceptics</td></tr>
+          <tr><th scope="row">Hobbes</th><td>A war of all against all</td><td>Only absolute power prevents collapse</td><td>Even tyranny beats anarchy</td></tr>
+          <tr><th scope="row">Locke</th><td>Peaceful but unworkable</td><td>It supplies an impartial judge</td><td>Government is limited and can be overthrown</td></tr>
+          <tr><th scope="row">Rousseau</th><td>Free, and better than what replaced it</td><td>Only a rebuilt, legitimate state</td><td>The existing order is part of the problem</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="misconceptions">10. Common misconceptions</h2>
+    <div class="box warn">
+      <div class="label">Misconception 1</div>
+      <p>“The state of nature is what actually happened before governments.” — No. It's a device for testing justification; empirical history neither confirms nor refutes it.</p>
+    </div>
+    <div class="box warn">
+      <div class="label">Misconception 2</div>
+      <p>“Hobbes and Locke disagree about whether people are good.” — Only partly. Locke's state of nature is peaceful because of a binding natural law, not because people are nice; his problem is a missing judge, not a missing conscience.</p>
+    </div>
+    <div class="box warn">
+      <div class="label">Misconception 3</div>
+      <p>“If Hobbes is right, the argument for government is settled.” — That is exactly what Wolff denies. Grant every risk of anarchy and you still haven't justified a particular state's authority.</p>
+    </div>
+
+    <h2 id="timeline-h">A timeline to anchor this</h2>
+    <ul class="timeline">
+      <li><span class="yr">c. 335 BC</span>Aristotle lectures on the <em>Politics</em> — the polis is natural.</li>
+      <li><span class="yr">1651</span>Hobbes publishes <em>Leviathan</em>, two years after a king is executed.</li>
+      <li><span class="yr">1689</span>Locke's <em>Two Treatises</em> appear after the Glorious Revolution.</li>
+      <li><span class="yr">1755</span>Rousseau's <em>Discourse on Inequality</em> — society corrupts.</li>
+      <li><span class="yr">2023</span>Wolff's 4th edition reshapes the old question for global and multicultural politics.</li>
+    </ul>
+
+    <h2 id="glossary">11. Glossary</h2>
+    <dl class="glossary">
+      <dt>State of nature</dt>
+      <dd>A thought experiment describing human life without political institutions. Used to test what the state contributes — not a claim about prehistory.</dd>
+      <dt>Political obligation</dt>
+      <dd>A citizen's duty to obey the state. The central question of the book.</dd>
+      <dt>Legitimacy</dt>
+      <dd>Whether the state's claim to authority is justified, as distinct from whether it is effective.</dd>
+      <dt>Natural law</dt>
+      <dd>Locke's idea that moral rules bind humans independently of any government or legislature.</dd>
+      <dt>Felicity</dt>
+      <dd>Hobbes's term for the continual, never-finished success in getting what one desires.</dd>
+      <dt>Amour-propre</dt>
+      <dd>Rousseau's term for vanity — the desire to be esteemed by others, which arises only in society.</dd>
+      <dt>Philosophical anarchism</dt>
+      <dd>The view that the state's authority is illegitimate, held without necessarily advocating violence or chaos.</dd>
+      <dt>Inconvenience (Locke)</dt>
+      <dd>A defect of the state of nature short of war: no settled law, no impartial judge, no enforcement.</dd>
+    </dl>
+
+    <section class="quiz" aria-labelledby="quiz-h">
+      <h2 id="quiz-h">Check your understanding</h2>
+      <p class="intro">Five questions. Pick an option to see why it's right or wrong.</p>
+
+      <div class="q">
+        <p><strong>1.</strong> Why does Wolff use the state of nature at all?</p>
+        <label class="opt" data-correct="false" data-feedback="Not a historical claim. The device makes no assertion about how humans once lived, and empirical findings about early societies don't confirm or refute it."><span class="box-dot"></span><span>To work out how people really lived before government</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. It strips away political institutions to see what collapses — and therefore what the state is actually for. It is a normative test, like removing a support to see what a bridge depends on."><span class="box-dot"></span><span>To isolate what the state contributes, and so what could justify it</span></label>
+        <label class="opt" data-correct="false" data-feedback="Prediction isn't the point. The device evaluates justification, not the likely consequences of a collapse."><span class="box-dot"></span><span>To predict what happens when a government falls</span></label>
+        <div class="fb"></div>
+      </div>
+
+      <div class="q">
+        <p><strong>2.</strong> Aristotle's claim that the polis exists “by nature” implies what?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. If political life is natural to humans, a state of nature isn't a viable human condition at all — the burden shifts to anyone treating government as an optional invention."><span class="box-dot"></span><span>A state of nature is not a possible human condition</span></label>
+        <label class="opt" data-correct="false" data-feedback="Too weak. Aristotle holds we are political animals by nature, not merely that we tend to prefer company."><span class="box-dot"></span><span>Life without a state is merely less convenient</span></label>
+        <label class="opt" data-correct="false" data-feedback="This is about human nature, not about which constitution is best — a separate question."><span class="box-dot"></span><span>Monarchy is the best form of government</span></label>
+        <div class="fb"></div>
+      </div>
+
+      <div class="q">
+        <p><strong>3.</strong> In Hobbes, why does rough <em>equality</em> produce war rather than peace?</p>
+        <label class="opt" data-correct="false" data-feedback="Hobbes claims the reverse: because no one is safe, everyone is driven to pre-empt. Equality makes domination impossible, not easy."><span class="box-dot"></span><span>Because the strong can dominate the weak without resistance</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Equality of ability gives equality of hope — even the weakest can threaten the strongest. Combined with competition, diffidence and glory, pre-emptive striking becomes rational."><span class="box-dot"></span><span>Because even the weakest can threaten the strongest</span></label>
+        <label class="opt" data-correct="false" data-feedback="Hobbes doesn't think equality produces cooperation. He thinks it produces insecurity — and with it the three causes of quarrel."><span class="box-dot"></span><span>Because equal people naturally cooperate</span></label>
+        <div class="fb"></div>
+      </div>
+
+      <div class="q">
+        <p><strong>4.</strong> What, for Locke, is actually wrong with the state of nature?</p>
+        <label class="opt" data-correct="false" data-feedback="For Locke people are bound by natural law, so the defect isn't moral collapse — it's that there's no settled law, no impartial judge, and no enforcement."><span class="box-dot"></span><span>People ignore the law of nature entirely</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. It's a procedural failure, not a moral one. Everyone is judge in their own case, so disputes escalate — hence government as a remedy for “inconveniences.”"><span class="box-dot"></span><span>There is no impartial judge or enforcement</span></label>
+        <label class="opt" data-correct="false" data-feedback="Locke explicitly distinguishes the state of nature from a state of war. They are not the same condition for him."><span class="box-dot"></span><span>It is already a state of war</span></label>
+        <div class="fb"></div>
+      </div>
+
+      <div class="q">
+        <p><strong>5.</strong> Wolff says the gap between rational anarchism and defending the state is “vanishingly small.” What does he mean?</p>
+        <label class="opt" data-correct="false" data-feedback="He isn't claiming anarchism is incoherent. His point is that the arguments used against it do far less work than is usually assumed."><span class="box-dot"></span><span>Anarchism is an incoherent position</span></label>
+        <label class="opt" data-correct="false" data-feedback="He isn't saying no state is needed — only that the usual Hobbesian case underdetermines which state, if any, is justified."><span class="box-dot"></span><span>The state has been proven unnecessary</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Granting every risk of anarchy does not yet justify this particular state's coercive authority — so the standard argument proves less than it seems to."><span class="box-dot"></span><span>The risks of anarchy don't yet justify a particular state</span></label>
+        <div class="fb"></div>
+      </div>
+
+      <button id="revealBtn" class="reveal" type="button">Reveal all answers</button>
+    </section>
+
+    <div class="reading">
+      <h2>Where to go next</h2>
+      <ol>
+        <li><a href="https://www.oxfordpoliticstrove.com/abstract/10.1093/hepl/9780192847904.001.0001/hepl-9780192847904-chapter-1">Wolff, <em>An Introduction to Political Philosophy</em>, 4th ed., ch. 1</a><span class="why">The chapter itself — start here once you've read this page. OUP's abstract is free.</span></li>
+        <li><a href="https://www.gutenberg.org/ebooks/3207">Hobbes, <em>Leviathan</em>, ch. XIII</a><span class="why">Read the “war of all against all” section directly — it's shorter than you'd expect and unusually vivid.</span></li>
+        <li><a href="https://www.gutenberg.org/ebooks/7370">Locke, <em>Second Treatise</em>, ch. II–V</a><span class="why">Compare Locke's opening description with Hobbes's. Same experiment, entirely different mood.</span></li>
+        <li><a href="https://www.gutenberg.org/ebooks/11136">Rousseau, <em>Discourse on Inequality</em></a><span class="why">Read the dedication and Part I for the noble-savage picture; Part II for <em>amour-propre</em>.</span></li>
+        <li><a href="https://classics.mit.edu/Aristotle/politics.1.one.html">Aristotle, <em>Politics</em>, Book I</a><span class="why">The “political animal” passage — about ten minutes. Read critically: who is excluded?</span></li>
+      </ol>
+    </div>
+  </main>
 
   <div class="footer">
-    <a href="index.html">← Back to Political Philosophy</a> · <span style="color: #aaa">Next: Justifying the State (coming soon)</span>
+    <a href="index.html">← All chapters</a>
+    <span>Next: Chapter 2 — Justifying the State</span>
   </div>
 
   <script>
-    document.querySelectorAll('.quiz-option').forEach(function(el){
-      el.addEventListener('click', function(){
-        var p = this.parentElement;
-        p.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); });
-        if (this.dataset.correct === 'true') { this.classList.add('correct'); }
-        else { this.classList.add('wrong'); var corr = p.querySelector('.quiz-option[data-correct="true"]'); if (corr) corr.classList.add('correct'); }
-        var fb = p.querySelector('.quiz-feedback');
-        if (fb) { fb.textContent = this.dataset.feedback || ''; fb.className = 'quiz-feedback show ' + (this.dataset.correct === 'true' ? 'correct-fb' : 'wrong-fb'); }
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var q = this.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = this.dataset.correct === 'true';
+        this.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = this.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+      });
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
       });
     });
-    var revealBtn = document.getElementById('revealBtn');
-    if (revealBtn) {
-      revealBtn.addEventListener('click', function(){
-        document.querySelectorAll('.quiz-question').forEach(function(q){
-          q.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('correct','wrong'); if (o.dataset.correct === 'true') o.classList.add('correct'); });
-          var fb = q.querySelector('.quiz-feedback'); var co = q.querySelector('.quiz-option[data-correct="true"]');
-          if (fb && co) { fb.textContent = co.dataset.feedback || ''; fb.className = 'quiz-feedback show correct-fb'; }
+    var rv = document.getElementById('revealBtn');
+    if (rv) {
+      rv.addEventListener('click', function () {
+        document.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
         });
       });
     }

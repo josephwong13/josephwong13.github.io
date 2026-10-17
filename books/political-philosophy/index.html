@@ -3,102 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Political Philosophy · Learning Hub</title>
+  <title>Political Philosophy — Reading Companion</title>
+  <meta name="description" content="A chapter-by-chapter reading companion to Jonathan Wolff's An Introduction to Political Philosophy (4th ed., 2023).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --paper: #FFFBEB; --card: #FFFFFF; --ink: #0F172A; --ink-soft: #3B3A38;
+      --brown: #92400E; --amber: #D97706; --border: #E7E2D6; --muted: #F6F1E4;
+      --muted-fg: #57534E; --stone: #78716C;
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body: 'Libre Baskerville', Georgia, serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #fafaf8; color: #1a1a1a; line-height: 1.6; max-width: 36rem; margin: 0 auto; padding: 2rem 1.5rem; font-size: 17px; }
-    h1 { font-size: 1.5rem; font-weight: 700; margin: 0.8rem 0 0.2rem; }
-    p { margin: 0 0 0.8rem; }
-    .lesson-meta { font-size: 0.72rem; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 0.2rem; }
-    .breadcrumb { font-size: 0.72rem; color: #6b6b6b; margin-bottom: 0.2rem; }
-    .breadcrumb a { color: #8b3a3a; text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .description { background: #fff; border: 1px solid #d4d4d4; border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.7; }
-    .module-block { background: #fff; border: 1px solid #d4d4d4; border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    .module-block .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #8b3a3a; font-weight: 600; margin-bottom: 0.3rem; }
-    .module-block h3 { font-size: 1rem; font-weight: 600; margin: 0.2rem 0 0.5rem; }
-    .lesson-list { list-style: none; margin-top: 0.5rem; }
-    .lesson-list li { margin: 0.35rem 0; font-size: 0.9rem; }
-    .lesson-list a { color: #1a1a1a; text-decoration: none; }
-    .lesson-list a:hover { text-decoration: underline; color: #8b3a3a; }
-    .quiz-link { color: #2d6a4f; font-weight: 600; }
-    .footer { margin-top: 2rem; font-size: 0.82rem; color: #6b6b6b; text-align: center; }
-    .footer a { color: #8b3a3a; text-decoration: none; }
+    html { -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) { * { transition-duration: .001ms !important; } }
+    body { font-family: var(--body); font-size: 1rem; line-height: 1.75; color: var(--ink); background: var(--paper); max-width: 43rem; margin: 0 auto; padding: 2.2rem 1.25rem 4rem; -webkit-font-smoothing: antialiased; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+    .skip { position: absolute; left: -999px; background: var(--brown); color: #fff; padding: .6rem 1rem; }
+    .skip:focus { left: 1rem; top: 1rem; z-index: 10; }
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.8rem; }
+    .crumb a { text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .eyebrow { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.2rem, 6.5vw, 3.1rem); font-weight: 600; line-height: 1.08; margin: .3rem 0 .6rem; }
+    .standfirst { font-size: 1.02rem; color: var(--ink-soft); line-height: 1.75; margin-bottom: 1.2rem; }
+    .meta { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.3rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .meta strong { color: var(--ink); }
+    h2 { font-family: var(--display); font-size: 1.45rem; font-weight: 600; margin: 2rem 0 .3rem; }
+    .note { background: var(--muted); border-left: 3px solid var(--amber); padding: .9rem 1.1rem; font-size: .92rem; line-height: 1.7; margin: 1.2rem 0 2rem; }
+    .chapters { list-style: none; margin-top: 1.6rem; }
+    .chapters li { border-top: 1px solid var(--border); }
+    .chapters li:last-child { border-bottom: 1px solid var(--border); }
+    .chapters a { display: flex; gap: 1rem; align-items: baseline; padding: 1rem .3rem; text-decoration: none; color: var(--ink); transition: background .18s; }
+    .chapters a:hover { background: var(--card); }
+    .chapters .num { font-family: var(--display); font-size: 1.6rem; color: var(--amber); flex: 0 0 1.8rem; line-height: 1; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+    .chapters .body { flex: 1; }
+    .chapters .title { font-family: var(--display); font-size: 1.22rem; font-weight: 600; display: block; line-height: 1.3; }
+    .chapters .theme { font-family: var(--ui); font-size: .78rem; color: var(--muted-fg); display: block; margin-top: .2rem; }
+    .chapters .soon { font-family: var(--ui); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); }
+    .chapters li.disabled a { cursor: default; }
+    .chapters li.disabled:hover { background: transparent; }
+    .chapters li.disabled .title { color: var(--stone); }
+    .chapters li.disabled .num { color: #C9C1B2; }
+    .chapters .tag { font-family: var(--ui); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); font-weight: 700; }
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); }
+    .footer a { text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    @media (max-width: 520px) { body { padding: 1.5rem .95rem 3rem; } .chapters .num { font-size: 1.35rem; flex-basis: 1.3rem; } }
   </style>
 </head>
 <body>
-  <p class="lesson-meta">Books · 6 Lessons + Final Test</p>
-  <p class="breadcrumb">🗂️ <a href="../../index.html">Hub</a> / Books</p>
-  <h1>Political Philosophy</h1>
+  <a class="skip" href="#main">Skip to content</a>
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / Political Philosophy</p>
 
-  <div class="description">
-    <p>A chapter-by-chapter reading companion to Jonathan Wolff's <em>An Introduction to Political Philosophy</em> (4th ed., Oxford University Press, 2023). One lesson per chapter: the question, the canonical answers, and where Wolff leaves it open.</p>
-  </div>
+  <header>
+    <p class="eyebrow">Reading companion · 6 chapters</p>
+    <h1>Political Philosophy</h1>
+    <p class="standfirst">A beginner's guide to Jonathan Wolff's <em>An Introduction to Political Philosophy</em>. Each chapter takes one question, explains the answers that have been given to it, and shows where the argument still breaks down.</p>
+    <p class="meta"><strong>Wolff</strong>, 4th edition · Oxford University Press, 2023 · written for readers with no prior philosophy</p>
+  </header>
 
-  <div class="module-block">
-    <div class="label">CHAPTER 1</div>
-    <h3>The State of Nature</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Aristotle · Hobbes · Locke · Rousseau · anarchism</p>
-    <ul class="lesson-list">
-      <li><a href="lesson-1-state-of-nature.html">01 — The State of Nature</a></li>
+  <main id="main">
+    <div class="note">
+      Read the lesson before the chapter, not after. It gives you the vocabulary, the historical situation, and the shape of each argument — so that when you open Wolff you're recognising material rather than meeting it cold.
+    </div>
+
+    <h2>Chapters</h2>
+    <ul class="chapters">
+      <li>
+        <a href="lesson-1-state-of-nature.html">
+          <span class="num">1</span>
+          <span class="body">
+            <span class="title">The State of Nature</span>
+            <span class="theme">Aristotle · Hobbes · Locke · Rousseau · the anarchist challenge</span>
+          </span>
+          <span class="tag">Read</span>
+        </a>
+      </li>
+      <li class="disabled">
+        <a href="#" tabindex="-1" aria-disabled="true">
+          <span class="num">2</span>
+          <span class="body">
+            <span class="title">Justifying the State</span>
+            <span class="theme">Consent · social contract · utilitarianism · fairness</span>
+          </span>
+          <span class="soon">Soon</span>
+        </a>
+      </li>
+      <li class="disabled">
+        <a href="#" tabindex="-1" aria-disabled="true">
+          <span class="num">3</span>
+          <span class="body">
+            <span class="title">Who Should Rule?</span>
+            <span class="theme">Plato · Rousseau · Mill · deliberative democracy</span>
+          </span>
+          <span class="soon">Soon</span>
+        </a>
+      </li>
+      <li class="disabled">
+        <a href="#" tabindex="-1" aria-disabled="true">
+          <span class="num">4</span>
+          <span class="body">
+            <span class="title">The Place of Liberty</span>
+            <span class="theme">Mill · the harm principle · paternalism · legal moralism</span>
+          </span>
+          <span class="soon">Soon</span>
+        </a>
+      </li>
+      <li class="disabled">
+        <a href="#" tabindex="-1" aria-disabled="true">
+          <span class="num">5</span>
+          <span class="body">
+            <span class="title">The Distribution of Property</span>
+            <span class="theme">Locke · markets · Rawls · Nozick</span>
+          </span>
+          <span class="soon">Soon</span>
+        </a>
+      </li>
+      <li class="disabled">
+        <a href="#" tabindex="-1" aria-disabled="true">
+          <span class="num">6</span>
+          <span class="body">
+            <span class="title">Justice for Everyone, Everywhere?</span>
+            <span class="theme">Gender · race · disability · global justice · future generations</span>
+          </span>
+          <span class="soon">Soon</span>
+        </a>
+      </li>
     </ul>
-  </div>
 
-  <div class="module-block">
-    <div class="label">CHAPTER 2</div>
-    <h3>Justifying the State</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Consent · social contract · utilitarianism · fairness</p>
-    <ul class="lesson-list">
-      <li>02 — Justifying the State <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
+    <h2>The book</h2>
+    <p style="font-size:.94rem">Wolff's book is deliberately organised by <em>question</em> rather than by chronology. It doesn't march from Plato to Rawls; it takes one problem at a time and shows you the strongest answers anyone has given. That means you can read chapters out of order — but each one assumes the vocabulary of the last, which is what these lessons supply.</p>
+  </main>
 
-  <div class="module-block">
-    <div class="label">CHAPTER 3</div>
-    <h3>Who Should Rule?</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Plato · Rousseau · Mill · deliberative democracy</p>
-    <ul class="lesson-list">
-      <li>03 — Who Should Rule? <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
-
-  <div class="module-block">
-    <div class="label">CHAPTER 4</div>
-    <h3>The Place of Liberty</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Mill · harm principle · paternalism · legal moralism</p>
-    <ul class="lesson-list">
-      <li>04 — The Place of Liberty <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
-
-  <div class="module-block">
-    <div class="label">CHAPTER 5</div>
-    <h3>The Distribution of Property</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Locke · markets · Rawls · Nozick</p>
-    <ul class="lesson-list">
-      <li>05 — The Distribution of Property <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
-
-  <div class="module-block">
-    <div class="label">CHAPTER 6</div>
-    <h3>Justice for Everyone, Everywhere?</h3>
-    <p style="font-size:0.85rem; color:#6b6b6b; margin-bottom:0.5rem;">Gender · race · disability · global justice · future generations</p>
-    <ul class="lesson-list">
-      <li>06 — Justice for Everyone, Everywhere? <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
-
-  <div class="module-block">
-    <div class="label">FINAL</div>
-    <h3>Summary &amp; Review</h3>
-    <ul class="lesson-list">
-      <li><span class="quiz-link">★ Final Test</span> <span style="font-size:0.8rem; color:#aaa">(coming soon)</span></li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    <a href="../../index.html">← Back to Learning Hub</a>
-  </div>
+  <div class="footer"><a href="../index.html">← All books</a> · <a href="../../index.html">Learning Hub</a></div>
 </body>
 </html>
