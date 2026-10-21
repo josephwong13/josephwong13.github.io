@@ -164,6 +164,31 @@
     .footer a { color: var(--brown); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
 
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
     @media (max-width: 520px) {
       body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
       h2 { font-size: 1.5rem; }
@@ -173,7 +198,7 @@
   </style>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <a class="skip" href="#lesson">Skip to content</a>
 
   <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
 
@@ -181,9 +206,21 @@
     <p class="chapno">Chapter 1 · Wolff, 4th ed. (2023)</p>
     <h1>The State of Nature</h1>
     <p class="standfirst">We obey governments every day — we pay, register, comply, queue. This chapter asks the question underneath all of that: what would we lose if there were no government at all? Four philosophers gave four very different answers, and none of them agrees.</p>
-    <p class="byline">Reading time <strong>≈ 12 minutes</strong> · No prior philosophy required</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
   </header>
 
+  <div class="levelbar" role="group" aria-label="Reading level">
+    <span class="lbl">Reading level</span>
+    <div class="seg">
+      <button class="seg-btn" type="button" data-level="normal" aria-pressed="true">Standard</button>
+      <button class="seg-btn" type="button" data-level="eli10" aria-pressed="false">Explain simply</button>
+    </div>
+    <span class="lvl-note" id="lvlNote">Written for a first-time reader</span>
+  </div>
+
+
+<div id="lesson">
+    <div class="level" data-level="normal">
   <div class="objectives">
     <h2>By the end you'll be able to</h2>
     <ul>
@@ -211,7 +248,7 @@
     </ol>
   </nav>
 
-  <main id="main">
+  <div class="level-body">
 
     <h2 id="terms">1. Five words to fix first</h2>
     <p class="lede">Nothing later will make sense if these slide around, so here they are up front. You don't need to memorise them — just let them settle.</p>
@@ -450,40 +487,280 @@
         <li><a href="https://classics.mit.edu/Aristotle/politics.1.one.html">Aristotle, <em>Politics</em>, Book I</a><span class="why">The “political animal” passage — about ten minutes. Read critically: who is excluded?</span></li>
       </ol>
     </div>
-  </main>
+  </div>
+    </div>
+    <div class="level" data-level="eli10" hidden>
+      <div class="objectives">
+        <h2>What you'll learn</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>What “the state of nature” means, in plain words</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>What four thinkers thought about it</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why this question is harder than it looks</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#words-e">Big words, made small</a></li>
+          <li><a href="#tax-e">The strange thing we all accept</a></li>
+          <li><a href="#game-e">The game with no government</a></li>
+          <li><a href="#aristotle-e">Aristotle: we need other people</a></li>
+          <li><a href="#hobbes-e">Hobbes: everyone is scared</a></li>
+          <li><a href="#locke-e">Locke: we need a referee</a></li>
+          <li><a href="#rousseau-e">Rousseau: comparing made us jealous</a></li>
+          <li><a href="#end-e">The tricky question at the end</a></li>
+          <li><a href="#quiz-e">Check yourself</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="words-e">Big words, made small</h2>
+        <p>These four words come up a lot. Here is what they really mean.</p>
+        <div class="box def">
+          <div class="label">Plain words</div>
+          <p><span class="term">The state (or government)</span> — the people who make the rules and can make you follow them. Police. Courts. Taxes.</p>
+          <p><span class="term">Authority</span> — having the <em>right</em> to tell someone what to do. Not just being strong enough to make them.</p>
+          <p><span class="term">Obey</span> — doing what someone tells you, because they told you.</p>
+          <p><span class="term">Justify</span> — to give a good reason why something is fair. Not “because I said so.”</p>
+        </div>
+
+        <h2 id="tax-e">The strange thing we all accept</h2>
+        <p>Imagine a stranger comes up to you and says:</p>
+        <p><em>“Give me one third of your money, or I will lock you in a room.”</em></p>
+        <p>That is stealing. You would call the police.</p>
+        <p>Now imagine the <strong>government</strong> says it. We call that tax. And we call it normal.</p>
+        <p>Same action. Different name. Why?</p>
+        <p>Because we believe the government has the <em>right</em> to ask. Where does that belief come from? That is the question this whole chapter is about.</p>
+
+        <h2 id="game-e">The game with no government</h2>
+        <p>Philosophers like to play a game. They ask: <em>what if there were no government at all?</em></p>
+        <p>Not really — nobody wants to try it. It is a “what if” question, like asking:</p>
+        <div class="box key">
+          <div class="label">Think of it like this</div>
+          <p>If you cut one leg off a table, does it fall down? If it falls, that leg was holding something up. If it stays standing, the leg wasn't doing much.</p>
+        </div>
+        <p>Take the government away. What breaks? That tells us what government is <em>for</em>.</p>
+        <div class="box warn">
+          <div class="label">Careful — this is not history</div>
+          <p>Nobody is saying there was a real morning when people woke up with no government. It's an imagination game. It helps us <em>test</em> whether government is fair.</p>
+        </div>
+
+        <h2 id="aristotle-e">Aristotle: we need other people</h2>
+        <div class="thinker">
+          <p class="who">384–322 BC · ancient Greece</p>
+          <h3 style="margin-top:.2rem">People are like bees</h3>
+        </div>
+        <p>Aristotle lived a very long time ago, in Greece. He looked at animals and noticed something.</p>
+        <p>Bees cannot live alone. One bee on its own dies. Bees need the hive.</p>
+        <p>He said humans are the same. We need other people. We need someone to talk to, someone to swap things with, someone to help us decide what is fair.</p>
+        <p>So he said: government is <strong>natural</strong>. It is not an invention. It is part of being human, like a hive is part of being a bee.</p>
+        <p>If he is right, then there was never a time without government — and nobody needs to prove it is a good idea.</p>
+
+        <h2 id="hobbes-e">Hobbes: everyone is scared</h2>
+        <div class="thinker">
+          <p class="who">1588–1679 · England</p>
+          <h3 style="margin-top:.2rem">The war of everyone against everyone</h3>
+        </div>
+        <p>Hobbes lived in England while it was fighting a war with itself. He saw what happens when the rules stop working.</p>
+        <p>He asked: what if there were no police, no courts, no laws?</p>
+        <p>Now picture it.</p>
+        <p>You have food. Your neighbour wants food. You don't know if your neighbour will attack you tonight.</p>
+        <p>So what do you do? You attack first, to be safe.</p>
+        <p>But your neighbour is thinking the same thing. So they attack first too.</p>
+        <p>Now everyone is scared, and everyone is attacking. Nobody can relax. Nobody can grow food, or build, or sleep properly.</p>
+        <p>Hobbes said life like that would be “nasty, brutish and short.”</p>
+        <div class="box warn">
+          <div class="label">He is not saying people are evil</div>
+          <p>That's the part people get wrong. Hobbes thought normal, careful people would still end up fighting. The <em>situation</em> makes it happen, not the person.</p>
+        </div>
+        <p>So Hobbes said: we need one big power that frightens everyone into keeping the peace. Even a bad government is better than none — because no government is worse.</p>
+
+        <h2 id="locke-e">Locke: we need a referee</h2>
+        <div class="thinker">
+          <p class="who">1632–1704 · England</p>
+          <h3 style="margin-top:.2rem">Someone has to make the call</h3>
+        </div>
+        <p>Locke read Hobbes and said: hold on. Life without government would not be a war.</p>
+        <p>He thought people are born with rights. You have the right to live. The right to be free. The right to keep your things.</p>
+        <p>And there is a natural rule, he said: <em>don't hurt other people</em>.</p>
+        <p>So the problem is not that people are bad. The problem is <strong>nobody can settle an argument</strong>.</p>
+        <div class="box key">
+          <div class="label">Think of a football game</div>
+          <p>Imagine playing football with no referee. Two players crash into each other. One says “he pushed me!” The other says “no, he tripped me!”</p>
+          <p>Nobody can decide. So they argue, then they fight. The game stops.</p>
+          <p>You don't need nicer players. You need a referee.</p>
+        </div>
+        <p>That is what Locke thought government is for. Not to take your rights away — to be the referee.</p>
+        <p>And that is why he said: if a government stops doing its job, the people can replace it.</p>
+
+        <h2 id="rousseau-e">Rousseau: comparing made us jealous</h2>
+        <div class="thinker">
+          <p class="who">1712–1778 · Geneva</p>
+          <h3 style="margin-top:.2rem">Society is what spoiled us</h3>
+        </div>
+        <p>Rousseau said something very different.</p>
+        <p>He thought early humans were fine. They had food. They had somewhere to sleep. They did not worry about what other people thought of them.</p>
+        <p>Then people started living together in villages. And they started <strong>comparing</strong>.</p>
+        <p><em>Am I richer than him? Am I funnier? Does everyone like me more?</em></p>
+        <p>Rousseau had a name for this: <span class="term">amour-propre</span>. It means caring too much about what other people think.</p>
+        <p>Once people compare, they want more. They want to look better. That is where inequality starts.</p>
+        <p>So for Rousseau, government is not the rescue. It is the last step in a bad direction.</p>
+        <div class="box warn">
+          <div class="label">He is not saying “go live in the forest”</div>
+          <p>You can't, and he knew it. He was saying: our society makes us unhappy in a particular way — so let's build a better one.</p>
+        </div>
+
+        <h2 id="end-e">The tricky question at the end</h2>
+        <p>Here is the part that is easy to miss.</p>
+        <p>Suppose Hobbes is right. Suppose life with no government really is terrible.</p>
+        <p>Does that mean <em>this</em> government is okay? These borders? This leader? These rules?</p>
+        <p>Not necessarily.</p>
+        <p>It might only show that we need <em>some</em> kind of system. It does not show that <em>this exact one</em> is fair.</p>
+        <p>That is what Wolff means when he says the gap between “we don't need a government” and “this government is right” is very, very small.</p>
+
+        <h2 id="compare-e">Four answers at a glance</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>Who said what, in one line each</caption>
+            <thead>
+              <tr><th scope="col">Thinker</th><th scope="col">No government would be…</th><th scope="col">So government is…</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Aristotle</th><td>Impossible — we need people</td><td>Just part of being human</td></tr>
+              <tr><th scope="row">Hobbes</th><td>A war, everyone scared</td><td>The only thing stopping the war</td></tr>
+              <tr><th scope="row">Locke</th><td>Peaceful, but messy</td><td>A referee</td></tr>
+              <tr><th scope="row">Rousseau</th><td>Actually fine</td><td>Part of the problem</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="quiz" aria-labelledby="quiz-e-h">
+          <h2 id="quiz-e-h">Check yourself</h2>
+          <p class="intro">Five questions. Pick an answer to see why it is right or wrong.</p>
+
+          <div class="q">
+            <p><strong>1.</strong> What is “the state of nature”?</p>
+            <label class="opt" data-correct="false" data-feedback="No — nobody knows how people really lived, and it isn't meant to be a history lesson."><span class="box-dot"></span><span>How people really lived a long time ago</span></label>
+            <label class="opt" data-correct="true" data-feedback="Yes. It's a “what if” game: imagine no government, and see what breaks. That shows us what government is for."><span class="box-dot"></span><span>An imagination game about life with no government</span></label>
+            <label class="opt" data-correct="false" data-feedback="No — it isn't about animals. Aristotle used bees as an example, but that's different."><span class="box-dot"></span><span>A place where wild animals live</span></label>
+            <div class="fb"></div>
+          </div>
+
+          <div class="q">
+            <p><strong>2.</strong> Why did Aristotle say government is “natural”?</p>
+            <label class="opt" data-correct="true" data-feedback="Yes. He compared humans to bees in a hive — we can't live well on our own."><span class="box-dot"></span><span>Because humans need other humans, like bees need a hive</span></label>
+            <label class="opt" data-correct="false" data-feedback="No. Aristotle said government is part of being human — not something we invented for safety."><span class="box-dot"></span><span>Because people invented it to stay safe</span></label>
+            <label class="opt" data-correct="false" data-feedback="No, that's not his reason. He was thinking about how humans live together, not about voting."><span class="box-dot"></span><span>Because it lets people vote</span></label>
+            <div class="fb"></div>
+          </div>
+
+          <div class="q">
+            <p><strong>3.</strong> Why did Hobbes think life with no government would be terrible?</p>
+            <label class="opt" data-correct="false" data-feedback="No — Hobbes did not think people are evil. He thought the situation makes everyone act the same way."><span class="box-dot"></span><span>Because people are evil</span></label>
+            <label class="opt" data-correct="true" data-feedback="Yes. You don't know who will attack you, so you attack first — and everyone ends up scared and fighting."><span class="box-dot"></span><span>Because everyone is scared, so everyone attacks first</span></label>
+            <label class="opt" data-correct="false" data-feedback="No — Hobbes wasn't worried about money. He was worried about safety."><span class="box-dot"></span><span>Because there would be no money</span></label>
+            <div class="fb"></div>
+          </div>
+
+          <div class="q">
+            <p><strong>4.</strong> What did Locke say government is like?</p>
+            <label class="opt" data-correct="true" data-feedback="Yes. In a game with no referee, players argue and fight. Locke said government settles the arguments."><span class="box-dot"></span><span>A referee in a game</span></label>
+            <label class="opt" data-correct="false" data-feedback="No — Locke thought the opposite. Government is there to protect your rights, not take them."><span class="box-dot"></span><span>A boss who owns you</span></label>
+            <label class="opt" data-correct="false" data-feedback="No. That's closer to Rousseau's worry about society."><span class="box-dot"></span><span>A cage you cannot leave</span></label>
+            <div class="fb"></div>
+          </div>
+
+          <div class="q">
+            <p><strong>5.</strong> What did Rousseau blame for making people unhappy?</p>
+            <label class="opt" data-correct="false" data-feedback="No — Rousseau blamed something that happens between people, not the government by itself."><span class="box-dot"></span><span>Bad kings</span></label>
+            <label class="opt" data-correct="true" data-feedback="Yes. He called it amour-propre — caring too much about what other people think, so you always want to be better than them."><span class="box-dot"></span><span>Comparing ourselves to other people</span></label>
+            <label class="opt" data-correct="false" data-feedback="No — he wasn't worried about weather or food. He was worried about wanting to look better than others."><span class="box-dot"></span><span>Cold weather and hunger</span></label>
+            <div class="fb"></div>
+          </div>
+
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+
+        <div class="reading">
+          <h2>Where to go next</h2>
+          <ol>
+            <li><a href="https://www.gutenberg.org/ebooks/3207">Hobbes, <em>Leviathan</em>, ch. XIII</a><span class="why">The famous part. Old English, but you'll recognise the ideas now.</span></li>
+            <li><a href="https://classics.mit.edu/Aristotle/politics.1.one.html">Aristotle, <em>Politics</em>, Book I</a><span class="why">Look for the bees comparison.</span></li>
+            <li><a href="https://www.gutenberg.org/ebooks/7370">Locke, <em>Second Treatise</em>, ch. II</a><span class="why">He describes life with no government quite differently from Hobbes.</span></li>
+            <li><a href="https://www.gutenberg.org/ebooks/11136">Rousseau, <em>Discourse on Inequality</em></a><span class="why">Read the first part to see the “society spoiled us” idea.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="footer">
     <a href="index.html">← All chapters</a>
     <span>Next: Chapter 2 — Justifying the State</span>
   </div>
 
-  <script>
-    document.querySelectorAll('.opt').forEach(function (el) {
-      el.addEventListener('click', function () {
-        var q = this.parentElement;
+    <script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
         q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
-        var ok = this.dataset.correct === 'true';
-        this.classList.add(ok ? 'correct' : 'wrong');
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
         if (!ok) {
           var c = q.querySelector('.opt[data-correct="true"]');
           if (c) c.classList.add('correct');
         }
         var fb = q.querySelector('.fb');
         if (fb) {
-          fb.textContent = this.dataset.feedback || '';
+          fb.textContent = opt.dataset.feedback || '';
           fb.className = 'fb show ' + (ok ? 'ok' : 'no');
         }
-      });
-      el.setAttribute('role', 'button');
-      el.setAttribute('tabindex', '0');
-      el.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
-      });
-    });
-    var rv = document.getElementById('revealBtn');
-    if (rv) {
-      rv.addEventListener('click', function () {
-        document.querySelectorAll('.q').forEach(function (q) {
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
           q.querySelectorAll('.opt').forEach(function (o) {
             o.classList.remove('correct', 'wrong');
             if (o.dataset.correct === 'true') o.classList.add('correct');
@@ -492,8 +769,18 @@
           var c = q.querySelector('.opt[data-correct="true"]');
           if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
         });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
       });
-    }
+    });
+  })();
   </script>
 </body>
 </html>
