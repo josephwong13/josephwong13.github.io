@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Test — Political Philosophy</title>
+  <meta name="description" content="Cumulative test across all six chapters of the Wolff reading companion.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
+    @media (max-width: 520px) {
+      .lvl-note { display: none; }
+      .levelbar { gap: .5rem; }
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
+  
+    /* ---------- fill-in-the-blank ---------- */
+    .fib { width: 100%; max-width: 22rem; margin-top: .45rem; padding: .6rem .8rem; min-height: 44px;
+           font-family: var(--body); font-size: .94rem; color: var(--ink);
+           background: #fff; border: 1px solid var(--border); border-radius: 3px; }
+    .fib:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+    .fib.ok { border-color: var(--green); background: var(--green-bg); }
+    .fib.no { border-color: var(--red); background: var(--red-bg); }
+    .score { margin: 1rem 0 .2rem; padding: .8rem 1rem; background: var(--muted);
+             border-left: 3px solid var(--brown); font-family: var(--ui); font-size: .88rem; font-weight: 600; }
+    .recap { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .6rem; margin: 1.2rem 0; }
+    .recap div { background: var(--card); border: 1px solid var(--border); padding: .7rem .8rem; font-size: .85rem; }
+    .recap strong { display: block; font-family: var(--display); font-size: 1rem; margin-bottom: .15rem; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to content</a>
+
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Final test · 12 questions</p>
+    <h1>What Did You Keep?</h1>
+    <p class="standfirst">Twelve questions across the whole book — one idea per chapter, plus the distinctions that do the most work.</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
+  </header>
+
+  <div id="lesson">
+    <div class="level" data-level="normal">
+
+      <div class="objectives">
+        <h2>What this covers</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>All six chapters — 12 questions, no time limit</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Nine multiple choice, three fill-in-the-blank</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Every answer explains itself</span></li>
+        </ul>
+      </div>
+
+      <div class="level-body">
+        <h2>The test</h2>
+        <p>Answer in any order. The score updates as you go — there is no penalty for guessing, and every explanation is shown.</p>
+        <div class="score" id="scoreEl">0 / 12 correct</div>
+
+        <section class="quiz" aria-labelledby="quiz-h">
+          <h2 id="quiz-h">Cumulative questions</h2>
+          <p class="intro">Nine multiple choice and three fill-in-the-blank.</p>
+      <div class="q" data-q="1">
+        <p><strong>1.</strong> Why does Wolff use the state of nature at all?</p>
+        <label class="opt" data-correct="false" data-feedback="It makes no claim about prehistory. It is a normative device, not anthropology."><span class="box-dot"></span><span>To reconstruct how people really lived before government</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Strip the institution away and see what collapses — that tells you what work it was doing."><span class="box-dot"></span><span>To isolate what the state contributes, and so what could justify it</span></label>
+        <label class="opt" data-correct="false" data-feedback="Prediction is not the purpose; justification is."><span class="box-dot"></span><span>To predict what happens when a government falls</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="2">
+        <p><strong>2.</strong> What is Hume's objection to tacit consent?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. His farmer cannot emigrate and his sailor stays on a leaking ship. A choice with only disastrous options is not consent."><span class="box-dot"></span><span>That staying is not choosing, when leaving would ruin your life</span></label>
+        <label class="opt" data-correct="false" data-feedback="Formality is not his objection."><span class="box-dot"></span><span>That consent must be written down</span></label>
+        <label class="opt" data-correct="false" data-feedback="Hume is not an anarchist; he is attacking a bad justification."><span class="box-dot"></span><span>That governments are unnecessary</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="3">
+        <p><strong>3.</strong> What does Plato's craft analogy claim?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. Like medicine or navigation, ruling has expertise and real stakes — so it should not be decided by whoever shouts loudest."><span class="box-dot"></span><span>That governing is a skill, so experts should govern</span></label>
+        <label class="opt" data-correct="false" data-feedback="The opposite — the analogy argues against widespread voting."><span class="box-dot"></span><span>That all citizens should vote on everything</span></label>
+        <label class="opt" data-correct="false" data-feedback="It argues the reverse."><span class="box-dot"></span><span>That skills do not matter in politics</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="4">
+        <p><strong>4.</strong> Which restriction does Mill's harm principle rule out?</p>
+        <label class="opt" data-correct="false" data-feedback="Fraud is clear harm to others, so it is permitted."><span class="box-dot"></span><span>Banning fraud</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Paternalism is exactly what Mill excludes — your own good is 'not a sufficient warrant'."><span class="box-dot"></span><span>Seatbelt laws imposed for your own good</span></label>
+        <label class="opt" data-correct="false" data-feedback="Clear harm to an identifiable person."><span class="box-dot"></span><span>Punishing assault</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="5">
+        <p><strong>5.</strong> What does Rawls's difference principle allow?</p>
+        <label class="opt" data-correct="false" data-feedback="It permits inequality — that is the point of the clause."><span class="box-dot"></span><span>Only complete equality</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. A gap is justified only if it raises the floor compared with equality."><span class="box-dot"></span><span>Inequalities that benefit the least advantaged</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is a utilitarian standard, rejected behind the veil because you might not be a winner."><span class="box-dot"></span><span>Whatever maximises total wealth</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="6">
+        <p><strong>6.</strong> What is the difference between formal and structural equality?</p>
+        <label class="opt" data-correct="false" data-feedback="The reverse."><span class="box-dot"></span><span>Formal equality is about outcomes; structural is about rules</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Identical rules applied to unequal starting points reproduce the inequality."><span class="box-dot"></span><span>Formal equality removes explicit discrimination; structural injustice persists through inherited disadvantage</span></label>
+        <label class="opt" data-correct="false" data-feedback="The distinction is the substance of the section."><span class="box-dot"></span><span>They mean the same thing</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="7">
+        <p><strong>7.</strong> What does Singer's drowning-child argument conclude?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. If you must save the child, the only remaining difference between that case and distant poverty is distance — which is not a moral reason."><span class="box-dot"></span><span>That distance and nationality are irrelevant to a duty to help</span></label>
+        <label class="opt" data-correct="false" data-feedback="The opposite of his conclusion."><span class="box-dot"></span><span>That we should help only those nearby</span></label>
+        <label class="opt" data-correct="false" data-feedback="He argues the duty/charity distinction collapses, not that charity is superior."><span class="box-dot"></span><span>That charity replaces justice</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="8">
+        <p><strong>8.</strong> Why does Wolff separate legitimacy from obligation?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. Legitimacy concerns what the state may do; obligation concerns what you must do. Separating them lets the argument survive the failure of consent theory."><span class="box-dot"></span><span>Because a state may be permitted to coerce even if you owe no general duty to obey</span></label>
+        <label class="opt" data-correct="false" data-feedback="The distinction exists precisely to stop obligation doing all the work."><span class="box-dot"></span><span>Because obligation is the only thing that matters</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is definable — the question is what justifies it."><span class="box-dot"></span><span>Because legitimacy is impossible to define</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="9">
+        <p><strong>9.</strong> What is the 'tension' inside democratic theory?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. Pure majority rule lets 51% override 49%; consideration for individuals requires limits — so the two pull apart."><span class="box-dot"></span><span>Between majority rule and consideration for individuals</span></label>
+        <label class="opt" data-correct="false" data-feedback="A question of scale, not the structural tension."><span class="box-dot"></span><span>Between local and national government</span></label>
+        <label class="opt" data-correct="false" data-feedback="A design question, not the core tension."><span class="box-dot"></span><span>Between elected and appointed officials</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="10">
+        <p><strong>10.</strong> Fill in the blank: the imagined condition of life without political institutions is called the ______.</p>
+        <input class="fib" type="text" id="f10" data-answers="state of nature|state of nature" data-fb-ok="Correct — the thought experiment that opens the book." data-fb-no="Look back at chapter 1: it is the device that removes the state to see what it was doing." placeholder="Type your answer" aria-label="Answer for question 10">
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="11">
+        <p><strong>11.</strong> Fill in the blank: Mill's principle holds that coercion is justified only to prevent ______ to others.</p>
+        <input class="fib" type="text" id="f11" data-answers="harm" data-fb-ok="Correct — the harm principle." data-fb-no="Chapter 4. It is the single word Mill's whole argument turns on." placeholder="Type your answer" aria-label="Answer for question 11">
+        <div class="fb"></div>
+      </div>
+      <div class="q" data-q="12">
+        <p><strong>12.</strong> Fill in the blank: Rawls asks us to choose principles from behind a ______ of ignorance.</p>
+        <input class="fib" type="text" id="f12" data-answers="veil" data-fb-ok="Correct — the veil of ignorance." data-fb-no="Chapter 5. It is what stops you knowing whether you will be rich or poor." placeholder="Type your answer" aria-label="Answer for question 12">
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal the multiple-choice answers</button>
+        </section>
+
+        <h2>Recap</h2>
+        <div class="recap">
+          <div><strong>1 · State of Nature</strong>Aristotle: natural · Hobbes: war · Locke: inconvenient · Rousseau: corrupting</div>
+          <div><strong>2 · Justifying the State</strong>Consent · tacit consent · utility · fairness — each overreaches</div>
+          <div><strong>3 · Who Should Rule?</strong>Plato's craft analogy · general will · representation</div>
+          <div><strong>4 · Liberty</strong>Harm principle · free speech · individuality · the ambiguity of harm</div>
+          <div><strong>5 · Property</strong>Labour · markets · veil of ignorance · entitlement</div>
+          <div><strong>6a · Everyone?</strong>Gender · race · disability · the limits of formal equality</div>
+          <div><strong>6b · Everywhere?</strong>Borders · global inequality · future generations</div>
+        </div>
+      </div>
+
+    </div>
+
+      </div>
+
+  <div class="footer">
+    <a href="lesson-6b-justice-everywhere.html">← Chapter 6b — Justice Everywhere?</a>
+    <a href="index.html">All chapters →</a>
+  </div>
+
+<script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = opt.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
+        });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  })();
+  </script>
+  <script>
+  (function () {
+    var TOTAL = 12, answered = {};
+
+    function updateScore() {
+      var right = 0, done = 0;
+      for (var k in answered) { done++; if (answered[k]) right++; }
+      var el = document.getElementById('scoreEl');
+      if (el) el.textContent = right + ' / ' + TOTAL + ' correct' + (done ? ' — ' + done + ' answered' : '');
+    }
+
+    document.addEventListener('click', function (e) {
+      var o = e.target.closest ? e.target.closest('.opt') : null;
+      if (!o) return;
+      var q = o.closest('.q');
+      if (q && q.dataset.q) { answered[q.dataset.q] = o.dataset.correct === 'true'; updateScore(); }
+    });
+
+    document.querySelectorAll('.fib').forEach(function (input) {
+      function grade() {
+        var val = input.value.trim().toLowerCase();
+        if (!val) return;
+        var answers = (input.dataset.answers || '').split('|').map(function (a) { return a.trim().toLowerCase(); });
+        var ok = answers.some(function (a) { return a === val || val.indexOf(a) > -1; });
+        input.classList.remove('ok', 'no');
+        input.classList.add(ok ? 'ok' : 'no');
+        var q = input.closest('.q');
+        var fb = q ? q.querySelector('.fb') : null;
+        if (fb) {
+          fb.textContent = ok ? (input.dataset.fbOk || 'Correct.') : (input.dataset.fbNo || 'Not quite — try again.');
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        if (q && q.dataset.q) { answered[q.dataset.q] = ok; updateScore(); }
+      }
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); grade(); } });
+      input.addEventListener('blur', grade);
+    });
+
+    updateScore();
+  })();
+  </script>
+
+</body>
+</html>

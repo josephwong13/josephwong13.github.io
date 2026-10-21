@@ -41,20 +41,16 @@
     .chapters li:last-child { border-bottom: 1px solid var(--border); }
     .chapters a { display: flex; gap: 1rem; align-items: baseline; padding: 1rem .3rem; text-decoration: none; color: var(--ink); transition: background .18s; }
     .chapters a:hover { background: var(--card); }
-    .chapters .num { font-family: var(--display); font-size: 1.6rem; color: var(--amber); flex: 0 0 1.8rem; line-height: 1; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+    .chapters .num { font-family: var(--display); font-size: 1.55rem; color: var(--amber); flex: 0 0 1.9rem; line-height: 1; font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
     .chapters .body { flex: 1; }
     .chapters .title { font-family: var(--display); font-size: 1.22rem; font-weight: 600; display: block; line-height: 1.3; }
     .chapters .theme { font-family: var(--ui); font-size: .78rem; color: var(--muted-fg); display: block; margin-top: .2rem; }
-    .chapters .soon { font-family: var(--ui); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); }
-    .chapters li.disabled a { cursor: default; }
-    .chapters li.disabled:hover { background: transparent; }
-    .chapters li.disabled .title { color: var(--stone); }
-    .chapters li.disabled .num { color: #C9C1B2; }
     .chapters .tag { font-family: var(--ui); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); font-weight: 700; }
+    .chapters .tag.test { color: #2F6B4F; }
     .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); }
     .footer a { text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
-    @media (max-width: 520px) { body { padding: 1.5rem .95rem 3rem; } .chapters .num { font-size: 1.35rem; flex-basis: 1.3rem; } }
+    @media (max-width: 520px) { body { padding: 1.5rem .95rem 3rem; } .chapters .num { font-size: 1.3rem; flex-basis: 1.5rem; } }
   </style>
 </head>
 <body>
@@ -62,15 +58,15 @@
   <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / Political Philosophy</p>
 
   <header>
-    <p class="eyebrow">Reading companion · 6 chapters</p>
+    <p class="eyebrow">Reading companion · 7 lessons + final test</p>
     <h1>Political Philosophy</h1>
-    <p class="standfirst">A beginner's guide to Jonathan Wolff's <em>An Introduction to Political Philosophy</em>. Each chapter takes one question, explains the answers that have been given to it, and shows where the argument still breaks down.</p>
+    <p class="standfirst">A beginner's guide to Jonathan Wolff's <em>An Introduction to Political Philosophy</em>. Each lesson takes one question, explains the answers that have been given to it, and shows where the argument still breaks down.</p>
     <p class="meta"><strong>Wolff</strong>, 4th edition · Oxford University Press, 2023 · written for readers with no prior philosophy</p>
   </header>
 
   <main id="main">
     <div class="note">
-      Read the lesson before the chapter, not after. It gives you the vocabulary, the historical situation, and the shape of each argument — so that when you open Wolff you're recognising material rather than meeting it cold.
+      Every lesson has two versions — <strong>Standard</strong> and <strong>Explain simply</strong> — switchable at the top of the page. Read the lesson before the chapter, not after: it gives you the vocabulary, the situation, and the shape of each argument, so that opening Wolff feels like recognising material rather than meeting it cold.
     </div>
 
     <h2>Chapters</h2>
@@ -85,54 +81,74 @@
           <span class="tag">Read</span>
         </a>
       </li>
-      <li class="disabled">
-        <a href="#" tabindex="-1" aria-disabled="true">
+      <li>
+        <a href="lesson-2-justifying-state.html">
           <span class="num">2</span>
           <span class="body">
             <span class="title">Justifying the State</span>
-            <span class="theme">Consent · social contract · utilitarianism · fairness</span>
+            <span class="theme">Consent · tacit consent · utilitarianism · fairness</span>
           </span>
-          <span class="soon">Soon</span>
+          <span class="tag">Read</span>
         </a>
       </li>
-      <li class="disabled">
-        <a href="#" tabindex="-1" aria-disabled="true">
+      <li>
+        <a href="lesson-3-who-should-rule.html">
           <span class="num">3</span>
           <span class="body">
             <span class="title">Who Should Rule?</span>
-            <span class="theme">Plato · Rousseau · Mill · deliberative democracy</span>
+            <span class="theme">Plato's craft analogy · guardianship · general will · representation</span>
           </span>
-          <span class="soon">Soon</span>
+          <span class="tag">Read</span>
         </a>
       </li>
-      <li class="disabled">
-        <a href="#" tabindex="-1" aria-disabled="true">
+      <li>
+        <a href="lesson-4-place-of-liberty.html">
           <span class="num">4</span>
           <span class="body">
             <span class="title">The Place of Liberty</span>
-            <span class="theme">Mill · the harm principle · paternalism · legal moralism</span>
+            <span class="theme">Mill · the harm principle · free speech · individuality · paternalism</span>
           </span>
-          <span class="soon">Soon</span>
+          <span class="tag">Read</span>
         </a>
       </li>
-      <li class="disabled">
-        <a href="#" tabindex="-1" aria-disabled="true">
+      <li>
+        <a href="lesson-5-distribution-of-property.html">
           <span class="num">5</span>
           <span class="body">
             <span class="title">The Distribution of Property</span>
-            <span class="theme">Locke · markets · Rawls · Nozick</span>
+            <span class="theme">Locke · markets · veil of ignorance · Rawls · Nozick</span>
           </span>
-          <span class="soon">Soon</span>
+          <span class="tag">Read</span>
         </a>
       </li>
-      <li class="disabled">
-        <a href="#" tabindex="-1" aria-disabled="true">
-          <span class="num">6</span>
+      <li>
+        <a href="lesson-6a-justice-for-everyone.html">
+          <span class="num">6a</span>
           <span class="body">
-            <span class="title">Justice for Everyone, Everywhere?</span>
-            <span class="theme">Gender · race · disability · global justice · future generations</span>
+            <span class="title">Justice for Everyone?</span>
+            <span class="theme">Gender · race · disability · the limits of formal equality</span>
           </span>
-          <span class="soon">Soon</span>
+          <span class="tag">Read</span>
+        </a>
+      </li>
+      <li>
+        <a href="lesson-6b-justice-everywhere.html">
+          <span class="num">6b</span>
+          <span class="body">
+            <span class="title">Justice Everywhere?</span>
+            <span class="theme">Borders · global inequality · immigration · future generations</span>
+          </span>
+          <span class="tag">Read</span>
+        </a>
+      </li>
+      <li>
+        <a href="final-test.html">
+          <span class="num">★</span>
+          <span class="body">
+            <span class="title">Final Test</span>
+            <span class="theme">12 questions across all chapters · 9 multiple choice + 3 fill-in</span>
+          </span>
+          <span class="tag test">Test</span>
         </a>
       </li>
     </ul>

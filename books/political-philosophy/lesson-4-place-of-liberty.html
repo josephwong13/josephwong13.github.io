@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4 — The Place of Liberty · Political Philosophy</title>
+  <meta name="description" content="Mill's harm principle: why the only justified limit on your freedom is harm to others, and why the word 'harm' causes trouble.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
+    @media (max-width: 520px) {
+      .lvl-note { display: none; }
+      .levelbar { gap: .5rem; }
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to content</a>
+
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Chapter 4 · Wolff, 4th ed. (2023)</p>
+    <h1>The Place of Liberty</h1>
+    <p class="standfirst">Democracy protects you from a king and exposes you to your neighbours. Mill's answer is one rule — and that rule turns out to be far harder to apply than it looks.</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
+  </header>
+
+  <div class="levelbar" role="group" aria-label="Reading level">
+    <span class="lbl">Reading level</span>
+    <div class="seg">
+      <button class="seg-btn" type="button" data-level="normal" aria-pressed="true">Standard</button>
+      <button class="seg-btn" type="button" data-level="eli10" aria-pressed="false">Explain simply</button>
+    </div>
+    <span class="lvl-note" id="lvlNote">Written for a first-time reader</span>
+  </div>
+
+  <div id="lesson">
+    <div class="level" data-level="normal">
+
+      <div class="objectives">
+        <h2>By the end you'll be able to</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>State Mill's Liberty Principle precisely, including its limits</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Reconstruct his defence of free speech</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Distinguish paternalism from legal moralism</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain why “harm” turns out to be the weak point</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms">1. Words you'll need</a></li>
+          <li><a href="#question">2. When most people gang up on you</a></li>
+          <li><a href="#liberty">3. Mill's one rule</a></li>
+          <li><a href="#speech">4. Why you cannot ban a bad opinion</a></li>
+          <li><a href="#individuality">5. Why unusual lives are useful</a></li>
+          <li><a href="#justifications">6. Three reasons to leave people alone</a></li>
+          <li><a href="#problems">7. Where the rule gets fuzzy</a></li>
+          <li><a href="#objection">8. Is “harm” doing any work?</a></li>
+          <li><a href="#synthesis">9. Putting it together</a></li>
+          <li><a href="#misconceptions">10. Common misconceptions</a></li>
+          <li><a href="#glossary">11. Glossary</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms">1. Words you'll need</h2>
+        <p class="lede">Chapters 2 and 3 asked who may rule. This one asks the opposite question: once they are ruling, how far may they reach into your life?</p>
+        <div class="box def">
+          <div class="label">Definitions</div>
+          <p><span class="term">Liberty</span> — the absence of constraint by others. Not the ability to do something, but the absence of someone stopping you.</p>
+          <p><span class="term">Harm principle</span> — the claim that the only justified reason to restrict someone's liberty is to prevent harm to others.</p>
+          <p><span class="term">Paternalism</span> — restricting you for your own good: seatbelt laws, bans on gambling, drug prohibition.</p>
+          <p><span class="term">Legal moralism</span> — restricting you because the act is immoral, even if it harms no one else.</p>
+          <p><span class="term">Offence</span> — distress caused by what others do, short of harm. The hardest case for Mill.</p>
+        </div>
+
+        <h2 id="question">2. When most people gang up on you</h2>
+        <p>Democracy solves one problem and creates another. If the majority decides, the majority can also decide what you are allowed to think, read, or do in your own home.</p>
+        <p>This is the <em>tyranny of the majority</em>: not a king oppressing subjects, but neighbours oppressing neighbours, with perfect democratic legitimacy.</p>
+        <div class="box key">
+          <div class="label">Mill's target</div>
+          <p>Notice who Mill is arguing against. Not mainly the state — but <em>public opinion</em>, and the social pressure that makes people conform before any law is passed.</p>
+        </div>
+
+        <h2 id="liberty">3. Mill's one rule</h2>
+        <div class="thinker">
+          <p class="who">John Stuart Mill · England · <em>On Liberty</em> (1859)</p>
+          <h3 style="margin-top:.2rem">One principle, stated exactly</h3>
+        </div>
+        <div class="box def">
+          <div class="label">The Liberty Principle</div>
+          <p>“The only purpose for which power can be rightfully exercised over any member of a civilised community, against his will, is to prevent harm to others. His own good, either physical or moral, is not a sufficient warrant.”</p>
+          <p>And the corollary: “Over himself, over his own body and mind, the individual is sovereign.”</p>
+        </div>
+        <p>Three things to notice, because they are usually missed.</p>
+        <p><strong>First</strong>, it is a principle about <em>coercion</em>, not about disapproval. People may think you a fool; they may not stop you.</p>
+        <p><strong>Second</strong>, it rules out paternalism. Your own good is explicitly not a reason.</p>
+        <p><strong>Third</strong>, it is not unlimited. Mill scopes it to “civilised communities” and excludes children — a limitation that has aged badly and needs confronting, not glossing.</p>
+
+        <h2 id="speech">4. Why you cannot ban a bad opinion</h2>
+        <p>Mill's defence of free discussion is the most famous part of the book, and it proceeds by exhausting the possibilities.</p>
+        <div class="arg">
+          <div class="label">The argument from fallibility</div>
+          <ol>
+            <li>Suppose the silenced opinion is <b>true</b>. Then we have lost the truth, and exchanged it for error.</li>
+            <li>Suppose it is <b>false</b>. Then we lose something almost as valuable: the need to defend our own view. An opinion held without challenge becomes prejudice — “a dead dogma, not a living truth.”</li>
+            <li>Suppose, as is usual, it is <b>partly true</b>. Then suppressing it loses exactly that part of the truth we lack.</li>
+          </ol>
+          <p class="concl"><b>Conclusion:</b> in no case does silencing an opinion serve the discovery of truth.</p>
+        </div>
+        <p>The step people forget is the second one. Mill is not only protecting the speaker. He is protecting <em>you</em> — because an unopposed belief is one you hold for bad reasons, and cannot really defend.</p>
+
+        <h2 id="individuality">5. Why unusual lives are useful</h2>
+        <p>Mill's second strand is not about truth but about <em>character</em>. Human beings are not all the same shape, and a society that presses everyone into one mould produces people who are comfortable but not fully developed.</p>
+        <p>Hence his phrase <em>experiments in living</em>: people who try out unusual ways of life are, in effect, running tests the rest of us can learn from. Conformity is not just dull — it is epistemically expensive.</p>
+        <div class="box key">
+          <div class="label">The claim in one line</div>
+          <p>“The free development of individuality is one of the leading essentials of well-being.” Not a luxury, and not merely a right — a condition of living well at all.</p>
+        </div>
+
+        <h2 id="justifications">6. Three reasons to leave people alone</h2>
+        <p>Mill actually offers three different kinds of justification, and they do not all pull in the same direction.</p>
+        <div class="tablewrap">
+          <table>
+            <caption>Three routes to the same conclusion</caption>
+            <thead>
+              <tr><th scope="col">Route</th><th scope="col">The claim</th><th scope="col">What it implies</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Rights</th><td>People have a sphere that others may not enter</td><td>Liberty is a side-constraint, not a calculation</td></tr>
+              <tr><th scope="row">Utility</th><td>Freedom produces more good overall</td><td>Liberty could in principle be traded away</td></tr>
+              <tr><th scope="row">Intrinsic good</th><td>Choosing for yourself is part of living well</td><td>Freedom matters even when it produces worse outcomes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>This matters, because if liberty is justified by its good consequences, then a case where restriction produced better consequences would defeat it. Mill wants all three, and the tension is never fully resolved.</p>
+
+        <h2 id="problems">7. Where the rule gets fuzzy</h2>
+        <p>The harm principle looks crisp until you try to apply it. Three difficulties.</p>
+        <p><strong>Self-regarding versus other-regarding.</strong> Almost nothing you do affects only you. If you ruin your health, someone pays. Mill needs a line that may not exist.</p>
+        <p><strong>Harm versus offence.</strong> Being disgusted, insulted or distressed is not being harmed — but it feels like it, and it is the commonest ground for censorship.</p>
+        <p><strong>Harm versus the risk of harm.</strong> Do we act only on harm, or on danger? Almost all regulation targets risk, which the principle does not obviously cover.</p>
+
+        <h2 id="objection">8. Is “harm” doing any work?</h2>
+        <div class="box warn">
+          <div class="label">The objection</div>
+          <p>If “harm” includes psychological distress, economic loss and offence, then almost anything can be called harmful — and the principle permits nearly everything governments want to do. If it excludes them, it forbids things almost everyone accepts, like safety regulation. Either the principle is too permissive or too strict.</p>
+        </div>
+        <p>Defenders reply that harm means <em>setback to interests</em>, and that offence and dislike are not interests of the right kind. That is a real answer, but it moves the work from the principle to a theory of interests — which Mill does not fully supply.</p>
+
+        <h2 id="synthesis">9. Putting it together</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>What the harm principle allows</caption>
+            <thead>
+              <tr><th scope="col">Case</th><th scope="col">Mill's verdict</th><th scope="col">Why</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Unpopular opinion</th><td>Protected</td><td>No harm; and silencing loses truth</td></tr>
+              <tr><th scope="row">Unusual lifestyle</th><td>Protected</td><td>Individuality is a condition of well-being</td></tr>
+              <tr><th scope="row">Seatbelt laws</th><td>Rejected</td><td>Paternalism — your good is not a warrant</td></tr>
+              <tr><th scope="row">Fraud or assault</th><td>Restricted</td><td>Clear harm to identifiable others</td></tr>
+              <tr><th scope="row">Public indecency</th><td>Contested</td><td>Offence, not obviously harm</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="misconceptions">10. Common misconceptions</h2>
+        <div class="box warn">
+          <div class="label">Misconception 1</div>
+          <p>“The harm principle means anything goes.” — It rules out paternalism and moralism, not all law. Mill allows restriction for harm to others, which includes most of criminal law.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 2</div>
+          <p>“Mill was a libertarian.” — He was a utilitarian reformer. He supported compulsory education and limits on child labour, and he excluded children from the principle entirely.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 3</div>
+          <p>“Mill defends free speech because speech is harmless.” — He defends it because suppressing it costs us truth, including the truth of our own beliefs. That is a stronger and stranger argument.</p>
+        </div>
+
+        <h2 id="glossary">11. Glossary</h2>
+        <dl class="glossary">
+          <dt>Harm principle</dt>
+          <dd>The only justified ground for coercing someone is preventing harm to others.</dd>
+          <dt>Paternalism</dt>
+          <dd>Restricting a person for their own good.</dd>
+          <dt>Legal moralism</dt>
+          <dd>Restricting conduct because it is immoral, independently of harm.</dd>
+          <dt>Experiments in living</dt>
+          <dd>Mill's term for unconventional ways of life that test how to live.</dd>
+          <dt>Tyranny of the majority</dt>
+          <dd>Majority opinion used to override individual liberty.</dd>
+          <dt>Dead dogma</dt>
+          <dd>A belief held without challenge, and therefore no longer understood.</dd>
+        </dl>
+
+        <section class="quiz" aria-labelledby="quiz-h">
+          <h2 id="quiz-h">Check your understanding</h2>
+          <p class="intro">Five questions. Pick an option to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> State Mill's Liberty Principle as precisely as you can.</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. Crucially, the person's own good — physical or moral — is explicitly not a sufficient warrant."><span class="box-dot"></span><span>Restricting liberty is justified only to prevent harm to others</span></label>
+        <label class="opt" data-correct="false" data-feedback="That would license paternalism and moralism, which the principle exists to exclude."><span class="box-dot"></span><span>Restricting liberty is justified whenever it improves society</span></label>
+        <label class="opt" data-correct="false" data-feedback="Mill allows restriction for harm to others — which covers most of criminal law."><span class="box-dot"></span><span>Liberty may never be restricted</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> What is the second horn of Mill's free-speech argument — the one people forget?</p>
+        <label class="opt" data-correct="false" data-feedback="Mill argues the opposite in every case."><span class="box-dot"></span><span>That false opinions should be banned</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Without challenge, belief becomes a dead dogma — held but not understood. The argument protects the listener, not only the speaker."><span class="box-dot"></span><span>That even a false opinion is useful, because it forces us to defend what we believe</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is the utilitarian framework generally, not the specific speech argument."><span class="box-dot"></span><span>That opinions should be judged only by their consequences</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> Which of these does the harm principle rule out?</p>
+        <label class="opt" data-correct="false" data-feedback="Fraud is clear harm to others, so it is allowed."><span class="box-dot"></span><span>Banning fraud</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Restricting someone for their own good is exactly what Mill's principle forbids."><span class="box-dot"></span><span>Seatbelt laws on paternalist grounds</span></label>
+        <label class="opt" data-correct="false" data-feedback="Clear harm to an identifiable other person."><span class="box-dot"></span><span>Punishing assault</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> Why is 'harm' the weak point in the principle?</p>
+        <label class="opt" data-correct="false" data-feedback="Too strong — there are workable accounts, such as setback to interests."><span class="box-dot"></span><span>Because nobody knows what it means</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. The principle is either too permissive or too strict, and the work of drawing the line falls on a theory of interests Mill does not supply."><span class="box-dot"></span><span>Because if it includes distress it licenses almost everything, and if it excludes it forbids too much</span></label>
+        <label class="opt" data-correct="false" data-feedback="He uses the concept throughout; the problem is precision, not total absence."><span class="box-dot"></span><span>Because Mill never defined it at all</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Mill's three justifications for liberty do not sit comfortably together. Why?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. If liberty is justified by its consequences, a case where restriction produced better consequences would defeat it — which is why Mill also wants an intrinsic-good argument."><span class="box-dot"></span><span>Because rights and utility can conflict when restriction produces better outcomes</span></label>
+        <label class="opt" data-correct="false" data-feedback="The tension is structural, not a matter of revision."><span class="box-dot"></span><span>Because he changed his mind between editions</span></label>
+        <label class="opt" data-correct="false" data-feedback="If they did, there would be no tension to explain."><span class="box-dot"></span><span>Because they all say the same thing</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+
+    <div class="level" data-level="eli10" hidden>
+
+      <div class="objectives">
+        <h2>What you'll learn</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Mill's one rule about when the government can stop you</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why banning a bad opinion is a bad idea</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why the word “harm” is harder than it looks</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms-e">1. Big words, made small</a></li>
+          <li><a href="#gang-e">2. When most people gang up on you</a></li>
+          <li><a href="#rule-e">3. Mill's one rule</a></li>
+          <li><a href="#speech-e">4. Why you can't ban a bad opinion</a></li>
+          <li><a href="#weird-e">5. Why weird lives are useful</a></li>
+          <li><a href="#reasons-e">6. Three reasons to leave people alone</a></li>
+          <li><a href="#fuzzy-e">7. Where the rule gets fuzzy</a></li>
+          <li><a href="#objection-e">8. Is “harm” doing any work?</a></li>
+          <li><a href="#compare-e">9. What Mill allows</a></li>
+          <li><a href="#quiz-e">Check yourself</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms-e">1. Big words, made small</h2>
+        <div class="box def">
+          <div class="label">Plain words</div>
+          <p><span class="term">Liberty</span> — nobody is stopping you.</p>
+          <p><span class="term">Harm</span> — actually hurting someone.</p>
+          <p><span class="term">Offence</span> — upsetting someone, but not hurting them.</p>
+          <p><span class="term">Paternalism</span> — stopping you “for your own good”, like making you wear a seatbelt.</p>
+        </div>
+
+        <h2 id="gang-e">2. When most people gang up on you</h2>
+        <p>Democracy has a problem.</p>
+        <p>If everyone votes, then the biggest group wins. And the biggest group can also decide what <em>you</em> are allowed to do.</p>
+        <p>They can say: you can't read that. You can't say that. You can't live like that.</p>
+        <p>And they can say it's fair, because most people agree.</p>
+        <p>That's called the <strong>tyranny of the majority</strong>. Not a king being cruel — just lots of normal people being cruel together.</p>
+
+        <h2 id="rule-e">3. Mill's one rule</h2>
+        <div class="thinker">
+          <p class="who">John Stuart Mill · England · 1806–1873</p>
+          <h3 style="margin-top:.2rem">One simple test</h3>
+        </div>
+        <p>Mill said: there is only <strong>one</strong> good reason to stop someone doing what they want.</p>
+        <div class="box def">
+          <div class="label">Mill's rule</div>
+          <p>You may stop people only to prevent them <strong>hurting other people</strong>.</p>
+          <p>Not because it's bad for them. Not because you don't like it. Only because it hurts someone else.</p>
+        </div>
+        <p>So: your own good is not a reason. That's important. Mill said the government can't say “this is bad for you, so we're banning it.”</p>
+
+        <h2 id="speech-e">4. Why you can't ban a bad opinion</h2>
+        <p>Mill had a famous argument about opinions.</p>
+        <p>Somebody says something you think is wrong. Should you ban it?</p>
+        <p>Mill says: think about the three possibilities.</p>
+        <p><strong>Maybe they're right.</strong> Then by banning it, you're the one who's wrong — and you just blocked the truth.</p>
+        <p><strong>Maybe they're wrong.</strong> Then you still lose something. If nobody ever argues with you, your own belief becomes lazy. You can't explain why it's true. You just repeat it.</p>
+        <p><strong>Maybe they're partly right.</strong> That's usually the case. And the part they're right about is exactly the part you'd be silencing.</p>
+        <p>So in every case, banning the opinion makes things worse.</p>
+
+        <h2 id="weird-e">5. Why weird lives are useful</h2>
+        <p>Mill had a second idea, about how people live.</p>
+        <p>People are not all the same. Some want a quiet life. Some want adventure. Some want to live alone in the woods.</p>
+        <p>If society pushes everyone into one shape, we lose something. Mill called unusual lives <em>experiments</em>. Someone is testing a way of living — and the rest of us can learn from it.</p>
+        <p>Even if it fails. Even if it looks strange.</p>
+
+        <h2 id="reasons-e">6. Three reasons to leave people alone</h2>
+        <p>Mill gives three different reasons for freedom. They don't all agree with each other.</p>
+        <div class="tablewrap">
+          <table>
+            <caption>Three reasons, three arguments</caption>
+            <thead>
+              <tr><th scope="col">Reason</th><th scope="col">It says</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Rights</th><td>People have a private space nobody may enter</td></tr>
+              <tr><th scope="row">Best results</th><td>Free people end up better off</td></tr>
+              <tr><th scope="row">It matters itself</th><td>Choosing your own life is part of living well</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Why does that matter? Because if freedom is only good for results, then someone could say: “but banning this gives better results.” And Mill would have to agree.</p>
+
+        <h2 id="fuzzy-e">7. Where the rule gets fuzzy</h2>
+        <p>Mill's rule sounds simple. Then you try to use it.</p>
+        <p><strong>Nothing only affects you.</strong> If you eat badly, someone has to look after you. If you crash without a seatbelt, someone pays. So where does “your own business” end?</p>
+        <p><strong>Being upset isn't being hurt.</strong> If someone says something horrible about you, are you harmed? Or just upset? The rule needs to know.</p>
+        <p><strong>Risk isn't harm.</strong> Do we wait for the accident, or stop people doing something dangerous?</p>
+
+        <h2 id="objection-e">8. Is “harm” doing any work?</h2>
+        <div class="box warn">
+          <div class="label">The problem</div>
+          <p>If “harm” means anything that upsets people, then almost everything can be banned. If it means only physical injury, then almost nothing can be.</p>
+          <p>So either the rule allows too little, or too much.</p>
+        </div>
+        <p>Supporters say harm means “really setting someone's interests back” — not just annoying them. That's a fair reply. But it means the hard work is done by the idea of “interests”, which Mill doesn't fully explain.</p>
+
+        <h2 id="compare-e">9. What Mill allows</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>Mill's verdicts</caption>
+            <thead>
+              <tr><th scope="col">The case</th><th scope="col">Allowed?</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">An unpopular opinion</th><td>Yes — protected</td></tr>
+              <tr><th scope="row">Living an unusual life</th><td>Yes — protected</td></tr>
+              <tr><th scope="row">Seatbelt laws</th><td>No — that's paternalism</td></tr>
+              <tr><th scope="row">Fraud or violence</th><td>No — that's real harm</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="quiz" aria-labelledby="quiz-e">
+          <h2 id="quiz-e">Check yourself</h2>
+          <p class="intro">Five questions. Pick an answer to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What was Mill's one rule?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. Not because it's bad for them — only because it hurts someone else."><span class="box-dot"></span><span>You can only stop people to prevent them hurting others</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is exactly the tyranny of the majority he was worried about."><span class="box-dot"></span><span>You can stop people whenever most people agree</span></label>
+        <label class="opt" data-correct="false" data-feedback="Mill allowed stopping people who harm others."><span class="box-dot"></span><span>You can never stop anyone</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> What did Mill say about banning an opinion you think is wrong?</p>
+        <label class="opt" data-correct="false" data-feedback="Mill argued the opposite in every case."><span class="box-dot"></span><span>Ban it, because wrong ideas spread</span></label>
+        <label class="opt" data-correct="true" data-feedback="Yes. If nobody challenges you, your belief becomes lazy and you can't explain it."><span class="box-dot"></span><span>Don't ban it — even if it's wrong, arguing about it keeps your own belief alive</span></label>
+        <label class="opt" data-correct="false" data-feedback="Mill thought it mattered a lot."><span class="box-dot"></span><span>It doesn't matter either way</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> Why did Mill think unusual lives are valuable?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — he called them experiments."><span class="box-dot"></span><span>Because they test new ways of living that everyone can learn from</span></label>
+        <label class="opt" data-correct="false" data-feedback="Fun isn't the argument. Learning is."><span class="box-dot"></span><span>Because they are more fun</span></label>
+        <label class="opt" data-correct="false" data-feedback="Not chaos — variety, and the freedom to try things."><span class="box-dot"></span><span>Because society needs to be chaotic</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> Why is “harm” a hard word for Mill's rule?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. If upset counts as harm, almost anything can be banned. If it doesn't, some real harm gets ignored."><span class="box-dot"></span><span>Because being upset is not the same as being hurt</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is about meaning, not spelling."><span class="box-dot"></span><span>Because it is a long word</span></label>
+        <label class="opt" data-correct="false" data-feedback="People obviously do get harmed."><span class="box-dot"></span><span>Because nobody ever gets harmed</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> What does Mill's rule say about seatbelt laws?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — that is paternalism, and Mill's principle excludes it."><span class="box-dot"></span><span>They are not allowed, because they protect you from yourself</span></label>
+        <label class="opt" data-correct="false" data-feedback="Saving money isn't the test; harm to others is."><span class="box-dot"></span><span>They are allowed, because they save money</span></label>
+        <label class="opt" data-correct="false" data-feedback="The danger is to the driver themselves, which is the case Mill excludes."><span class="box-dot"></span><span>They are allowed, because driving is dangerous</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-3-who-should-rule.html">← Chapter 3 — Who Should Rule?</a>
+    <a href="lesson-5-distribution-of-property.html">Chapter 5 — The Distribution of Property →</a>
+  </div>
+
+<script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = opt.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
+        });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

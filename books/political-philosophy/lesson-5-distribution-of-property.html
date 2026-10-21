@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5 — The Distribution of Property · Political Philosophy</title>
+  <meta name="description" content="Who should own what? Locke's labour theory, the free market, Rawls's difference principle and Nozick's entitlement objection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
+    @media (max-width: 520px) {
+      .lvl-note { display: none; }
+      .levelbar { gap: .5rem; }
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to content</a>
+
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Chapter 5 · Wolff, 4th ed. (2023)</p>
+    <h1>The Distribution of Property</h1>
+    <p class="standfirst">The income parade makes inequality visible: most people short, a few giants. Is that unjust — or just the result of fair dealings? Four answers, and no agreement.</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
+  </header>
+
+  <div class="levelbar" role="group" aria-label="Reading level">
+    <span class="lbl">Reading level</span>
+    <div class="seg">
+      <button class="seg-btn" type="button" data-level="normal" aria-pressed="true">Standard</button>
+      <button class="seg-btn" type="button" data-level="eli10" aria-pressed="false">Explain simply</button>
+    </div>
+    <span class="lvl-note" id="lvlNote">Written for a first-time reader</span>
+  </div>
+
+  <div id="lesson">
+    <div class="level" data-level="normal">
+
+      <div class="objectives">
+        <h2>By the end you'll be able to</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain what the income parade shows</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Reconstruct Locke's labour argument and its proviso</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>State Rawls's difference principle and why the veil of ignorance generates it</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Distinguish historical from patterned theories of justice</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms">1. Words you'll need</a></li>
+          <li><a href="#question">2. The parade of incomes</a></li>
+          <li><a href="#setup">3. Liberty against equality</a></li>
+          <li><a href="#locke">4. Locke: you made it, you own it</a></li>
+          <li><a href="#market">5. The free market</a></li>
+          <li><a href="#rawls">6. Rawls and the veil of ignorance</a></li>
+          <li><a href="#nozick">7. Nozick's objection</a></li>
+          <li><a href="#objection">8. Can any distribution be just?</a></li>
+          <li><a href="#synthesis">9. Putting them together</a></li>
+          <li><a href="#misconceptions">10. Common misconceptions</a></li>
+          <li><a href="#glossary">11. Glossary</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms">1. Words you'll need</h2>
+        <p class="lede">Chapter 4 protected what you may do. This chapter asks what you may <em>own</em> — and whether the answer changes if someone else has almost nothing.</p>
+        <div class="box def">
+          <div class="label">Definitions</div>
+          <p><span class="term">Distributive justice</span> — the question of how goods, income and opportunities ought to be shared.</p>
+          <p><span class="term">Proviso</span> — Locke's condition that acquiring property is legitimate only if enough and as good is left for others.</p>
+          <p><span class="term">Veil of ignorance</span> — Rawls's device: choose principles of justice without knowing your place in society.</p>
+          <p><span class="term">Difference principle</span> — inequalities are justified only if they benefit the least advantaged.</p>
+          <p><span class="term">Entitlement</span> — Nozick's idea that a holding is just if it was justly acquired and justly transferred, whatever pattern results.</p>
+        </div>
+
+        <h2 id="question">2. The parade of incomes</h2>
+        <p>Imagine everyone in the country walking past you in a line, ordered from poorest to richest. Their height shows their income: average income is average height.</p>
+        <p>For most of the parade you see dwarfs — people far below average. Near the end come the tall, and at the very back a few giants whose height exceeds the horizon.</p>
+        <div class="box key">
+          <div class="label">Why the image works</div>
+          <p>It replaces an abstraction (“inequality”) with something you can see. And it forces a question no statistic does: <em>is this arrangement just?</em></p>
+        </div>
+
+        <h2 id="setup">3. Liberty against equality</h2>
+        <p>Two things we value collide here.</p>
+        <p><strong>Liberty</strong> says people may acquire, trade and keep what they get. <strong>Equality</strong> says the resulting gap may be indefensible regardless of how it arose.</p>
+        <p>Every position in this chapter is a different way of weighing those two.</p>
+
+        <h2 id="locke">4. Locke: you made it, you own it</h2>
+        <div class="thinker">
+          <p class="who">Locke · <em>Second Treatise</em>, ch. V</p>
+          <h3 style="margin-top:.2rem">Property begins with labour</h3>
+        </div>
+        <p>Locke's argument is that the world starts as common property, and private property arises when someone mixes their labour with it. Pick apples in an unowned field and the apples are yours — you did the work.</p>
+        <div class="arg">
+          <div class="label">The labour argument</div>
+          <ol>
+            <li>The earth is given to humanity in common.</li>
+            <li>Mixing your labour with something makes it yours.</li>
+            <li>So acquisition is justified by work, not by permission or agreement.</li>
+          </ol>
+          <p class="concl"><b>But there is a limit:</b> you may take only what you can use before it spoils, and only where “enough and as good” is left for others.</p>
+        </div>
+        <p>That proviso is where the argument strains. Once money exists, goods no longer spoil, and land can be enclosed indefinitely. Locke's limits look designed for a world before markets — and he knows it.</p>
+
+        <h2 id="market">5. The free market</h2>
+        <p>The market position says: if every transfer was voluntary and no one was defrauded, the resulting distribution is just, however unequal it looks.</p>
+        <p>Redistribution, on this view, is not generosity — it is taking something from someone who owns it, to give it to someone who does not, on the basis of a pattern the taker prefers.</p>
+        <div class="box key">
+          <div class="label">The strongest version</div>
+          <p>It does not claim the outcome is beautiful. It claims the process was legitimate, and that legitimate processes generate legitimate results.</p>
+        </div>
+
+        <h2 id="rawls">6. Rawls and the veil of ignorance</h2>
+        <div class="thinker">
+          <p class="who">John Rawls · <em>A Theory of Justice</em> (1971)</p>
+          <h3 style="margin-top:.2rem">Choose the rules without knowing your place</h3>
+        </div>
+        <p>Rawls asks you to imagine choosing the basic rules of society from behind a <em>veil of ignorance</em>. You do not know whether you will be born rich or poor, clever or not, healthy or disabled.</p>
+        <p>Behind that veil, what would you choose? Not a system that maximises the average — you might be below it. Not a system that forbids all inequality — you might be among the winners.</p>
+        <div class="box def">
+          <div class="label">Rawls's two principles</div>
+          <p><strong>1.</strong> Each person has an equal claim to basic liberties.</p>
+          <p><strong>2.</strong> Social and economic inequalities are justified only if they are attached to positions open to all, <em>and</em> they benefit the least advantaged members of society.</p>
+        </div>
+        <p>The second clause is the <strong>difference principle</strong>. It does not demand equality. It demands that any inequality make the worst-off better than they would be under equality — otherwise it is unjust.</p>
+
+        <h2 id="nozick">7. Nozick's objection</h2>
+        <div class="thinker">
+          <p class="who">Robert Nozick · <em>Anarchy, State, and Utopia</em> (1974)</p>
+          <h3 style="margin-top:.2rem">Justice is historical, not a pattern</h3>
+        </div>
+        <p>Nozick's objection is structural. Rawls's principle is <em>patterned</em>: it says what the distribution should look like now. But patterns cannot survive liberty.</p>
+        <div class="arg">
+          <div class="label">The Wilt Chamberlain argument</div>
+          <ol>
+            <li>Start with whatever distribution you think is just — including a perfectly equal one.</li>
+            <li>People voluntarily pay to watch Chamberlain play. Each payment is fair.</li>
+            <li>After the season, he is vastly richer, and the pattern is broken.</li>
+            <li>To restore the pattern, you must forbid or reverse voluntary transfers.</li>
+          </ol>
+          <p class="concl"><b>Conclusion:</b> maintaining a pattern requires continuous interference with liberty.</p>
+        </div>
+        <p>Nozick's alternative is <em>historical</em>: a holding is just if it was justly acquired (original acquisition), justly transferred (free exchange), or justly rectified if the first two failed. No pattern required.</p>
+
+        <h2 id="objection">8. Can any distribution be just?</h2>
+        <div class="box warn">
+          <div class="label">The unresolved quarrel</div>
+          <p>Both sides have a real point. Nozick is right that patterns require interference with voluntary action. Rawls is right that a process can be voluntary at every step and still produce a distribution no one would have agreed to in advance — especially if the starting point was unjust.</p>
+        </div>
+        <p>The heart of it is historical: who owned what at the beginning, and how did they get it? Nozick's theory is only as good as his account of original acquisition — which is Locke's, proviso and all.</p>
+
+        <h2 id="synthesis">9. Putting them together</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>What each theory lets you keep</caption>
+            <thead>
+              <tr><th scope="col">Theory</th><th scope="col">What justifies a holding</th><th scope="col">What it permits</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Locke</th><td>Labour, within limits</td><td>Enclosure, until the proviso binds</td></tr>
+              <tr><th scope="row">Free market</th><td>Voluntary transfer</td><td>Any inequality the process produces</td></tr>
+              <tr><th scope="row">Rawls</th><td>Benefit to the worst off</td><td>Inequality only where it helps the least advantaged</td></tr>
+              <tr><th scope="row">Nozick</th><td>History: acquisition and transfer</td><td>Entitlements, whatever pattern they form</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="misconceptions">10. Common misconceptions</h2>
+        <div class="box warn">
+          <div class="label">Misconception 1</div>
+          <p>“Rawls wanted equality.” — He wanted the least advantaged to be as well off as possible. That can require large inequalities, if they raise the floor.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 2</div>
+          <p>“Nozick defends the rich.” — He defends entitlement, not wealth. A distribution he would reject can still be very unequal, and one he would accept can be flat.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 3</div>
+          <p>“Locke's labour argument settles it.” — It rests entirely on the proviso, and the proviso may be impossible to meet once land is scarce and money circulates.</p>
+        </div>
+
+        <h2 id="glossary">11. Glossary</h2>
+        <dl class="glossary">
+          <dt>Distributive justice</dt>
+          <dd>How goods and opportunities ought to be shared among people.</dd>
+          <dt>Proviso</dt>
+          <dd>Locke's condition that acquisition must leave enough and as good for others.</dd>
+          <dt>Veil of ignorance</dt>
+          <dd>Rawls's device for choosing principles without knowing your own position.</dd>
+          <dt>Difference principle</dt>
+          <dd>Inequalities are just only when they benefit the least advantaged.</dd>
+          <dt>Historical theory</dt>
+          <dd>Justice depends on how holdings came about, not on the resulting pattern.</dd>
+          <dt>End-state / patterned theory</dt>
+          <dd>Justice is judged by the shape of the distribution at a moment in time.</dd>
+        </dl>
+
+        <section class="quiz" aria-labelledby="quiz-h">
+          <h2 id="quiz-h">Check your understanding</h2>
+          <p class="intro">Five questions. Pick an option to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What does the income parade show?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. It turns a statistic into something visible, and forces the question of whether the arrangement is just — which no average can answer."><span class="box-dot"></span><span>That average income is a misleading summary</span></label>
+        <label class="opt" data-correct="false" data-feedback="The opposite: most are dwarfs and a few are giants."><span class="box-dot"></span><span>That everyone earns roughly the same</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is a thought experiment about justice, not a legal claim."><span class="box-dot"></span><span>That income inequality is illegal</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> What is Locke's proviso?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct — and it is where his argument strains, because money and scarce land make the condition hard to satisfy."><span class="box-dot"></span><span>Acquisition is legitimate only if enough and as good is left for others</span></label>
+        <label class="opt" data-correct="false" data-feedback="That ignores the limits Locke explicitly sets."><span class="box-dot"></span><span>You may take whatever you can carry</span></label>
+        <label class="opt" data-correct="false" data-feedback="For Locke, labour creates the title, not the state."><span class="box-dot"></span><span>Property requires the state's permission</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> What does Rawls's difference principle permit?</p>
+        <label class="opt" data-correct="false" data-feedback="It explicitly allows inequality — that is the point of the second clause."><span class="box-dot"></span><span>Only absolute equality</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. A gap is justified if it raises the floor; otherwise it is unjust."><span class="box-dot"></span><span>Inequalities that benefit the least advantaged</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is a utilitarian standard, which Rawls rejects behind the veil because you might not be among the winners."><span class="box-dot"></span><span>Whichever distribution maximises total wealth</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> What is Nozick's central objection to patterned theories?</p>
+        <label class="opt" data-correct="false" data-feedback="The objection is structural, not about complexity."><span class="box-dot"></span><span>That they are too complicated to apply</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. The Wilt Chamberlain case shows any pattern is destabilised by free exchange, so preserving it means restricting liberty."><span class="box-dot"></span><span>That maintaining a pattern requires continuous interference with voluntary transfers</span></label>
+        <label class="opt" data-correct="false" data-feedback="He is not arguing from the interests of the rich, but from entitlement and liberty."><span class="box-dot"></span><span>That patterns are unjust to the rich</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Why does the debate remain unresolved?</p>
+        <label class="opt" data-correct="false" data-feedback="It is a philosophical disagreement, not an empirical one."><span class="box-dot"></span><span>Because neither side has enough data</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Nozick's process objection and Rawls's outcome objection both have force, and the argument turns on the justice of original acquisition."><span class="box-dot"></span><span>Because voluntary steps can produce a distribution no one would have agreed to, and history of acquisition is contested</span></label>
+        <label class="opt" data-correct="false" data-feedback="The disagreement is about justice, not calculation."><span class="box-dot"></span><span>Because philosophers disagree about arithmetic</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+
+    <div class="level" data-level="eli10" hidden>
+
+      <div class="objectives">
+        <h2>What you'll learn</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why some people have much more than others</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Four ideas about who should own what</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why “it's fair because they earned it” is not the end of the argument</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms-e">1. Big words, made small</a></li>
+          <li><a href="#parade-e">2. The parade of incomes</a></li>
+          <li><a href="#fight-e">3. Freedom vs fairness</a></li>
+          <li><a href="#locke-e">4. Locke: you made it, you own it</a></li>
+          <li><a href="#market-e">5. The market knows best</a></li>
+          <li><a href="#rawls-e">6. Rawls: design it without knowing your place</a></li>
+          <li><a href="#nozick-e">7. Nozick: fairness has no history</a></li>
+          <li><a href="#objection-e">8. Can any distribution be just?</a></li>
+          <li><a href="#compare-e">9. Four answers at a glance</a></li>
+          <li><a href="#quiz-e">Check yourself</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms-e">1. Big words, made small</h2>
+        <div class="box def">
+          <div class="label">Plain words</div>
+          <p><span class="term">Own</span> — it's yours, and other people can't just take it.</p>
+          <p><span class="term">Fair share</span> — how much each person should get.</p>
+          <p><span class="term">Inequality</span> — when some people have much more than others.</p>
+          <p><span class="term">Tax</span> — money the government takes to pay for things everyone uses.</p>
+        </div>
+
+        <h2 id="parade-e">2. The parade of incomes</h2>
+        <p>Imagine everyone in the country walks past you in a line.</p>
+        <p>They go from the poorest to the richest. And their <strong>height</strong> shows how much money they have.</p>
+        <p>Most people would be very short. Near the end, people get tall. And at the very back, a few would be giants — taller than the buildings.</p>
+        <p>That's what money looks like when you draw it.</p>
+        <p>Now the question: <em>is that fair?</em></p>
+
+        <h2 id="fight-e">3. Freedom vs fairness</h2>
+        <p>Two ideas pull against each other here.</p>
+        <div class="box key">
+          <div class="label">The fight</div>
+          <p><strong>Freedom:</strong> people should keep what they earn. If you build something and sell it, the money is yours.</p>
+          <p><strong>Fairness:</strong> it doesn't matter how you got it — if others have almost nothing, something is wrong.</p>
+        </div>
+
+        <h2 id="locke-e">4. Locke: you made it, you own it</h2>
+        <div class="thinker">
+          <p class="who">John Locke · 1632–1704</p>
+          <h3 style="margin-top:.2rem">Work makes it yours</h3>
+        </div>
+        <p>Locke said: the world belongs to everyone at the start.</p>
+        <p>But if you pick apples from a wild tree, the apples are yours. Why? Because you did the work. You mixed your effort into them.</p>
+        <p>So owning things comes from working, not from asking permission.</p>
+        <div class="box warn">
+          <div class="label">But there's a catch</div>
+          <p>Locke added a rule: you can only take what you can use, and you must leave <em>enough and as good</em> for other people.</p>
+          <p>That rule is hard to keep once land runs out — and once money exists, nothing ever goes bad, so people can keep collecting.</p>
+        </div>
+
+        <h2 id="market-e">5. The market knows best</h2>
+        <p>Some people say: if nobody cheated, and every deal was fair, then the result is fair too.</p>
+        <p>Even if some people end up with a lot and others with very little.</p>
+        <p>Because nobody took anything. Everything was bought, sold or given, freely.</p>
+        <p>So taking money from the rich to help the poor isn't kindness — it's taking something that belongs to someone else.</p>
+
+        <h2 id="rawls-e">6. Rawls: design it without knowing your place</h2>
+        <div class="thinker">
+          <p class="who">John Rawls · 1921–2002</p>
+          <h3 style="margin-top:.2rem">The veil of ignorance</h3>
+        </div>
+        <p>Rawls asks you to imagine something.</p>
+        <p>You have to choose the rules of society. But you don't know who you'll be. You don't know if you'll be born rich or poor, healthy or sick, clever or not.</p>
+        <p>What rules would you pick?</p>
+        <p>You wouldn't pick “the richest people get everything” — because you might be poor.</p>
+        <p>You wouldn't pick “everyone gets exactly the same” either — because a bit of inequality can make everyone better off.</p>
+        <div class="box def">
+          <div class="label">Rawls's answer</div>
+          <p>Inequality is okay <strong>only if it helps the worst-off people</strong>.</p>
+          <p>If the poorest person is better off with the gap than without it, the gap is allowed.</p>
+        </div>
+
+        <h2 id="nozick-e">7. Nozick: fairness has no history</h2>
+        <div class="thinker">
+          <p class="who">Robert Nozick · 1938–2002</p>
+          <h3 style="margin-top:.2rem">It depends how you got it</h3>
+        </div>
+        <p>Nozick said Rawls is making a mistake.</p>
+        <p>Rawls looks at the <em>shape</em> of the money — who has how much right now. Nozick says that's not the question.</p>
+        <p>The question is: <strong>how did they get it?</strong></p>
+        <p>His example: start with everyone equal. Then people choose to pay to watch a great basketball player. Nobody is forced. After a year, he's rich.</p>
+        <p>The shape changed. But every single payment was fair.</p>
+        <p>So Nozick says: to keep things “even”, you'd have to stop people giving their money to whoever they want.</p>
+
+        <h2 id="objection-e">8. Can any distribution be just?</h2>
+        <div class="box warn">
+          <div class="label">The problem nobody has solved</div>
+          <p>Nozick is right that forcing a shape means interfering with free choices.</p>
+          <p>Rawls is right that a result can come from fair steps and still be one nobody would agree to in advance.</p>
+        </div>
+        <p>And there is a deeper question underneath both: who owned what at the very beginning, and how did they get it? If the start was unfair — land taken, people enslaved — then everything built on it is questionable.</p>
+
+        <h2 id="compare-e">9. Four answers at a glance</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>Who gets what</caption>
+            <thead>
+              <tr><th scope="col">Idea</th><th scope="col">It says you can keep it because…</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Locke</th><td>You worked for it</td></tr>
+              <tr><th scope="row">Market</th><td>Someone freely gave it to you</td></tr>
+              <tr><th scope="row">Rawls</th><td>Only if the poorest are better off too</td></tr>
+              <tr><th scope="row">Nozick</th><td>You got it fairly, however unequal that looks</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="quiz" aria-labelledby="quiz-e">
+          <h2 id="quiz-e">Check yourself</h2>
+          <p class="intro">Five questions. Pick an answer to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What does the parade of incomes show?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. Most are short, a few are giants."><span class="box-dot"></span><span>Most people have much less than the average, and a few have enormous amounts</span></label>
+        <label class="opt" data-correct="false" data-feedback="The opposite is the point."><span class="box-dot"></span><span>Everyone earns the same</span></label>
+        <label class="opt" data-correct="false" data-feedback="The parade is about how money is spread."><span class="box-dot"></span><span>Money is not important</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> What did Locke say makes something yours?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. You mixed your effort into it."><span class="box-dot"></span><span>Your work</span></label>
+        <label class="opt" data-correct="false" data-feedback="Locke added limits — you must leave enough for others."><span class="box-dot"></span><span>Whoever takes it first, no matter what</span></label>
+        <label class="opt" data-correct="false" data-feedback="For Locke, work creates the claim, not permission."><span class="box-dot"></span><span>The government giving it to you</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> What is Rawls's test for whether inequality is okay?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. If the poorest are better off with the gap, it's allowed."><span class="box-dot"></span><span>Does it help the worst-off people?</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is a different standard, and Rawls rejected it."><span class="box-dot"></span><span>Is the total amount bigger?</span></label>
+        <label class="opt" data-correct="false" data-feedback="Rawls used the veil of ignorance, not a vote."><span class="box-dot"></span><span>Do most people agree?</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> What was Nozick's point about the basketball player?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. Everyone paid freely, yet the shape changed. That's why he says the shape isn't the question."><span class="box-dot"></span><span>Fair steps can still produce a very unequal result</span></label>
+        <label class="opt" data-correct="false" data-feedback="He wasn't making a point about sports pay."><span class="box-dot"></span><span>Sports stars are paid too much</span></label>
+        <label class="opt" data-correct="false" data-feedback="He argued the opposite — entitlement, whatever pattern results."><span class="box-dot"></span><span>Nobody should be allowed to be rich</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Why is this argument still not settled?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. Freedom matters, fairness matters, and the history at the very beginning is disputed."><span class="box-dot"></span><span>Because both sides have a real point, and nobody agrees on the starting point</span></label>
+        <label class="opt" data-correct="false" data-feedback="It's a disagreement about justice, not arithmetic."><span class="box-dot"></span><span>Because nobody has done the maths</span></label>
+        <label class="opt" data-correct="false" data-feedback="It has been argued for centuries."><span class="box-dot"></span><span>Because it is a new question</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-4-place-of-liberty.html">← Chapter 4 — The Place of Liberty</a>
+    <a href="lesson-6a-justice-for-everyone.html">Chapter 6a — Justice for Everyone? →</a>
+  </div>
+
+<script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = opt.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
+        });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

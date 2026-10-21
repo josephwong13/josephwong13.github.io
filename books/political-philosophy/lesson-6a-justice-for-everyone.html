@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 6a — Justice for Everyone? · Political Philosophy</title>
+  <meta name="description" content="Who did political philosophy leave out? Gender, race, disability and the limits of formal equality.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
+    @media (max-width: 520px) {
+      .lvl-note { display: none; }
+      .levelbar { gap: .5rem; }
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to content</a>
+
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Chapter 6a · Wolff, 4th ed. (2023)</p>
+    <h1>Justice for Everyone?</h1>
+    <p class="standfirst">Every chapter so far assumed a citizen: adult, able-bodied, usually male, with no one to care for. This is what that assumption hid — and why simply adding the missing people is not enough.</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
+  </header>
+
+  <div class="levelbar" role="group" aria-label="Reading level">
+    <span class="lbl">Reading level</span>
+    <div class="seg">
+      <button class="seg-btn" type="button" data-level="normal" aria-pressed="true">Standard</button>
+      <button class="seg-btn" type="button" data-level="eli10" aria-pressed="false">Explain simply</button>
+    </div>
+    <span class="lvl-note" id="lvlNote">Written for a first-time reader</span>
+  </div>
+
+  <div id="lesson">
+    <div class="level" data-level="normal">
+
+      <div class="objectives">
+        <h2>By the end you'll be able to</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain what Wolff means by an “oversight”</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Say why the public/private split hid gender injustice</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Distinguish formal equality from structural injustice</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain why simply “adding groups” is not enough</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms">1. Words you'll need</a></li>
+          <li><a href="#question">2. Who did the great thinkers forget?</a></li>
+          <li><a href="#oversight">3. What an “oversight” is</a></li>
+          <li><a href="#gender">4. Gender and the private sphere</a></li>
+          <li><a href="#race">5. Race: from formal to structural</a></li>
+          <li><a href="#disability">6. Disability and sexual orientation</a></li>
+          <li><a href="#objection">7. Is adding groups enough?</a></li>
+          <li><a href="#synthesis">8. Putting it together</a></li>
+          <li><a href="#misconceptions">9. Common misconceptions</a></li>
+          <li><a href="#glossary">10. Glossary</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms">1. Words you'll need</h2>
+        <p class="lede">Every chapter so far quietly assumed a citizen: an adult, able-bodied, usually male, and living inside one country. This chapter asks what that assumption cost.</p>
+        <div class="box def">
+          <div class="label">Definitions</div>
+          <p><span class="term">Oversight</span> — Wolff's term for a blind spot: not a refuted argument, but a question never asked.</p>
+          <p><span class="term">Domestic justice</span> — justice <em>within</em> a single state, as opposed to across borders.</p>
+          <p><span class="term">Formal equality</span> — the same rules applied to everyone on paper.</p>
+          <p><span class="term">Structural injustice</span> — disadvantage produced by how institutions are arranged, without anyone intending it.</p>
+          <p><span class="term">Public/private divide</span> — the assumption that the household is outside politics and therefore outside justice.</p>
+        </div>
+
+        <h2 id="question">2. Who did the great thinkers forget?</h2>
+        <p>Hobbes's state of nature is populated by heads of households. Locke's property owner is someone who works land. Rawls's chooser behind the veil is an adult with a life plan.</p>
+        <p>Each is a specific kind of person. The theories are not obviously wrong about that person — they are silent about everyone else.</p>
+        <div class="box key">
+          <div class="label">The pattern</div>
+          <p>The excluded are not random. They are the people whose labour, care or dependence made the theorist's independent citizen possible in the first place.</p>
+        </div>
+
+        <h2 id="oversight">3. What an “oversight” is</h2>
+        <p>Wolff names three thinkers as having committed oversights: <strong>Marx</strong>, <strong>Wollstonecraft</strong> and <strong>Mill</strong>.</p>
+        <p>That list is deliberately odd. Wollstonecraft and Mill are included not because they ignored injustice, but because each saw one axis clearly and another not at all. Marx saw class and treated other divisions as secondary. Mill defended liberty while excluding those he considered uncivilised.</p>
+        <p>An oversight, then, is not stupidity. It is what happens when a theory is built around the problems its author could see.</p>
+
+        <h2 id="gender">4. Gender and the private sphere</h2>
+        <div class="thinker">
+          <p class="who">Mary Wollstonecraft · <em>A Vindication of the Rights of Woman</em> (1792)</p>
+          <h3 style="margin-top:.2rem">The personal is political</h3>
+        </div>
+        <p>Wollstonecraft's target is not the law but the household. Women were excluded from education, property and the vote — and the exclusion was defended as natural, domestic and therefore outside politics.</p>
+        <p>Her argument is that this is circular: you deny someone education, then cite their lack of education as proof they should not be trusted with decisions.</p>
+        <div class="box key">
+          <div class="label">The move that mattered</div>
+          <p>If the household is where power is exercised — who eats last, who leaves school, who is safe — then calling it “private” does not remove it from justice. It removes it from scrutiny.</p>
+        </div>
+        <p>Later feminists compressed this into a slogan: <em>the personal is political</em>. It is a claim about scope, not about banning family life.</p>
+
+        <h2 id="race">5. Race: from formal to structural</h2>
+        <p>Formal equality is easy to state: the same rules for everyone, regardless of race. Most legal systems now claim it.</p>
+        <p>The difficulty is that identical rules applied to unequal starting points reproduce the inequality. If your grandparents could not own property, a neutral inheritance law is not neutral in effect.</p>
+        <div class="box def">
+          <div class="label">The distinction that matters</div>
+          <p><strong>Formal</strong>: no rule mentions race. <strong>Structural</strong>: the outcome still tracks race, because history is carried in wealth, housing, schooling and policing.</p>
+        </div>
+        <p>This is why “I don't see race” is not a neutral position. It describes the rules while ignoring the starting line.</p>
+
+        <h2 id="disability">6. Disability and sexual orientation</h2>
+        <p>Both cases expose a hidden assumption in liberal theory: that justice means treating like people alike.</p>
+        <p>For disability, the <em>social model</em> argues the disadvantage lies less in bodies than in environments — stairs instead of ramps, exams that measure speed, workplaces built for one kind of body. Treating everyone identically preserves the barrier.</p>
+        <p>For sexual orientation, the issue is not only legal permission but the baseline against which “normal” is measured. Formal neutrality can leave a majority's way of life as the default, with everyone else defined by departure from it.</p>
+        <div class="box key">
+          <div class="label">Why this troubles the earlier chapters</div>
+          <p>Chapter 4's harm principle protects you from interference. But it says little about being able to participate. Liberty and capability are not the same thing.</p>
+        </div>
+
+        <h2 id="objection">7. Is adding groups enough?</h2>
+        <div class="box warn">
+          <div class="label">The objection</div>
+          <p>The obvious fix is to add the missing groups to the theory. But that may not work. If the framework was built around an independent adult with no caring responsibilities, adding women to it does not address the fact that the framework assumes someone else is doing the caring — usually a woman.</p>
+        </div>
+        <p>The deeper challenge is that these are not separate problems bolted onto a working theory. They question the picture of society the theory started from: a collection of independent individuals rather than people who depend on each other.</p>
+
+        <h2 id="synthesis">8. Putting it together</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>What each oversight exposes</caption>
+            <thead>
+              <tr><th scope="col">Axis</th><th scope="col">What was hidden</th><th scope="col">What it challenges</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Gender</th><td>Power inside the household</td><td>The public/private divide</td></tr>
+              <tr><th scope="row">Race</th><td>Inherited disadvantage</td><td>Formal equality</td></tr>
+              <tr><th scope="row">Disability</th><td>Barriers built into environments</td><td>The “same rules for all” model</td></tr>
+              <tr><th scope="row">Orientation</th><td>The majority as default</td><td>Neutrality as fairness</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="misconceptions">9. Common misconceptions</h2>
+        <div class="box warn">
+          <div class="label">Misconception 1</div>
+          <p>“An oversight means the thinker was wrong.” — It means a question went unasked. Much of Hobbes, Locke and Rawls survives; what changes is the scope of the question.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 2</div>
+          <p>“Formal equality ends injustice.” — It removes explicit discrimination from the rulebook while leaving inherited advantage intact.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 3</div>
+          <p>“Adding women and minorities fixes the theory.” — Only if the theory's basic picture of a self-sufficient adult was right to begin with. That picture is exactly what is in dispute.</p>
+        </div>
+
+        <h2 id="glossary">10. Glossary</h2>
+        <dl class="glossary">
+          <dt>Oversight</dt>
+          <dd>A question a theory never asks, as distinct from an error it argues for.</dd>
+          <dt>Domestic justice</dt>
+          <dd>Justice as it operates inside a single state.</dd>
+          <dt>Structural injustice</dt>
+          <dd>Disadvantage produced by institutional arrangements rather than individual intent.</dd>
+          <dt>Social model of disability</dt>
+          <dd>The view that disability arises from barriers in society, not only from bodies.</dd>
+          <dt>Public/private divide</dt>
+          <dd>The assumption that households are outside the scope of political justice.</dd>
+        </dl>
+
+        <section class="quiz" aria-labelledby="quiz-h">
+          <h2 id="quiz-h">Check your understanding</h2>
+          <p class="intro">Five questions. Pick an option to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What does Wolff mean by an 'oversight'?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. It is a blind spot, not a refuted argument — which is why much of the original theory survives even after the oversight is named."><span class="box-dot"></span><span>A question the theory never asks</span></label>
+        <label class="opt" data-correct="false" data-feedback="Contradictions are different. An oversight is silence, not inconsistency."><span class="box-dot"></span><span>A logical contradiction in the argument</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is about scope — who the theory was built to describe."><span class="box-dot"></span><span>A factual error about history</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> Why does the private/public divide matter for gender justice?</p>
+        <label class="opt" data-correct="false" data-feedback="That is the assumption Wollstonecraft attacks, not a reason to accept it."><span class="box-dot"></span><span>Because households are naturally apolitical</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. If decisions about education, money and safety happen at home, the label 'private' hides them rather than removing them from justice."><span class="box-dot"></span><span>Because power is exercised inside the household, and calling it private removes it from scrutiny</span></label>
+        <label class="opt" data-correct="false" data-feedback="They were affected — they were excluded from property, education and the vote."><span class="box-dot"></span><span>Because women were not affected by law</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> What is the difference between formal and structural equality?</p>
+        <label class="opt" data-correct="false" data-feedback="The reverse: formal equality is about rules on paper; structural injustice is about outcomes produced by history and institutions."><span class="box-dot"></span><span>Formal equality is about outcomes, structural about rules</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Identical rules applied to unequal starting points reproduce the inequality."><span class="box-dot"></span><span>Formal equality removes explicit discrimination; structural injustice persists through inherited disadvantage</span></label>
+        <label class="opt" data-correct="false" data-feedback="The distinction is the whole point of the section."><span class="box-dot"></span><span>They are the same thing described differently</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> What does the social model of disability claim?</p>
+        <label class="opt" data-correct="false" data-feedback="That is the model it opposes."><span class="box-dot"></span><span>That disability is only a medical condition</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Stairs, timed exams and workplace design disable people as much as bodies do — which is why identical treatment preserves the barrier."><span class="box-dot"></span><span>That disadvantage comes largely from barriers in environments and institutions</span></label>
+        <label class="opt" data-correct="false" data-feedback="It calls for different treatment, not no treatment."><span class="box-dot"></span><span>That disability should be ignored by the law</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Why is 'adding the missing groups' not enough?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. If the framework assumes someone with no caring responsibilities, adding women to it leaves the assumption — and the unpaid care behind it — untouched."><span class="box-dot"></span><span>Because the theory's basic picture of an independent adult may itself be the problem</span></label>
+        <label class="opt" data-correct="false" data-feedback="The objection is conceptual, not a matter of counting."><span class="box-dot"></span><span>Because there are too many groups to add</span></label>
+        <label class="opt" data-correct="false" data-feedback="They can; the question is whether doing so addresses the underlying assumption."><span class="box-dot"></span><span>Because groups cannot be added to theories</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+
+    <div class="level" data-level="eli10" hidden>
+
+      <div class="objectives">
+        <h2>What you'll learn</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Who the famous thinkers left out</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why “same rules for everyone” isn't always fair</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why just adding people to the list isn't enough</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms-e">1. Big words, made small</a></li>
+          <li><a href="#forgot-e">2. Who did the great thinkers forget?</a></li>
+          <li><a href="#blind-e">3. Three famous blind spots</a></li>
+          <li><a href="#gender-e">4. What about women?</a></li>
+          <li><a href="#race-e">5. What about race?</a></li>
+          <li><a href="#disability-e">6. What about disability?</a></li>
+          <li><a href="#objection-e">7. Is adding people enough?</a></li>
+          <li><a href="#compare-e">8. What each blind spot shows</a></li>
+          <li><a href="#quiz-e">Check yourself</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms-e">1. Big words, made small</h2>
+        <div class="box def">
+          <div class="label">Plain words</div>
+          <p><span class="term">Oversight</span> — something you didn't notice. Not a lie, just a blind spot.</p>
+          <p><span class="term">Formal equality</span> — the same rule for everyone, on paper.</p>
+          <p><span class="term">Structural</span> — built into how things are set up, not into one person's choice.</p>
+        </div>
+
+        <h2 id="forgot-e">2. Who did the great thinkers forget?</h2>
+        <p>Look closely at the earlier chapters.</p>
+        <p>Hobbes imagines a man with a house. Locke imagines someone who owns land. Rawls imagines an adult with a plan for their life.</p>
+        <p>Notice who is missing. Almost every example is a grown man who doesn't have to look after anyone.</p>
+        <p>Where are the women? The children? The people who need care? The people whose country was taken?</p>
+
+        <h2 id="blind-e">3. Three famous blind spots</h2>
+        <p>Wolff names three thinkers who had blind spots: <strong>Marx</strong>, <strong>Wollstonecraft</strong> and <strong>Mill</strong>.</p>
+        <p>That's a strange list — because two of them fought for justice.</p>
+        <p>But that's the point. You can see one unfairness very clearly and miss another completely.</p>
+
+        <h2 id="gender-e">4. What about women?</h2>
+        <div class="thinker">
+          <p class="who">Mary Wollstonecraft · 1759–1797</p>
+          <h3 style="margin-top:.2rem">The home is political too</h3>
+        </div>
+        <p>For a long time, women could not vote, own property, or go to university.</p>
+        <p>People said: that's fine, because a woman's place is the home. And the home is private — not politics.</p>
+        <p>Wollstonecraft said that's a trick.</p>
+        <p>If power is used inside the home — who eats last, who leaves school, who is safe — then calling it “private” doesn't make it fair. It just means nobody checks.</p>
+        <p>Later, people summed this up: <em>the personal is political</em>.</p>
+
+        <h2 id="race-e">5. What about race?</h2>
+        <p>Today most laws say: the same rules for everyone, whatever your race.</p>
+        <p>That sounds fair. But it isn't the whole story.</p>
+        <div class="box key">
+          <div class="label">A simple example</div>
+          <p>Two runners start a race. One starts at the line. The other starts 100 metres back.</p>
+          <p>Now give them exactly the same rules. Is the race fair?</p>
+        </div>
+        <p>Same rules on paper can still produce very different results — because people start in different places.</p>
+
+        <h2 id="disability-e">6. What about disability?</h2>
+        <p>Here's something easy to miss.</p>
+        <p>If a building has stairs and no ramp, who is stopped? Not everyone.</p>
+        <p>The problem isn't only the person's body. It's the building.</p>
+        <p>Same with a test that measures speed, or a job that assumes you can stand all day. The rules are the same for everyone — and that's exactly what keeps some people out.</p>
+
+        <h2 id="objection-e">7. Is adding people enough?</h2>
+        <div class="box warn">
+          <div class="label">The problem</div>
+          <p>Easy fix: just add women and other missing people to the theory.</p>
+          <p>But the theory was built around a person with no one to look after. Add women to it and you still haven't asked: who does the caring?</p>
+        </div>
+        <p>The real question is bigger. These thinkers imagined society as a bunch of independent adults. But nobody is independent. We all start as children, and most of us need help at some point.</p>
+
+        <h2 id="compare-e">8. What each blind spot shows</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>What got hidden</caption>
+            <thead>
+              <tr><th scope="col">About…</th><th scope="col">What was hidden</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Women</th><td>Power inside the home</td></tr>
+              <tr><th scope="row">Race</th><td>Starting from further back</td></tr>
+              <tr><th scope="row">Disability</th><td>Barriers built into buildings and rules</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="quiz" aria-labelledby="quiz-e">
+          <h2 id="quiz-e">Check yourself</h2>
+          <p class="intro">Five questions. Pick an answer to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What is an “oversight”?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — a blind spot, not a lie."><span class="box-dot"></span><span>Something the thinker simply didn't notice</span></label>
+        <label class="opt" data-correct="false" data-feedback="Wolff is not accusing them of dishonesty."><span class="box-dot"></span><span>A deliberate lie</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is about who the theory was built for."><span class="box-dot"></span><span>A maths mistake</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> Why did people say the home is “private”?</p>
+        <label class="opt" data-correct="false" data-feedback="That is exactly the assumption Wollstonecraft challenged."><span class="box-dot"></span><span>Because nothing important happens there</span></label>
+        <label class="opt" data-correct="true" data-feedback="Yes — calling it private meant nobody looked at who had power there."><span class="box-dot"></span><span>Because they wanted to keep power inside it out of sight</span></label>
+        <label class="opt" data-correct="false" data-feedback="Obviously not the point."><span class="box-dot"></span><span>Because homes are not real</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> Why can “same rules for everyone” still be unfair?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — like one runner starting 100 metres back."><span class="box-dot"></span><span>Because people start in different places</span></label>
+        <label class="opt" data-correct="false" data-feedback="Rules matter; the point is about the starting line."><span class="box-dot"></span><span>Because rules are always bad</span></label>
+        <label class="opt" data-correct="false" data-feedback="Not the argument."><span class="box-dot"></span><span>Because nobody follows rules</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> What stops a person in a wheelchair: their body or the building?</p>
+        <label class="opt" data-correct="false" data-feedback="The social model says barriers matter too."><span class="box-dot"></span><span>Only their body</span></label>
+        <label class="opt" data-correct="true" data-feedback="Yes. The same rules for everyone can keep some people out."><span class="box-dot"></span><span>Often the building — stairs with no ramp</span></label>
+        <label class="opt" data-correct="false" data-feedback="That misses the point entirely."><span class="box-dot"></span><span>Neither — it's a choice</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Why isn't “just add women and other groups” enough?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — and adding people doesn't fix that assumption."><span class="box-dot"></span><span>Because the theory imagines people with no one to care for</span></label>
+        <label class="opt" data-correct="false" data-feedback="It's not about counting."><span class="box-dot"></span><span>Because there are too many groups</span></label>
+        <label class="opt" data-correct="false" data-feedback="They can — but this change goes deeper than adding names."><span class="box-dot"></span><span>Because theories can't change</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-5-distribution-of-property.html">← Chapter 5 — The Distribution of Property</a>
+    <a href="lesson-6b-justice-everywhere.html">Chapter 6b — Justice Everywhere? →</a>
+  </div>
+
+<script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = opt.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
+        });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

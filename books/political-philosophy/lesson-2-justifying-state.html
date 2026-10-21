@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 — Justifying the State · Political Philosophy</title>
+  <meta name="description" content="Why do we owe the state obedience? Consent, tacit consent, utilitarianism and fairness — and why each one fails.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --paper: #FFFBEB;
+      --card: #FFFFFF;
+      --ink: #0F172A;
+      --ink-soft: #3B3A38;
+      --stone: #78716C;
+      --brown: #92400E;
+      --amber: #D97706;
+      --border: #E7E2D6;
+      --muted: #F6F1E4;
+      --muted-fg: #57534E;
+      --green: #2F6B4F;
+      --green-bg: #EAF3EC;
+      --red: #9B2226;
+      --red-bg: #FBEAEA;
+      --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --body: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+      --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --measure: 43rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+    body {
+      font-family: var(--body);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--ink);
+      background: var(--paper);
+      padding: 2rem 1.25rem 4rem;
+      max-width: var(--measure);
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip { position: absolute; left: -999px; top: 0; background: var(--brown); color: #fff; padding: .6rem 1rem; z-index: 20; }
+    .skip:focus { left: 1rem; top: 1rem; }
+    a { color: var(--brown); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    a:hover { color: var(--amber); }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 2px; }
+
+    /* ---------- masthead ---------- */
+    .crumb { font-family: var(--ui); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: 1.6rem; }
+    .crumb a { color: var(--brown); text-decoration: none; }
+    .crumb a:hover { text-decoration: underline; }
+    .chapno { font-family: var(--ui); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brown); font-weight: 600; }
+    h1 { font-family: var(--display); font-size: clamp(2.3rem, 7vw, 3.4rem); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; margin: .35rem 0 .5rem; }
+    .standfirst { font-size: 1.08rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1rem; }
+    .byline { font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .byline strong { color: var(--ink); font-weight: 600; }
+
+    /* ---------- objectives ---------- */
+    .objectives { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1.1rem 1.3rem; margin: 0 0 2rem; }
+    .objectives h2 { font-family: var(--ui); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); font-weight: 600; margin-bottom: .7rem; }
+    .objectives ul { list-style: none; }
+    .objectives li { display: flex; gap: .65rem; font-size: .95rem; line-height: 1.6; margin-bottom: .55rem; }
+    .objectives li:last-child { margin-bottom: 0; }
+    .objectives svg { flex: 0 0 16px; width: 16px; height: 16px; margin-top: .35rem; color: var(--green); }
+
+    /* ---------- table of contents ---------- */
+    .toc { margin: 0 0 2.5rem; padding: 1rem 1.2rem; background: var(--muted); border-left: 3px solid var(--amber); }
+    .toc h2 { font-family: var(--ui); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin-bottom: .5rem; }
+    .toc ol { margin-left: 1.1rem; font-size: .92rem; line-height: 1.9; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--brown); text-decoration: underline; }
+
+    /* ---------- headings ---------- */
+    h2 { font-family: var(--display); font-size: 1.72rem; font-weight: 600; line-height: 1.25; margin: 2.6rem 0 .6rem; }
+    h3 { font-family: var(--display); font-size: 1.28rem; font-weight: 600; margin: 1.8rem 0 .4rem; }
+    h4 { font-family: var(--ui); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-fg); font-weight: 600; margin: 1.4rem 0 .35rem; }
+    p { margin: 0 0 1rem; }
+    .lede { font-size: 1.06rem; }
+    em { font-style: italic; }
+    strong { font-weight: 700; color: var(--ink); }
+    .term { font-style: italic; font-weight: 700; }
+
+    /* ---------- callouts ---------- */
+    .box { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--stone); padding: 1rem 1.2rem; margin: 1.4rem 0; border-radius: 2px; }
+    .box .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--stone); margin-bottom: .4rem; }
+    .box p:last-child { margin-bottom: 0; }
+    .box.def { border-left-color: var(--brown); background: #FFFDF6; }
+    .box.def .label { color: var(--brown); }
+    .box.ctx { border-left-color: var(--stone); background: var(--muted); }
+    .box.key { border-left-color: var(--amber); background: #FFFBF0; }
+    .box.key .label { color: #B45309; }
+    .box.warn { border-left-color: var(--red); background: var(--red-bg); }
+    .box.warn .label { color: var(--red); }
+
+    /* ---------- formal argument ---------- */
+    .arg { margin: 1.3rem 0; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); }
+    .arg .label { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; margin-bottom: .6rem; }
+    .arg ol { margin-left: 1.3rem; font-size: .95rem; line-height: 1.7; }
+    .arg li { margin-bottom: .45rem; }
+    .arg .concl { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed var(--border); font-size: .95rem; }
+    .arg .concl b { font-family: var(--ui); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brown); }
+
+    /* ---------- thinker header ---------- */
+    .thinker { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); }
+    .thinker .who { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); margin-bottom: .2rem; }
+    .thinker h2 { margin-top: .1rem; }
+
+    /* ---------- comparison table ---------- */
+    .tablewrap { overflow-x: auto; margin: 1.4rem 0; border: 1px solid var(--border); background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+    caption { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-fg); text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    thead th { font-family: var(--ui); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); background: var(--muted); }
+    tbody th { font-family: var(--display); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* ---------- timeline ---------- */
+    .timeline { list-style: none; margin: 1.4rem 0; border-left: 2px solid var(--border); padding-left: 1.2rem; }
+    .timeline li { position: relative; margin-bottom: 1.1rem; font-size: .95rem; line-height: 1.6; }
+    .timeline li::before { content: ""; position: absolute; left: -1.53rem; top: .55rem; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+    .timeline .yr { font-family: var(--ui); font-size: .72rem; letter-spacing: .1em; color: var(--brown); font-weight: 700; display: block; }
+
+    /* ---------- glossary ---------- */
+    dl.glossary { margin: 1.2rem 0; }
+    dl.glossary dt { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-top: 1rem; }
+    dl.glossary dd { font-size: .94rem; line-height: 1.7; color: var(--ink-soft); margin: .15rem 0 0; }
+
+    /* ---------- quiz ---------- */
+    .quiz { margin: 3rem 0 1rem; padding: 1.3rem 1.4rem; background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--brown); }
+    .quiz h2 { margin-top: 0; font-size: 1.5rem; }
+    .quiz .intro { font-family: var(--ui); font-size: .82rem; color: var(--muted-fg); margin-bottom: 1.2rem; }
+    .q { margin: 1.4rem 0; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .q:last-of-type { border-bottom: none; }
+    .q > p { font-size: .97rem; margin-bottom: .6rem; }
+    .opt { display: flex; align-items: flex-start; gap: .6rem; padding: .7rem .85rem; margin: .4rem 0; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-size: .91rem; line-height: 1.5; transition: background .18s, border-color .18s; min-height: 44px; }
+    .opt:hover { background: var(--muted); border-color: var(--stone); }
+    .opt .box-dot { flex: 0 0 15px; width: 15px; height: 15px; border: 1.5px solid var(--stone); border-radius: 50%; margin-top: .2rem; }
+    .opt.correct { background: var(--green-bg); border-color: var(--green); font-weight: 700; }
+    .opt.correct .box-dot { background: var(--green); border-color: var(--green); }
+    .opt.wrong { background: var(--red-bg); border-color: var(--red); }
+    .opt.wrong .box-dot { background: var(--red); border-color: var(--red); }
+    .fb { margin-top: .5rem; padding: .55rem .75rem; font-size: .85rem; line-height: 1.55; display: none; border-left: 3px solid; }
+    .fb.show { display: block; }
+    .fb.ok { background: var(--green-bg); border-color: var(--green); color: #1F4A37; }
+    .fb.no { background: var(--red-bg); border-color: var(--red); color: #6E1A1D; }
+    .reveal { width: 100%; margin-top: 1rem; padding: .8rem 1.2rem; min-height: 44px; font-family: var(--ui); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brown); background: var(--muted); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: background .18s; }
+    .reveal:hover { background: #F0E8D5; }
+
+    /* ---------- reading list ---------- */
+    .reading { margin-top: 2.5rem; padding: 1.2rem 1.3rem; background: var(--card); border: 1px solid var(--border); }
+    .reading h2 { margin-top: 0; font-size: 1.35rem; }
+    .reading ol { margin-left: 1.2rem; font-size: .92rem; line-height: 1.7; }
+    .reading li { margin-bottom: .7rem; }
+    .reading .why { display: block; color: var(--muted-fg); font-size: .86rem; }
+
+    .footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--ui); font-size: .8rem; color: var(--muted-fg); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer a { color: var(--brown); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ---------- reading-level switch ---------- */
+    .levelbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem 0 .55rem;
+      margin: 0 0 1.8rem;
+    }
+    .levelbar .lbl { font-family: var(--ui); font-size: .66rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted-fg); font-weight: 700; }
+    .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; }
+    .seg-btn {
+      font-family: var(--ui); font-size: .79rem; font-weight: 600;
+      padding: .5rem 1rem; min-height: 44px;
+      border: none; border-radius: 999px; background: transparent;
+      color: var(--muted-fg); cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+    .seg-btn:hover { color: var(--ink); background: var(--muted); }
+    .seg-btn[aria-pressed="true"] { background: var(--brown); color: #fff; }
+    .seg-btn[aria-pressed="true"]:hover { background: #7A360C; color: #fff; }
+    .lvl-note { font-family: var(--ui); font-size: .72rem; color: var(--muted-fg); }
+    .level[hidden] { display: none; }
+    h2[id] { scroll-margin-top: 5rem; }
+
+    @media (max-width: 520px) {
+      .lvl-note { display: none; }
+      .levelbar { gap: .5rem; }
+      body { padding: 1.4rem .9rem 3rem; font-size: .98rem; }
+      h2 { font-size: 1.5rem; }
+      .tablewrap { font-size: .85rem; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lesson">Skip to content</a>
+
+  <p class="crumb"><a href="../../index.html">Hub</a> / <a href="../index.html">Books</a> / <a href="index.html">Political Philosophy</a></p>
+
+  <header>
+    <p class="chapno">Chapter 2 · Wolff, 4th ed. (2023)</p>
+    <h1>Justifying the State</h1>
+    <p class="standfirst">We treat the state's authority as obvious. But you never agreed to it, and no one asked. Four attempts have been made to show you are bound anyway — and each one leaves something out.</p>
+    <p class="byline">Reading time <strong id="readTime">≈ 12 min</strong> · <span id="readNote">No prior philosophy required</span></p>
+  </header>
+
+  <div class="levelbar" role="group" aria-label="Reading level">
+    <span class="lbl">Reading level</span>
+    <div class="seg">
+      <button class="seg-btn" type="button" data-level="normal" aria-pressed="true">Standard</button>
+      <button class="seg-btn" type="button" data-level="eli10" aria-pressed="false">Explain simply</button>
+    </div>
+    <span class="lvl-note" id="lvlNote">Written for a first-time reader</span>
+  </div>
+
+  <div id="lesson">
+    <div class="level" data-level="normal">
+
+      <div class="objectives">
+        <h2>By the end you'll be able to</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Say what a state is, and what would count as justifying one</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>State four attempts to ground political obligation, and the standard objection to each</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Explain Hume's objection to tacit consent</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Distinguish legitimacy from obligation</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms">1. Words you'll need</a></li>
+          <li><a href="#question">2. The question: you never signed anything</a></li>
+          <li><a href="#setup">3. What would count as a justification?</a></li>
+          <li><a href="#consent">4. Consent theory</a></li>
+          <li><a href="#tacit">5. Tacit consent, and Hume's objection</a></li>
+          <li><a href="#util">6. Utilitarianism</a></li>
+          <li><a href="#fairness">7. The principle of fairness</a></li>
+          <li><a href="#objection">8. The hard objection</a></li>
+          <li><a href="#synthesis">9. Putting them together</a></li>
+          <li><a href="#misconceptions">10. Common misconceptions</a></li>
+          <li><a href="#glossary">11. Glossary</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms">1. Words you'll need</h2>
+        <p class="lede">Chapter 1 asked whether we could live without a state. This chapter assumes we need one, and asks a sharper question: what gives <em>this</em> state the right to command <em>me</em>?</p>
+        <div class="box def">
+          <div class="label">Definitions</div>
+          <p><span class="term">Political obligation</span> — a citizen's moral duty to obey the state. Not fear of punishment: a duty.</p>
+          <p><span class="term">Consent</span> — agreement given, in the paradigm case, explicitly and knowingly.</p>
+          <p><span class="term">Tacit consent</span> — agreement inferred from what you <em>don't</em> do: staying, not leaving, accepting benefits.</p>
+          <p><span class="term">Legitimacy</span> — whether the state's claim to authority is justified. Distinct from whether you personally owe it obedience.</p>
+          <p><span class="term">Philosophical anarchism</span> — the view that no state is legitimate, held by people who nonetheless obey the law and pay their taxes.</p>
+        </div>
+
+        <h2 id="question">2. The question: you never signed anything</h2>
+        <p>You did not agree to be governed. You were born here, registered, schooled, and now taxed. If you stop paying, eventually men with guns will come — legally, politely, but armed.</p>
+        <p>What makes that different from a protection racket? The answer most people reach for is: <em>the government has the right</em>. This chapter asks what could make that true.</p>
+        <div class="box key">
+          <div class="label">Why it matters practically</div>
+          <p>If no answer works, it does not follow that we should abolish the state. It follows that a great deal of what states do rests on something other than the consent of the governed — and we should know what.</p>
+        </div>
+
+        <h2 id="setup">3. What would count as a justification?</h2>
+        <p>Wolff starts by clarifying the target. A state is not just whoever has the guns; it claims a <em>monopoly of legitimate force</em> over a territory, and it claims authority over everyone inside it — citizens and visitors alike.</p>
+        <p>So a justification has to show something strong: that there are <strong>universal political obligations</strong>. Not that most people ought to obey, or that obedience is usually wise, but that everyone subject to the state is bound.</p>
+        <div class="box warn">
+          <div class="label">A distinction to hold onto</div>
+          <p>Justifying <em>having a state</em> is easier than justifying <em>this</em> state. You might prove that some authority is necessary and still fail to show that the particular one you live under has a claim on you.</p>
+        </div>
+
+        <h2 id="consent">4. Consent theory</h2>
+        <div class="thinker">
+          <p class="who">Locke · <em>Second Treatise</em>, ch. VIII</p>
+          <h3 style="margin-top:.2rem">Obligation must be self-assumed</h3>
+        </div>
+        <p>Locke's starting point is that we are naturally free. No one is born a subject. So the only thing that could place you under a government is your own agreement:</p>
+        <div class="arg">
+          <div class="label">The consent argument</div>
+          <ol>
+            <li>Humans are by nature free and equal, subject to no political power.</li>
+            <li>The only way to become legitimately subject to a government is to consent to it.</li>
+            <li>Therefore, political obligation rests on consent — and nothing else.</li>
+          </ol>
+          <p class="concl"><b>Upshot:</b> no consent, no obligation, however beneficial the state may be.</p>
+        </div>
+        <p>The attraction is obvious: it makes authority depend on you. The difficulty is equally obvious. Almost nobody has consented. You didn't sign at birth, and you have no memory of agreeing.</p>
+
+        <h2 id="tacit">5. Tacit consent, and Hume's objection</h2>
+        <p>Locke sees the problem and offers a patch. Consent need not be spoken. If you remain in a territory, enjoy its protection, and could in principle leave, your staying counts as agreement — <em>tacit</em> consent.</p>
+        <p>David Hume found this absurd, and his objections are still the ones to beat.</p>
+        <div class="arg">
+          <div class="label">Hume's objections</div>
+          <ol>
+            <li><b>Staying isn't choosing.</b> A poor labourer cannot emigrate; leaving means abandoning family, work, language and everything he owns. A choice with only ruinous options isn't a choice.</li>
+            <li><b>Birth isn't consent.</b> We are born into a government as we are born into a language. Nobody thinks speaking English means agreeing to English politics.</li>
+            <li><b>The sailor.</b> Hume's image: a man who stays on a leaking ship because the shore is hostile has not agreed to the voyage.</li>
+          </ol>
+          <p class="concl"><b>Upshot:</b> tacit consent explains obedience, not obligation.</p>
+        </div>
+        <p>Note what Hume is doing. He is not denying that we often obey. He is denying that obedience is evidence of agreement — which is exactly what consent theory needs it to be.</p>
+
+        <h2 id="util">6. Utilitarianism</h2>
+        <p>The utilitarian sidesteps consent entirely. The test of the state is not whether you agreed, but whether it produces better consequences than the alternatives.</p>
+        <p>On this view, the state is justified because life under it is safer, richer, and freer than life without it — for everyone counted equally. The fact that you never consented is irrelevant, in the same way that you needn't consent to a vaccination programme that saves your life.</p>
+        <div class="box warn">
+          <div class="label">The standard objection</div>
+          <p>If consequences alone justify coercion, then sacrificing an innocent person for the greater good is justified whenever the sums favour it. Most people think that is a reductio: it shows the theory permits what no legitimate state may do.</p>
+        </div>
+
+        <h2 id="fairness">7. The principle of fairness</h2>
+        <p>A fourth route, associated with H. L. A. Hart and Rawls: obligation arises from <em>fair play</em>. If you accept the benefits of a cooperative scheme, you owe your share of the burden. You didn't ask for the road network, but you use it.</p>
+        <div class="arg">
+          <div class="label">The fairness argument</div>
+          <ol>
+            <li>A just scheme of cooperation produces benefits for those who take part.</li>
+            <li>If you voluntarily accept those benefits, you acquire an obligation to do your part.</li>
+            <li>The state is such a scheme.</li>
+          </ol>
+          <p class="concl"><b>Upshot:</b> you owe obedience because you have been taking, not because you agreed.</p>
+        </div>
+        <p>Nozick's reply is the sharpest: benefits alone don't oblige you. If a radio station broadcasts into your flat, you don't owe it money for the music you can't easily avoid. Acceptance must be <em>voluntary</em> — and with public goods like defence and law, it never is.</p>
+
+        <h2 id="objection">8. The hard objection</h2>
+        <p>Put the four side by side and a pattern appears: each theory identifies something real — agreement, benefit, consequences — and then overreaches in claiming it generates an obligation for <em>everyone</em>.</p>
+        <p>This is the position A. John Simmons calls <span class="term">philosophical anarchism</span>. It is not a call to throw stones. It says: no existing state is legitimate in the strong sense, because no general obligation has been established — and yet we may still have reasons to obey particular laws, and states may still be justified in doing many things.</p>
+        <div class="box key">
+          <div class="label">The distinction that saves the chapter</div>
+          <p><strong>Legitimacy</strong> is about whether the state may coerce. <strong>Obligation</strong> is about whether you must comply, and why. A state can be legitimate without you owing it a general duty of obedience — and that gap is where most of modern political philosophy lives.</p>
+        </div>
+
+        <h2 id="synthesis">9. Putting them together</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>Four routes to political obligation</caption>
+            <thead>
+              <tr><th scope="col">Theory</th><th scope="col">What you must have done</th><th scope="col">Standard objection</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Consent</th><td>Actually agreed, explicitly</td><td>Almost nobody has</td></tr>
+              <tr><th scope="row">Tacit consent</th><td>Stayed, or failed to leave</td><td>Staying is not choosing</td></tr>
+              <tr><th scope="row">Utilitarian</th><td>Nothing — only outcomes count</td><td>It permits sacrificing individuals</td></tr>
+              <tr><th scope="row">Fairness</th><td>Accepted benefits</td><td>Benefits are not voluntary</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="misconceptions">10. Common misconceptions</h2>
+        <div class="box warn">
+          <div class="label">Misconception 1</div>
+          <p>“Consent just means voting.” — Voting might be evidence of participation, but it is not an explicit agreement to obey. Many who vote would refuse if asked directly.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 2</div>
+          <p>“Utilitarianism doesn't care about individuals.” — It counts each person's welfare equally. The objection is not that it ignores people, but that it aggregates them.</p>
+        </div>
+        <div class="box warn">
+          <div class="label">Misconception 3</div>
+          <p>“If no theory works, no state is justified.” — That confuses obligation with legitimacy. You can conclude that no general duty of obedience exists without concluding that all coercion is wrong.</p>
+        </div>
+
+        <h2 id="glossary">11. Glossary</h2>
+        <dl class="glossary">
+          <dt>Political obligation</dt>
+          <dd>A moral duty to obey the state, as opposed to merely being forced to.</dd>
+          <dt>Express consent</dt>
+          <dd>Explicit, stated agreement — swearing an oath, signing a form.</dd>
+          <dt>Tacit consent</dt>
+          <dd>Agreement inferred from behaviour, especially from remaining in a territory.</dd>
+          <dt>Principle of fairness</dt>
+          <dd>The claim that accepting benefits from a just cooperative scheme creates an obligation to contribute.</dd>
+          <dt>Philosophical anarchism</dt>
+          <dd>The view that no state is legitimate, combined with ordinary law-abiding behaviour.</dd>
+          <dt>Legitimacy</dt>
+          <dd>Whether a state may rightfully coerce — distinct from whether you owe it obedience.</dd>
+        </dl>
+
+        <section class="quiz" aria-labelledby="quiz-h">
+          <h2 id="quiz-h">Check your understanding</h2>
+          <p class="intro">Five questions. Pick an option to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> What would a successful justification of the state have to show?</p>
+        <label class="opt" data-correct="false" data-feedback="Not enough. Wolff sets the bar higher: a justification must show everyone subject to the state is bound, not just that most benefit."><span class="box-dot"></span><span>That most people are better off under it</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. The target is universal political obligation — otherwise the state is coercing some people with no justification at all."><span class="box-dot"></span><span>That everyone subject to it has a political obligation</span></label>
+        <label class="opt" data-correct="false" data-feedback="Elections may be evidence of something, but they are not the same as showing universal obligation."><span class="box-dot"></span><span>That the government was elected</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> Locke's consent theory rests on which claim?</p>
+        <label class="opt" data-correct="true" data-feedback="Correct. Obligation must be self-assumed. That is what makes the theory attractive — and what makes the missing agreement so damaging."><span class="box-dot"></span><span>We are born free, so only our own agreement can subject us to a government</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is Aristotle's view, from chapter 1. Locke's starting point is natural freedom."><span class="box-dot"></span><span>Government is natural to humans</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is the utilitarian route, which Locke's consent theory is meant to replace."><span class="box-dot"></span><span>Whatever produces the best outcomes is justified</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> What is Hume's core objection to tacit consent?</p>
+        <label class="opt" data-correct="false" data-feedback="Hume does not propose paperwork. His point is that staying is not evidence of agreement."><span class="box-dot"></span><span>People should be forced to sign a contract</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. His farmer cannot realistically emigrate, and his sailor stays on a leaking ship. A choice with only disastrous options is not consent."><span class="box-dot"></span><span>Staying is not choosing, when leaving would ruin your life</span></label>
+        <label class="opt" data-correct="false" data-feedback="Hume does not say consent is impossible — only that the behaviour cited as tacit consent does not amount to it."><span class="box-dot"></span><span>Consent is impossible in principle</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> Why is utilitarianism thought to permit too much?</p>
+        <label class="opt" data-correct="false" data-feedback="The reverse — consequences are all it considers."><span class="box-dot"></span><span>It ignores consequences</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is its strength, not the objection. The problem is aggregation, not equality of counting."><span class="box-dot"></span><span>It counts everyone equally</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. If only totals matter, the innocent individual has no protection. That is the standard reductio."><span class="box-dot"></span><span>It would justify sacrificing an innocent person for the greater good</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> Wolff distinguishes legitimacy from obligation. What does that distinction do?</p>
+        <label class="opt" data-correct="false" data-feedback="It is more careful than that. Some states may be legitimate even if you owe no general duty of obedience."><span class="box-dot"></span><span>It shows that no state can ever be justified</span></label>
+        <label class="opt" data-correct="true" data-feedback="Correct. Legitimacy concerns what the state may do; obligation concerns what you must do. Separating them lets the argument survive the failure of consent theory."><span class="box-dot"></span><span>It allows that a state may rightfully coerce even if you have no general duty to obey</span></label>
+        <label class="opt" data-correct="false" data-feedback="The distinction exists precisely to stop obligation doing all the work."><span class="box-dot"></span><span>It says obligation is the only thing that matters</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+
+    <div class="level" data-level="eli10" hidden>
+
+      <div class="objectives">
+        <h2>What you'll learn</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Four reasons people give for obeying the government</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why each reason has a problem</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Why “the government says so” isn't enough</span></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#terms-e">1. Big words, made small</a></li>
+          <li><a href="#question-e">2. You never signed anything</a></li>
+          <li><a href="#setup-e">3. What even is a state?</a></li>
+          <li><a href="#locke-e">4. Locke: you said yes</a></li>
+          <li><a href="#hume-e">5. Hume: but did you really?</a></li>
+          <li><a href="#util-e">6. The greatest good for the most people</a></li>
+          <li><a href="#fair-e">7. You took the benefits</a></li>
+          <li><a href="#objection-e">8. So why does it still feel wrong?</a></li>
+          <li><a href="#compare-e">9. Four answers at a glance</a></li>
+          <li><a href="#quiz-e">Check yourself</a></li>
+        </ol>
+      </nav>
+
+      <div class="level-body">
+        <h2 id="terms-e">1. Big words, made small</h2>
+        <div class="box def">
+          <div class="label">Plain words</div>
+          <p><span class="term">Obey</span> — doing what someone tells you, because they told you.</p>
+          <p><span class="term">Duty</span> — something you <em>should</em> do, even if nobody is watching.</p>
+          <p><span class="term">Consent</span> — saying yes to something.</p>
+          <p><span class="term">Tacit consent</span> — a fancy way of saying “you said yes without saying anything” — like staying quiet.</p>
+        </div>
+
+        <h2 id="question-e">2. You never signed anything</h2>
+        <p>Here is a strange thing.</p>
+        <p>Nobody ever asked you if you wanted a government. You were just born here.</p>
+        <p>Now the government takes some of your money every month. If you refuse, they can punish you.</p>
+        <p>If a stranger did that, we would call it stealing. So why is it okay when the government does it?</p>
+        <p>Most people say: “Because the government has the <em>right</em>.”</p>
+        <p>Okay. But where does that right come from?</p>
+
+        <h2 id="setup-e">3. What even is a state?</h2>
+        <p>A state is not just “whoever has the most guns.”</p>
+        <p>It is the group that says: <em>only we are allowed to use force here.</em> Police, courts, prisons, borders. And it says this about <strong>everyone</strong> in the country — not just people who agreed.</p>
+        <p>So if you want to say a government is fair, you have to show something big: that <strong>everyone</strong> in the country should obey it.</p>
+        <p>That is a lot to prove.</p>
+
+        <h2 id="locke-e">4. Locke: you said yes</h2>
+        <div class="thinker">
+          <p class="who">John Locke · England · 1632–1704</p>
+          <h3 style="margin-top:.2rem">You must have agreed</h3>
+        </div>
+        <p>Locke said: people are born free. Nobody is born a servant.</p>
+        <p>So the only way a government can have power over you is if <strong>you agreed</strong> to it.</p>
+        <p>That sounds fair. But it has a big problem.</p>
+        <p>Did you agree? Do you remember signing anything? Did anyone ask?</p>
+        <p>Almost nobody has. So by Locke's own rule, almost nobody has to obey.</p>
+
+        <h2 id="hume-e">5. Hume: but did you really?</h2>
+        <div class="thinker">
+          <p class="who">David Hume · Scotland · 1711–1776</p>
+          <h3 style="margin-top:.2rem">Staying is not the same as saying yes</h3>
+        </div>
+        <p>Locke tried to fix the problem. He said: if you stay in the country, that counts as agreeing. You could leave, and you didn't. So you said yes without speaking.</p>
+        <p>Hume said that is silly.</p>
+        <p>Imagine a poor farmer. To leave the country, he would have to leave his family, his job, his language, and everything he owns. That is not a real choice.</p>
+        <p>Hume's picture: a sailor stays on a leaking ship because the shore is dangerous. Did he <em>agree</em> to the voyage? Of course not.</p>
+        <p>You also didn't choose your language. Nobody thinks speaking English means you agreed to English politics.</p>
+
+        <h2 id="util-e">6. The greatest good for the most people</h2>
+        <p>Some thinkers skip the question of agreement completely.</p>
+        <p>They say: don't ask whether people agreed. Ask whether the government makes life <em>better</em>.</p>
+        <p>Is life safer with a government? Richer? Less violent? If yes, that's the justification. Everyone counts equally, and everyone is better off.</p>
+        <p>That sounds reasonable. But there is a problem.</p>
+        <div class="box warn">
+          <div class="label">The problem</div>
+          <p>If “more good overall” is all that matters, then hurting one innocent person to help many would be fine. Most of us think that's wrong. So something is missing.</p>
+        </div>
+
+        <h2 id="fair-e">7. You took the benefits</h2>
+        <p>Here is another idea. It goes like this.</p>
+        <p>You use the roads. You use the hospitals. You are protected by the police and the army. You didn't pay for all of that yourself.</p>
+        <p>So you owe something back. Not because you agreed — because you <em>took</em>.</p>
+        <p>It is like a group project at school. You didn't say you'd join. But you used the work everyone else did. Now it's your turn to do your part.</p>
+        <div class="box warn">
+          <div class="label">The problem</div>
+          <p>What if you didn't ask for the benefit? If a radio station plays music into your house, do you owe them money? Probably not. For “you took it” to work, you have to have taken it <em>on purpose</em>.</p>
+        </div>
+
+        <h2 id="objection-e">8. So why does it still feel wrong?</h2>
+        <p>Look at the four ideas together.</p>
+        <p>Each one gets something right. People do agree sometimes. Benefits do matter. Consequences do matter.</p>
+        <p>But none of them proves that <strong>everyone</strong> must obey.</p>
+        <p>Some philosophers accept this. They are called <em>philosophical anarchists</em>. That sounds scary, but it isn't. They don't want to smash anything. They just say: no government has fully proved that it has the right to command you.</p>
+        <div class="box key">
+          <div class="label">One important difference</div>
+          <p>There are two separate questions. <strong>May the state make me?</strong> And <strong>must I obey?</strong> They are not the same. A state can be allowed to do things without you personally owing it obedience.</p>
+        </div>
+
+        <h2 id="compare-e">9. Four answers at a glance</h2>
+        <div class="tablewrap">
+          <table>
+            <caption>Four reasons, and what's wrong with each</caption>
+            <thead>
+              <tr><th scope="col">Idea</th><th scope="col">It says you obey because…</th><th scope="col">Problem</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Consent</th><td>You agreed</td><td>Almost nobody did</td></tr>
+              <tr><th scope="row">Tacit consent</th><td>You stayed</td><td>Staying isn't choosing</td></tr>
+              <tr><th scope="row">Best outcomes</th><td>It makes life better</td><td>Would allow hurting one to help many</td></tr>
+              <tr><th scope="row">Fairness</th><td>You took the benefits</td><td>You didn't ask for them</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="quiz" aria-labelledby="quiz-e">
+          <h2 id="quiz-e">Check yourself</h2>
+          <p class="intro">Five questions. Pick an answer to see why it is right or wrong.</p>
+      <div class="q">
+        <p><strong>1.</strong> Why does the chapter start with you never signing anything?</p>
+        <label class="opt" data-correct="false" data-feedback="Not quite. The point is that almost nobody agreed to be governed, yet we act as if they did."><span class="box-dot"></span><span>Because contracts are the only way to make rules</span></label>
+        <label class="opt" data-correct="true" data-feedback="Yes. You were just born here — and that is the puzzle."><span class="box-dot"></span><span>Because nobody ever asked you if you wanted a government</span></label>
+        <label class="opt" data-correct="false" data-feedback="It is not about lost forms. It is about whether agreement ever happened."><span class="box-dot"></span><span>Because the government lost your paperwork</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>2.</strong> What is a state, in plain words?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes — police, courts and borders, and it claims this over everyone, not just people who agreed."><span class="box-dot"></span><span>The group allowed to use force, over everyone in the country</span></label>
+        <label class="opt" data-correct="false" data-feedback="Money is not what makes a state a state."><span class="box-dot"></span><span>Whoever is richest</span></label>
+        <label class="opt" data-correct="false" data-feedback="That would be closer to consent theory. A state claims authority over everyone, agreed or not."><span class="box-dot"></span><span>A group of people who all agree</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>3.</strong> What was Locke's big idea?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. He thought people are born free, so only agreement can make them subject to a government."><span class="box-dot"></span><span>You must have agreed to be governed</span></label>
+        <label class="opt" data-correct="false" data-feedback="That is closer to Plato's worries, not Locke."><span class="box-dot"></span><span>The strongest should rule</span></label>
+        <label class="opt" data-correct="false" data-feedback="Locke wanted to justify government, not remove it."><span class="box-dot"></span><span>Government should be abolished</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>4.</strong> Why did Hume think “you stayed, so you agreed” is wrong?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. The farmer cannot just leave, and the sailor stays on a leaking ship. That is not agreement."><span class="box-dot"></span><span>Because staying is not really a choice if leaving would ruin your life</span></label>
+        <label class="opt" data-correct="false" data-feedback="No — Hume's point is that leaving is often impossible, not that people should leave."><span class="box-dot"></span><span>Because people should travel more</span></label>
+        <label class="opt" data-correct="false" data-feedback="It isn't about legality. It is about whether staying means saying yes."><span class="box-dot"></span><span>Because staying is illegal</span></label>
+        <div class="fb"></div>
+      </div>
+      <div class="q">
+        <p><strong>5.</strong> What is the problem with “it makes life better, so it's fair”?</p>
+        <label class="opt" data-correct="true" data-feedback="Yes. If only the total matters, an innocent person can be sacrificed — and most of us think that's wrong."><span class="box-dot"></span><span>It would allow hurting one person to help many</span></label>
+        <label class="opt" data-correct="false" data-feedback="Cost is not the objection. The objection is about fairness to individuals."><span class="box-dot"></span><span>It is too expensive</span></label>
+        <label class="opt" data-correct="false" data-feedback="The opposite — it judges the government only by results."><span class="box-dot"></span><span>It ignores the government</span></label>
+        <div class="fb"></div>
+      </div>
+          <button class="reveal" type="button">Reveal all answers</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="lesson-1-state-of-nature.html">← Chapter 1 — The State of Nature</a>
+    <a href="lesson-3-who-should-rule.html">Chapter 3 — Who Should Rule? →</a>
+  </div>
+
+<script>
+  (function () {
+    var KEY = 'pp-level';
+
+    /* ---------- reading-level switch ---------- */
+    var levels = document.querySelectorAll('.level');
+    var btns = document.querySelectorAll('.seg-btn');
+    var note = document.getElementById('lvlNote');
+
+    function apply(level, remember) {
+      levels.forEach(function (el) {
+        if (el.dataset.level === level) { el.removeAttribute('hidden'); }
+        else { el.setAttribute('hidden', ''); }
+      });
+      btns.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.level === level));
+      });
+      if (note) {
+        note.textContent = level === 'eli10'
+          ? 'Plain words, short sentences'
+          : 'Written for a first-time reader';
+      }
+      var rt = document.getElementById('readTime');
+      var rn = document.getElementById('readNote');
+      if (rt) rt.textContent = level === 'eli10' ? '≈ 6 min' : '≈ 12 min';
+      if (rn) rn.textContent = level === 'eli10' ? 'Plain English, no jargon' : 'No prior philosophy required';
+      if (remember) { try { localStorage.setItem(KEY, level); } catch (e) {} }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.level, true); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    apply(saved === 'eli10' ? 'eli10' : 'normal', false);
+
+    /* ---------- quiz (delegated, so it works in either level) ---------- */
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest ? e.target.closest('.opt') : null;
+      if (opt) {
+        var q = opt.parentElement;
+        q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('correct', 'wrong'); });
+        var ok = opt.dataset.correct === 'true';
+        opt.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) {
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (c) c.classList.add('correct');
+        }
+        var fb = q.querySelector('.fb');
+        if (fb) {
+          fb.textContent = opt.dataset.feedback || '';
+          fb.className = 'fb show ' + (ok ? 'ok' : 'no');
+        }
+        return;
+      }
+      var rv = e.target.closest ? e.target.closest('.reveal') : null;
+      if (rv) {
+        var quiz = rv.closest('.quiz');
+        quiz.querySelectorAll('.q').forEach(function (q) {
+          q.querySelectorAll('.opt').forEach(function (o) {
+            o.classList.remove('correct', 'wrong');
+            if (o.dataset.correct === 'true') o.classList.add('correct');
+          });
+          var fb = q.querySelector('.fb');
+          var c = q.querySelector('.opt[data-correct="true"]');
+          if (fb && c) { fb.textContent = c.dataset.feedback || ''; fb.className = 'fb show ok'; }
+        });
+      }
+    });
+
+    /* keyboard access for options */
+    document.querySelectorAll('.opt').forEach(function (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
